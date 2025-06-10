@@ -1,0 +1,2347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Combine</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+
+
+    th,
+    td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      cursor: pointer;
+      background-color: #3498db;
+      color: white;
+      /* Changed header text color to white */
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    div {
+      background-color: rgb(236, 246, 247);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+
+
+    /* BUTTONS */
+
+    /* button */
+    .button {
+      border: none;
+      color: white;
+      padding: 20px 34px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      transition-duration: 0.4s;
+      cursor: pointer;
+    }
+
+    /* button1 */
+
+    .button1 {
+      background-color: white;
+      color: black;
+      border: 2px solid #04AA6D;
+      padding: 3px 8px;
+    }
+
+    .button1:hover {
+      background-color: #04AA6D;
+      color: white;
+    }
+
+    /* button2 */
+
+    .button2 {
+      background-color: white;
+      color: black;
+      border: 2px solid #008CBA;
+      padding: 3px 8px;
+    }
+
+    .button2:hover {
+      background-color: #008CBA;
+      color: white;
+    }
+
+    /* button3 */
+
+    .button3 {
+      background-color: #f1f4f5;
+      color: black;
+      border: 1px solid #04AA6D;
+      padding: 3px 8px;
+      height: 27px;
+      width: 65px;
+      border-radius: 4px;
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .button3:hover {
+      background-color: #04AA6D;
+      color: white;
+    }
+
+    /* button4 */
+
+    .button4 {
+      background-color: #f1f4f5;
+      color: black;
+      border: 1px solid #04AA6D;
+      padding: 3px 8px;
+      height: 27px;
+      width: 120px;
+      border-radius: 4px;
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .button4:hover {
+      background-color: #04AA6D;
+      color: white;
+    }
+
+    /* open-button */
+
+    .open-button {
+      background-color: #008CBA;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      margin-bottom: 10px;
+      border-radius: 0px;
+      height: 27px;
+      width: 90px;
+    }
+
+    .open-button:hover {
+      background-color: #0077B3;
+    }
+
+    /* save-button */
+
+    .save-button {
+      background-color: #2dc806;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      margin-bottom: 10px;
+      border-radius: 0px;
+      height: 27px;
+      width: 70px;
+    }
+
+    .save-button:hover {
+      background-color: #069001;
+    }
+
+    /* clear-button */
+
+    .clear-button {
+      background-color: #f44336;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      margin: 10px 2px;
+      cursor: pointer;
+      border-radius: 0px;
+      height: 27px;
+      width: 70px;
+    }
+
+    .clear-button:hover {
+      background-color: #da190b;
+      /* Darker red on hover */
+
+    }
+
+    /* hide-button */
+
+    .hide-button {
+      background-color: #a08785;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      margin: 10px 2px;
+      cursor: pointer;
+      border-radius: 0px;
+      height: 27px;
+      width: 70px;
+    }
+
+    .hide-button:hover {
+      background-color: #8a5d5a;
+    }
+
+    /* reload-button */
+
+    .reload-button {
+      background-color: #ffe100;
+      color: rgb(0, 0, 0);
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      margin-bottom: 10px;
+      border-radius: 0px;
+      height: 27px;
+      width: 70px;
+    }
+
+    .reload-button:hover {
+      background-color: #fff700e0;
+    }
+
+    /* invert-button */
+
+    .invert-button {
+      background-color: #008CBA;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      margin-bottom: 10px;
+      border-radius: 0px;
+      height: 27px;
+      width: 70px;
+    }
+
+    .invert-button:hover {
+      background-color: #0077B3;
+
+    }
+
+    .box1 {
+      margin-left: 2px;
+      border: 1px solid #ccc;
+      padding: 5px;
+    }
+
+    .box2 {
+      margin-left: 2px;
+      width: 83px;
+      border: 1px solid #ccc;
+      padding: 5px;
+    }
+
+    .box3 {
+      margin-left: 2px;
+      width: 160px;
+      border: 1px solid #ccc;
+      padding: 5px;
+    }
+
+
+    th:hover {
+      background-color: #0077B3;
+      color: white;
+    }
+
+    th,
+    td {
+      transition: background-color 0.3s;
+    }
+
+
+
+    /* Navigation Bar */
+    .navbar {
+      background-color: #2c3e50;
+      padding: 1rem;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .navbar .nav-links a {
+      text-decoration: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      background-color: #34495e;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .navbar .nav-links a.active {
+      background-color: #e74c3c;
+      /* Example: Red for active */
+      color: white;
+    }
+
+
+    .navbar .nav-links a:hover {
+      background-color: #0077B3;
+    }
+
+    /* Highlighting */
+    .highlight {
+      background-color: lightblue !important;
+    }
+
+    .highlighted {
+      background-color: lightblue !important;
+    }
+
+
+    .row-highlighted {
+      background-color: lightblue;
+    }
+
+
+
+    .select-by-label {
+      font-size: 1.5em;
+      /* Use a valid unit like em, px, rem, etc. */
+      color: rgb(52, 152, 219);
+    }
+
+    .sort-by-label {
+      font-size: 1.5em;
+      /* Use a valid unit like em, px, rem, etc. */
+      color: rgb(25, 148, 19);
+    }
+
+
+    /* Main Content */
+
+    .main {
+      flex: 1;
+      padding: 1rem;
+      background-color: #ecf0f1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .field {
+      background: white;
+      padding: 1rem;
+      border-radius: 0px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: left;
+      flex: 1;
+      /* Distribute available space equally between the cards */
+    }
+
+
+    .cardmap {
+      background: rgb(224, 218, 218);
+      padding: 1.0rem;
+      border-radius: 0px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      font-size: 4;
+      text-align: center;
+    }
+
+    .activemap {
+      background: rgb(200, 195, 195);
+      padding: 1.0rem;
+      border-radius: 0px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      font-size: 4;
+      text-align: center;
+    }
+
+    #input-container {
+      margin-bottom: 20px;
+      background-color: #ecf0f1;
+      padding: 20px;
+      display: flex;
+      /* Make the input container a flex container */
+      gap: 20px;
+      /* Add some space between the cards */
+      align-items: flex-start;
+      /* Align items to the top to handle different heights */
+    }
+
+    #csv-container {
+      width: 100%;
+      height: 420px;
+      /* Or whatever height you prefer */
+      margin: 10px auto;
+      overflow: auto;
+      /* Add scrollbars when needed */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 10px;
+      display: none;
+      /* Initially hidden */
+    }
+
+
+    #selected-table-container {
+      width: calc(100% + 2rem);
+      /* Προσθέτουμε το διπλάσιο του padding του boxPlot */
+      height: 420px;
+      /* Σταθερό ύψος */
+      overflow-y: auto;
+      /* Μόνο κάθετη μπάρα κύλισης */
+      background: rgb(200, 237, 202);
+      display: none;
+      margin: -1rem;
+      /* Αφαιρούμε το περιθώριο ίσο με το padding του boxPlot */
+      border: none;
+      /* Αφαιρούμε το border */
+    }
+
+    .container {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    #Plot {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /* Optional: Set a specific height if needed */
+      /* height: 400px; */
+
+    }
+
+    .boxPlot {
+      background: rgb(200, 237, 202);
+      padding: 1.0rem;
+      border-radius: 0px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      font-size: 4;
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    /* Footer */
+    .footer {
+      background-color: #34495e;
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+    }
+  </style>
+
+</head>
+
+<body>
+
+
+  <!-- Navigation Bar -->
+
+  <nav class="navbar">
+    <h1>Clinical Dashboard</h1>
+    <ul class="nav-links">
+      <li><a href="main.html" id="dashboardTabLink" target="_blank">Main</a></li>
+      <li><a href="combine.html" class="active">Combine</a></li>
+      <li><a href="create.html" id="createTabLink" target="_blank">Create</a></li>
+      <li><a href="schedule.html" id="scheduleTabLink" target="_blank">Schedule</a></li>
+      <li><a href="#help">Help</a></li>
+    </ul>
+  </nav>
+
+  <br>
+
+  <!-- Open CSV -->
+
+  <button class="open-button" id="openFileButton">Open CSV</button>
+
+  <!--Space-->
+  &#8202;&#8202;
+
+  <input type="text" id="selectedFileName" placeholder="Select file to open" readonly
+    style="margin-left: 2px; border: 1px solid #ccc; padding: 5px;">
+  <input type="file" id="csvFileInput" accept=".csv" style="display: none;">
+
+
+  <!--Space-->
+  &#8202;&#8202;
+
+  <!-- Save Button -->
+  <button class="save-button" id="saveTableButton">Save</button>
+
+
+  <!--Space-->
+  &#8202;
+
+  <!-- Clear Button -->
+  <button class="clear-button" id="clearSelectedTableButton">Clear</button>
+
+  <!--Space-->
+  &#8202;
+
+  <!-- Show Button -->
+  <button class="hide-button" onclick="hideTable()">Show</button>
+
+  <!--Space-->
+  &#8202;
+
+  <!-- Reload Button -->
+  <button class="reload-button" onclick="reloadTable()">Reload</button>
+
+  &#8202;
+
+  <button class="button2" id="deselectButton" onclick="deselectAll()">Deselect</button>
+
+
+  <br><br>
+
+
+  <!--Columns and Rows Textfields container-->
+
+  <div id="input-container">
+
+    <!-- * topCard1 * Rows handling container-->
+
+    <div id="topCard1" class="field">
+
+      <label for="columns">
+        <font size=4 color="blue"><b>Size:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></font>
+      </label>
+
+      <input type="number" class="box2" id="rows" placeholder="Rows" name="rows">
+
+
+
+      <input type="number" class="box2" id="columns" placeholder="Columns" name="columns">
+
+      &#8202;
+
+      <button class="button3" onclick="createTable()">Create</button>
+
+      <br><br>
+
+      <!-- Rows - Textbox to show clicked row name -->
+      <label for="columnName">
+        <font size=4 color="#34495e"><b>Row:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></font>
+      </label>
+      <input type="text" id="row" name="row" readonly
+        style="margin-left: 16px; width: 170px; border: 1px solid #ccc; padding: 5px;">
+
+      <!--Space-->
+      &#8202;
+
+      <!-- Remove Button -->
+      <button id="removeRowButton" class="button3">Remove</button>
+
+      &#8202;
+
+      <button class="button3" onclick="undoRemove()" disabled>Undo</button>
+
+      <br><br>
+
+      <!-- Columns - Textbox to show clicked header name -->
+      <label for="columnName">
+        <font size=4 color="#34495e"><b>Column:</b></font>
+      </label>
+      <input type="text" id="columnName" readonly
+        style="margin-left: 16px; width: 170px; border: 1px solid #ccc; padding: 5px;">
+
+      <!--Space-->
+      &#8202;
+
+      <!-- Add Button -->
+      <button id="addColumnButton" class="button3">Add</button>
+
+      &#8202;
+
+      <button class="button3" onclick="undoAddColumn()">Undo</button>
+
+
+
+    </div>
+
+    <!-- * topCard2 * Rows handling container-->
+
+    <div id="topCard2" class="field">
+
+      <label for="sortByColumn">
+        <font size=4 color="red"><b>Sort by:&nbsp;&nbsp;&nbsp;&#8202;</b></font>
+      </label>
+
+      <select id="sortByColumn" class="box3" onchange="highlightSortColumn()">
+        <option value="">None</option>
+      </select>
+
+      &#8202;
+
+      <button class="button3" onclick="sortTable()">Sort</button>
+
+      &#8202;
+
+      <button class="button3" id="undoSortTableID" onclick="undoSortTable()" disabled>Undo</button>
+
+      <br><br>
+
+      <label for="selectByRow">
+        <font size=4 color="#34495e"><b>Row:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#8202;</b>
+        </font>
+      </label>
+
+      <select id="deleteByRowSelect" class="box3" onchange="highlightSelectedTableRow()">
+        <option value="__none__">None</option>
+
+      </select>
+
+      &#8202;
+
+      <button class="button3" id="deleteRow" onclick="deleteRowFromSelectedTable()">Delete</button>
+
+      &#8202;
+
+      <button class="button3" id="undoDeleteRow" onclick="undoDelete()">Undo</button>
+
+      <br><br>
+
+      <label for="deleteByColumn">
+        <font size=4 color="#34495e"><b>Column:&nbsp;&#8202;</b></font>
+      </label>
+
+      &#8202;
+
+      <select id="deleteByColumnSelect" class="box3" onchange="highlightSelectedTableColumnByName(this.value)">
+
+        <option value="__none__">None</option>
+
+      </select>
+
+      &#8202;
+
+      <button class="button3" id="deleteColumn" onclick="deleteColumn()">Delete</button>
+
+      &#8202;
+
+      <button class="button3" id="undoDeleteColumn2" onclick="undoDeleteColumn()">Undo</button>
+
+
+    </div>
+
+
+    <div id="topCard3" class="field">
+
+      <label for="sortBy">
+        <label for="sortBy" class="sort-by-label"><b>Move:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+          </font>
+        </label>
+
+        <br><br>
+
+        <label for="sortByRow">
+          <font size=4 color="#34495e">
+            <b>Row:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#8202;&#8202;</b></font>
+        </label>
+
+        <select id="sortByRowSelect" class="box3" onchange="highlightSortByRow()">
+          <option value="__none__">None</option>
+
+        </select>
+
+        &#8202;
+
+        <button class="button3" onclick="moveRowUp()">Up</button>
+
+        &#8202;
+
+        <button class="button3" onclick="moveRowdown()">Down</button>
+
+        <br><br>
+
+        <label for="moveByColumn">
+          <font size=4 color="#34495e"><b>Column:&nbsp;&nbsp;&#8202;&#8202;</b></font>
+        </label>
+
+        <select id="moveByColumn" class="box3" onchange="highlightSortColumn()">
+          <option value="__none__">None</option>
+
+        </select>
+
+        &#8202;
+
+        <button class="button3" onclick="moveColumnLeft()">Left</button>
+
+        &#8202;
+
+        <button class="button3" onclick="moveColumnRight()">Right</button>
+
+    </div>
+
+  </div>
+
+  <!-- Table-->
+  <!-- Table container -->
+  <div id="csv-container" class="csv-container">
+    <div id="tableContainer">
+      <table id="csvFileInput"></table>
+    </div>
+  </div>
+
+  <br>
+
+  <!--Blue bar-->
+
+  <div class="boxPlot">
+    <!-- Selected Table container -->
+    <div id="selected-table-container" class="boxPlot">
+      <table id="selectedTable">
+        <thead>
+          <tr></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div id="Plot"></div>
+  </div>
+
+
+
+  <br>
+
+  <!-- Main -->
+  <main class="main">
+
+    <div id="card1" class="cardmap">
+      <font size=4 color="#9900FF"><b>Combination</b></font><br><br>
+      <button id="showboxbutt" class="button1"
+        onclick=" setAlltoCardMap(); changeCardColor('showboxbutt', 'activemap');  updatePlot(); scrollToMainPlot()">Show</button>
+      <button id="hideboxbutt" class="button2"
+        onclick=" setAlltoCardMap(); undoenlargeboxPlot(); hideCombination()">Hide</button><br>
+      <div id="CanvasBoxPlot"></div>
+    </div>
+
+  </main>
+
+  <br>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 Dashboard</p>
+  </footer>
+
+  <script>
+    function updatePlot() {
+      // Δεν κάνουμε τίποτα προς το παρόν εδώ
+    }
+
+    function hideCombination() {
+      // Δεν κάνουμε τίποτα εδώ πια
+    }
+
+    const selectedTableHead = document.querySelector('#selectedTable thead tr');
+
+    selectedTableHead.addEventListener('dblclick', function (event) {
+      const target = event.target;
+      if (target.tagName === 'TH') {
+        const originalText = target.textContent;
+        const columnIndex = Array.from(selectedTableHead.children).indexOf(target);
+
+        const inputElement = document.createElement('input');
+        inputElement.type = 'text';
+        inputElement.value = originalText;
+        inputElement.classList.add('editable');
+
+        target.textContent = '';
+        target.appendChild(inputElement);
+        inputElement.focus();
+
+        inputElement.addEventListener('blur', function () {
+          target.textContent = inputElement.value.trim();
+        });
+
+        inputElement.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') {
+            target.textContent = inputElement.value.trim();
+          }
+        });
+      }
+    });
+
+    let lastSortedState = null;
+    // Initialize the undoSortTableButton at the top
+    const undoSortTableButton = document.getElementById('undoSortTableID');
+
+    const selectedFileNameInput = document.getElementById('selectedFileName'); // Get the input element
+    const columnName = document.getElementById('columnName'); // Get the columnName element
+    const row = document.getElementById('row'); // Get the row element
+
+    // Μεταβλητή για να αποθηκεύσετε το αρχικό περιεχόμενο του CSV
+    let originalCsvData = null;
+
+    // Undo Remove Row Button
+    let lastRemovedRow = null;
+    // Select the Undo button
+    const undoRemoveButton = document.querySelector('.button3[onclick="undoRemove()"]');
+
+    // Μεταβλητή για την αποθήκευση της τελευταίας προσθήκης στήλης
+    let lastAddedColumn = null;
+
+    const addColumnButton = document.getElementById('addColumnButton');
+    const undoAddColumnButton = document.querySelector('.button3[onclick="undoAddColumn()"]');
+    const selectedTableHeadRow = document.querySelector('#selectedTable thead tr');
+    const selectedTableBody = document.querySelector('#selectedTable tbody');
+
+
+    function hideTable() {
+      const tableContainer = document.getElementById('csv-container');
+      const hideButton = document.querySelector('.hide-button');
+
+      if (tableContainer.style.display === 'none' || window.getComputedStyle(tableContainer).display === 'none') {
+        tableContainer.style.display = 'block';
+        hideButton.textContent = 'Hide';
+        // Scroll to the main plot after showing the table
+        document.getElementById('CanvasBoxPlot').scrollIntoView({
+          behavior: 'smooth'
+        });
+      } else {
+        tableContainer.style.display = 'none';
+        hideButton.textContent = 'Show';
+      }
+    }
+
+    function getHighlightedColumnIndex() {
+      const highlightedCell = document.querySelector('#tableContainer .highlighted'); // Εδώ η αλλαγή
+      if (highlightedCell) {
+        return parseInt(highlightedCell.dataset.columnIndex);
+      }
+      return -1;
+    }
+
+
+
+    // Κλήση της hideTable για αρχική ρύθμιση κατά την φόρτωση της σελίδας
+    document.addEventListener('DOMContentLoaded', function () {
+      const tableContainer = document.getElementById('csv-container');
+      const hideButton = document.querySelector('.hide-button');
+
+      // Αν ο container είναι αρχικά ορατός (όπως θα τον κάνουμε στο CSS),
+      // τότε το κουμπί πρέπει να δείχνει "Hide".
+      if (window.getComputedStyle(tableContainer).display === 'block') {
+        hideButton.textContent = 'Hide';
+      } else {
+        hideButton.textContent = 'Show';
+      }
+
+      const addColumnButton = document.getElementById('addColumnButton');
+      const undoAddColumnButton = document.querySelector('.button3[onclick="undoAddColumn()"]');
+      const selectedTableHeadRow = document.querySelector('#selectedTable thead tr');
+      const selectedTableBody = document.querySelector('#selectedTable tbody');
+
+
+
+
+      // Event listener για την προσθήκη στήλης (τροποποιήθηκε για ενημέρωση των λιστών)
+      addColumnButton.addEventListener('click', function () {
+        const highlightedColumnIndex = getHighlightedColumnIndex();
+        enlargeboxPlot();
+        if (highlightedColumnIndex === -1) {
+          alert('Please select a column to add.');
+          return;
+        }
+
+        const headers = Array.from(document.querySelectorAll('#tableContainer table th')).map(th => th
+          .textContent);
+        const columnName = headers[highlightedColumnIndex];
+
+        const selectedTableHeaders = Array.from(selectedTableHeadRow.querySelectorAll('th')).map(th => th
+          .textContent);
+
+
+        lastAddedColumn = {
+          header: document.createElement('th'),
+          data: []
+        };
+        lastAddedColumn.header.textContent = columnName;
+        selectedTableHeadRow.appendChild(lastAddedColumn.header);
+
+        const rows = document.querySelectorAll('#tableContainer table tr');
+        rows.forEach((row, rowIndex) => {
+          if (rowIndex === 0) return;
+          const cells = row.querySelectorAll('td');
+          const cellValue = cells[highlightedColumnIndex].textContent;
+
+          let targetRow = selectedTableBody.children[rowIndex - 1];
+          if (!targetRow) {
+            targetRow = document.createElement('tr');
+            selectedTableBody.appendChild(targetRow);
+          }
+
+          const newCell = document.createElement('td');
+          newCell.textContent = cellValue;
+          targetRow.appendChild(newCell);
+          lastAddedColumn.data.push(newCell);
+        });
+
+        if (undoAddColumnButton) {
+          undoAddColumnButton.disabled = false;
+        }
+        // Ενημέρωση των λιστών select μετά την προσθήκη στήλης
+        updateSelectLists();
+      });
+
+    });
+
+
+
+    // Set values to empty on initial load
+    selectedFileNameInput.value = '';
+    columnName.value = 'None Selected';
+    row.value = 'None Selected';
+
+
+    document.getElementById('openFileButton').addEventListener('click', function () {
+      document.getElementById('csvFileInput').click();
+    });
+
+
+    // Event listener για την φόρτωση CSV (τροποποιήθηκε για αρχική συμπλήρωση των λιστών)
+    document.getElementById('csvFileInput').addEventListener('change', function (event) {
+      const file = event.target.files[0];
+      selectedFileNameInput.value = file ? file.name : '';
+      const reader = new FileReader();
+
+      if (file) {
+        reader.onload = function (e) {
+          const csv = e.target.result;
+          originalCsvData = csv;
+          displayCsvInTable(csv);
+          const lines = csv.split('\n');
+          let tableHTML = '<table>';
+          let headers = [];
+
+          lines.forEach((line, index) => {
+            const columns = line.split(',');
+            if (index === 0) {
+              tableHTML += '<tr>';
+              columns.forEach((column, headerIndex) => {
+                headers.push(column);
+                tableHTML += `<th data-column-index="${headerIndex}">${column}</th>`;
+              });
+              tableHTML += '</tr>';
+            } else if (line.trim() !== "") {
+              tableHTML += `<tr data-row-index="${index} " style="height: 1.5em;">`;
+              columns.forEach(column => {
+                tableHTML += `<td>${column}</td>`;
+              });
+              tableHTML += '</tr>';
+            }
+          });
+
+          tableHTML += '</table>';
+          document.getElementById('tableContainer').innerHTML = tableHTML;
+
+          const csvContainer = document.getElementById('csv-container');
+          const hideButton = document.querySelector('.hide-button');
+          csvContainer.style.display = 'block';
+          hideButton.textContent = 'Hide';
+
+          // Header Listener
+          const headerElements = document.querySelectorAll('#tableContainer table th');
+          headerElements.forEach(header => {
+            header.addEventListener('click', function () {
+              const columnIndex = parseInt(this.dataset.columnIndex);
+              const columnName = headers[columnIndex];
+              const rows = document.querySelectorAll('#tableContainer table tr');
+              rows.forEach(row => {
+                const cells = row.querySelectorAll('td, th');
+                cells.forEach((cell, index) => {
+                  if (index === columnIndex) {
+                    cell.classList.add('highlighted');
+                  } else {
+                    cell.classList.remove('highlighted');
+                  }
+                });
+              });
+              document.getElementById('columnName').value = columnName;
+            });
+          });
+          const tableRows = document.querySelectorAll('#tableContainer table tr');
+          tableRows.forEach(row => {
+            row.addEventListener('click', function () {
+              tableRows.forEach(r => r.classList.remove('row-highlighted'));
+              this.classList.add('row-highlighted');
+              document.getElementById('row').value = this.dataset.rowIndex;
+            });
+          });
+
+          const removeRowButton = document.getElementById('removeRowButton');
+
+          removeRowButton.addEventListener('click', function () {
+            const highlightedRow = document.querySelector('.row-highlighted');
+            if (highlightedRow) {
+              const rowIndexToDelete = parseInt(highlightedRow.dataset.rowIndex);
+              // Αποθηκεύουμε τον αρχικό index στη μεταβλητή lastRemovedRow
+              lastRemovedRow = {
+                element: highlightedRow.cloneNode(true),
+                originalIndex: rowIndexToDelete
+              };
+
+              highlightedRow.remove();
+
+              // Update row indexes in the main table
+              const remainingRows = document.querySelectorAll('#tableContainer table tr');
+              remainingRows.forEach((row, index) => {
+                if (index > 0) {
+                  row.dataset.rowIndex = index;
+                }
+              });
+
+              // Update row indexes in the selected table (αν υπάρχει)
+              const selectedRows = document.querySelectorAll('#selectedTable tbody tr');
+              selectedRows.forEach((row, index) => {
+                row.dataset.rowIndex = index + 1;
+              });
+
+              document.getElementById('row').value = '';
+              if (undoRemoveButton) {
+                undoRemoveButton.disabled = false;
+              }
+            } else {
+              alert('Please select a row to remove.');
+            }
+          });
+
+          const clearSelectedTableButton = document.getElementById('clearSelectedTableButton');
+          clearSelectedTableButton.addEventListener('click', () => {
+            document.querySelector('#selectedTable thead tr').innerHTML = '';
+            document.querySelector('#selectedTable tbody').innerHTML = '';
+            undoenlargeboxPlot();
+
+            // Άδειασμα των λιστών select στα topCard1 και topCard2
+            const deleteByRowSelect = document.getElementById('deleteByRowSelect');
+            const sortByRowSelect = document.getElementById('sortByRowSelect');
+            const sortByColumnSelect = document.getElementById('sortByColumn');
+            const deleteByColumnSelect = document.getElementById('deleteByColumnSelect');
+            const moveByColumnSelect = document.getElementById('moveByColumn');
+            const sortByRowSelectMove = document.getElementById(
+              'sortByRowSelect'); // Διόρθωση: χρησιμοποιήστε το σωστό ID
+
+            deleteByRowSelect.innerHTML = '<option value="">None</option>';
+            sortByRowSelect.innerHTML = '<option value="">None</option>';
+            sortByColumnSelect.innerHTML = '<option value="">None</option>';
+            deleteByColumnSelect.innerHTML = '<option value="">None</option>';
+            moveByColumnSelect.innerHTML = '<option value="">None</option>';
+            sortByRowSelectMove.innerHTML = '<option value="">None</option>';
+          });
+        };
+
+        reader.readAsText(file);
+      }
+
+    });
+
+    function undoRemove() {
+      if (lastRemovedRow) {
+        const tableBody = document.querySelector('#tableContainer table tbody');
+        const originalIndex = lastRemovedRow.originalIndex;
+        const elementToRestore = lastRemovedRow.element;
+        const rows = tableBody.querySelectorAll('tr');
+        let inserted = false;
+
+        if (originalIndex <= rows.length) {
+          // Βρες την γραμμή που έχει data-row-index ίσο με originalIndex
+          for (let i = 0; i < rows.length; i++) {
+            if (parseInt(rows[i].dataset.rowIndex) === originalIndex) {
+              tableBody.insertBefore(elementToRestore, rows[i]);
+              inserted = true;
+              break;
+            }
+          }
+        }
+
+        // Αν δεν βρέθηκε θέση (π.χ., αν αφαιρέθηκε η τελευταία γραμμή), πρόσθεσε στο τέλος
+        if (!inserted) {
+          tableBody.appendChild(elementToRestore);
+        }
+
+        // Επαναφορά του event listener για την επισήμανση
+        elementToRestore.addEventListener('click', function () {
+          const allRows = document.querySelectorAll('#tableContainer table tr');
+          allRows.forEach(r => r.classList.remove('row-highlighted'));
+          this.classList.add('row-highlighted');
+          document.getElementById('row').value = this.dataset.rowIndex;
+        });
+
+        // Αναβάθμιση των δεικτών γραμμών για όλες τις γραμμές
+        const updatedRows = document.querySelectorAll('#tableContainer table tr');
+        updatedRows.forEach((row, index) => {
+          if (index > 0) {
+            row.dataset.rowIndex = index;
+          }
+        });
+
+        lastRemovedRow = null;
+        if (undoRemoveButton) {
+          undoRemoveButton.disabled = true;
+        }
+      }
+    }
+
+    function undoAddColumn() {
+      if (lastAddedColumn) {
+        // Αφαίρεση της επικεφαλίδας
+        selectedTableHeadRow.removeChild(lastAddedColumn.header);
+
+        // Αφαίρεση των δεδομένων
+        const bodyRows = selectedTableBody.querySelectorAll('tr');
+        bodyRows.forEach((row, index) => {
+          if (lastAddedColumn.data[index]) {
+            row.removeChild(lastAddedColumn.data[index]);
+          }
+        });
+
+        lastAddedColumn = null;
+        if (undoAddColumnButton) {
+          undoAddColumnButton.disabled = true;
+        }
+        // Εάν μετά την αναίρεση δεν υπάρχουν πλέον στήλες, επαναφέρετε το boxPlot
+        if (selectedTableHeadRow.children.length === 0) {
+          undoenlargeboxPlot();
+        }
+      }
+    }
+
+    function highlightSelectedTableRow() {
+      const selectElement = document.getElementById('deleteByRowSelect');
+      const selectedRowIndex = selectElement.value;
+      const tableRows = document.querySelectorAll('#tableContainer table tr');
+
+      // Αφαιρούμε το highlight από όλες τις γραμμές
+      tableRows.forEach(row => row.classList.remove('row-highlighted'));
+
+      // Προσθέτουμε το highlight στην επιλεγμένη γραμμή (αν δεν είναι η πρώτη γραμμή των headers)
+      if (selectedRowIndex && selectedRowIndex !== "") {
+        const rowToHighlight = document.querySelector(`#tableContainer table tr[data-row-index="${selectedRowIndex}"]`);
+        if (rowToHighlight) {
+          rowToHighlight.classList.add('row-highlighted');
+          document.getElementById('row').value = selectedRowIndex; // Ενημερώνουμε και το textbox "Row"
+        } else {
+          document.getElementById('row').value = 'None Selected'; // Αν δεν βρεθεί, ενημερώνουμε το textbox
+        }
+      } else {
+        document.getElementById('row').value = 'None Selected'; // Αν επιλεγεί "None", ενημερώνουμε το textbox
+      }
+    }
+
+    function updateSelectLists() {
+      const selectedTableHeaders = Array.from(document.querySelectorAll('#selectedTable thead th')).map(th => th
+        .textContent);
+      const selectedTableBodyRows = document.querySelectorAll('#selectedTable tbody tr');
+
+      const sortByColumnSelect = document.getElementById('sortByColumn');
+      const deleteByColumnSelect = document.getElementById('deleteByColumnSelect');
+      const moveByColumnSelect = document.getElementById('moveByColumn');
+
+      // Καθαρίζουμε τις προηγούμενες επιλογές
+      sortByColumnSelect.innerHTML = '<option value="">None</option>';
+      deleteByColumnSelect.innerHTML = '<option value="">None</option>';
+      moveByColumnSelect.innerHTML = '<option value="">None</option>';
+
+      // Συμπληρώνουμε τις λίστες με τις κεφαλίδες του selectedTable
+      selectedTableHeaders.forEach(headerText => {
+        const option1 = document.createElement('option');
+        option1.value = headerText;
+        option1.textContent = headerText;
+        sortByColumnSelect.appendChild(option1);
+
+        const option2 = document.createElement('option');
+        option2.value = headerText;
+        option2.textContent = headerText;
+        deleteByColumnSelect.appendChild(option2);
+
+        const option3 = document.createElement('option');
+        option3.value = headerText;
+        option3.textContent = headerText;
+        moveByColumnSelect.appendChild(option3);
+      });
+
+      const deleteByRowSelect = document.getElementById('deleteByRowSelect');
+      const sortByRowSelect = document.getElementById(
+        'sortByRowSelect'); // Αυτό είναι το ίδιο με το sortByRowSelectMove
+
+      deleteByRowSelect.innerHTML = '<option value="">None</option>';
+      sortByRowSelect.innerHTML = '<option value="">None</option>';
+
+      // Συμπληρώνουμε τις λίστες με τους αριθμούς γραμμών του selectedTable
+      selectedTableBodyRows.forEach((row, index) => {
+        const rowNumber = index + 1; // Οι γραμμές ξεκινούν από το 1
+        const option1 = document.createElement('option');
+        option1.value = rowNumber;
+        option1.textContent = `Row ${rowNumber}`;
+        deleteByRowSelect.appendChild(option1);
+
+        const option2 = document.createElement('option');
+        option2.value = rowNumber;
+        option2.textContent = `Row ${rowNumber}`;
+        sortByRowSelect.appendChild(option2);
+      });
+    }
+
+
+
+    // Νέα συνάρτηση:
+    function displayCsvInTable(csv) {
+      const lines = csv.split('\n');
+      let tableHTML = '<table>';
+      let headers = [];
+
+      lines.forEach((line, index) => {
+        const columns = line.split(',');
+        if (index === 0) {
+          tableHTML += '<tr>';
+          columns.forEach(column => {
+            headers.push(column);
+            tableHTML +=
+              `<th data-column-index="${headers.length - 1}">${column}</th>`;
+          });
+          tableHTML += '</tr>';
+        } else if (line.trim() !== "") {
+          tableHTML += `<tr data-row-index="${index}" style="height: 1.5em;">`;
+          columns.forEach(column => {
+            tableHTML += `<td>${column}</td>`;
+          });
+          tableHTML += '</tr>';
+        }
+      });
+
+      tableHTML += '</table>';
+      document.getElementById('tableContainer').innerHTML = tableHTML;
+
+      const csvContainer = document.getElementById('csv-container');
+      const hideButton = document.querySelector('.hide-button');
+      csvContainer.style.display = 'block';
+      hideButton.textContent = 'Hide';
+
+      // Header Listener - Επανασύνδεση των event listeners για τις στήλες
+
+      const headerElements = document.querySelectorAll('#tableContainer table th');
+      console.log("Found header elements:", headerElements);
+      headerElements.forEach(header => {
+        header.addEventListener('click', function () {
+          const columnIndex = parseInt(this.dataset.columnIndex);
+          const columnName = headers[columnIndex];
+          const rows = document.querySelectorAll('#tableContainer table tr');
+          rows.forEach(row => {
+            const cells = row.querySelectorAll('td, th');
+            cells.forEach((cell, index) => {
+              if (index === columnIndex) {
+                cell.classList.add('highlighted');
+              } else {
+                cell.classList.remove('highlighted');
+              }
+            });
+          });
+          document.getElementById('columnName').value = columnName;
+        });
+      });
+
+      // Row Listener - Επανασύνδεση των event listeners για τις γραμμές
+      const tableRows = document.querySelectorAll('#tableContainer table tr');
+      tableRows.forEach(row => {
+        row.addEventListener('click', function () {
+          const allRows = document.querySelectorAll('#tableContainer table tr');
+          allRows.forEach(r => r.classList.remove('row-highlighted'));
+          this.classList.add('row-highlighted');
+          document.getElementById('row').value = this.dataset.rowIndex;
+        });
+      });
+    }
+
+    // Edit στο σώμα του selectedTable
+
+    // Προσθέτουμε έναν event listener για διπλό κλικ στο tbody του selectedTable
+    selectedTableBody.addEventListener('dblclick', function (event) {
+      const target = event.target;
+      // Ελέγχουμε αν το στοιχείο που έκανε το διπλό κλικ είναι ένα td (κελί δεδομένων)
+      if (target.tagName === 'TD') {
+        // Παίρνουμε το τρέχον περιεχόμενο του κελιού
+        const originalContent = target.textContent;
+        // Δημιουργούμε ένα input στοιχείο
+        const inputElement = document.createElement('input');
+        inputElement.type = 'text';
+        // Θέτουμε την τρέχουσα τιμή του κελιού στο input
+        inputElement.value = originalContent;
+
+        // Αντικαθιστούμε το περιεχόμενο του κελιού με το input στοιχείο
+        target.textContent = '';
+        target.appendChild(inputElement);
+        // Κάνουμε focus στο input για να αρχίσει αμέσως η επεξεργασία
+        inputElement.focus();
+
+        // Προσθέτουμε έναν event listener στο input για όταν χάνει το focus (ο χρήστης τελειώσει την επεξεργασία)
+        inputElement.addEventListener('blur', function () {
+          // Παίρνουμε τη νέα τιμή από το input
+          const newContent = inputElement.value;
+          // Αντικαθιστούμε το input με το νέο περιεχόμενο
+          target.textContent = newContent;
+        });
+
+        // Προαιρετικά: Προσθέτουμε έναν event listener για το πάτημα του Enter μέσα στο input
+        inputElement.addEventListener('keypress', function (event) {
+          if (event.key === 'Enter') {
+            // Κάνουμε blur το input για να ενεργοποιηθεί ο προηγούμενος listener και να αποθηκευτεί η αλλαγή
+            this.blur();
+          }
+        });
+      }
+    });
+
+
+
+    // Save Table Button
+    const saveTableButton = document.getElementById('saveTableButton');
+    saveTableButton.addEventListener('click', () => {
+      const selectedTable = document.getElementById('selectedTable');
+      const rows = selectedTable.querySelectorAll('tr');
+      let csvContent = "data:text/csv;charset=utf-8,";
+
+      rows.forEach(row => {
+        const rowData = [];
+        const cells = row.querySelectorAll('td, th');
+        cells.forEach(cell => {
+          rowData.push(cell.textContent);
+        });
+        csvContent += rowData.join(',') + '\r\n';
+      });
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', 'selected_table.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    //--Windows--
+
+    document.addEventListener('DOMContentLoaded', function () {
+      let dashboardWindow = null;
+      let createWindow = null;
+      let scheduleWindow = null;
+
+
+      const deleteByColumnSelect = document.getElementById('deleteByColumnSelect');
+      const deleteByRowSelect = document.getElementById('deleteByRowSelect');
+      const sortByRowSelectTopCard2 = document.getElementById('deleteByRowSelect'); // Same as deleteByRowSelect
+      const moveByColumnSelect = document.getElementById('moveByColumn');
+      const sortByRowSelectTopCard3 = document.getElementById('sortByRowSelect');
+
+      if (deleteByColumnSelect) {
+        deleteByColumnSelect.addEventListener('change', function () {
+          const columnName = this.value;
+          highlightSelectedTableColumnByName(columnName);
+        });
+      }
+
+      if (deleteByRowSelect) {
+        deleteByRowSelect.addEventListener('change', function () {
+          const rowIndex = this.value;
+          highlightSelectedTableRowByIndex(rowIndex);
+        });
+      }
+
+      if (sortByRowSelectTopCard2) {
+        sortByRowSelectTopCard2.addEventListener('change', function () {
+          const rowIndex = this.value;
+          highlightSelectedTableRowByIndex(rowIndex);
+        });
+      }
+
+      if (moveByColumnSelect) {
+        moveByColumnSelect.addEventListener('change', function () {
+          const columnName = this.value;
+          highlightSelectedTableColumnByName(columnName);
+        });
+      }
+
+      if (sortByRowSelectTopCard3) {
+        sortByRowSelectTopCard3.addEventListener('change', function () {
+          const rowIndex = this.value;
+          highlightSelectedTableRowByIndex(rowIndex);
+        });
+      }
+
+
+      const selectedTableHeader = document.querySelector('#selectedTable thead tr');
+      if (selectedTableHeader) {
+        selectedTableHeader.addEventListener('click', function (event) {
+          const target = event.target;
+          if (target.tagName === 'TH') {
+            const columnIndex = target.cellIndex;
+            highlightSelectedTableColumn(columnIndex);
+            updateSelectedTableColumnSelectLists();
+          }
+        });
+      }
+
+      document.getElementById('dashboardTabLink').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent default link behavior
+
+        if (dashboardWindow && !dashboardWindow.closed) {
+          dashboardWindow.focus(); // Focus on the existing window
+        } else {
+          dashboardWindow = window.open('main.html', '_blank'); // Open a new window
+        }
+      });
+
+      document.getElementById('createTabLink').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent default link behavior
+
+        if (createWindow && !createWindow.closed) {
+          createWindow.focus(); // Focus on the existing window
+        } else {
+          createWindow = window.open('create.html', '_blank'); // Open a new window
+        }
+      });
+
+      document.getElementById('scheduleTabLink').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent default link behavior
+
+        if (scheduleWindow && !scheduleWindow.closed) {
+          scheduleWindow.focus(); // Focus on the existing window
+        } else {
+          scheduleWindow = window.open('schedule.html', '_blank'); // Open a new window
+        }
+      });
+
+    });
+
+    const deleteByColumnSelect = document.getElementById('deleteByColumnSelect');
+    const deleteColumnButton = document.getElementById('deleteColumn');
+    const undoDeleteColumnButton = document.getElementById('undoDeleteColumn2');
+    let lastDeletedColumnData = null;
+    let lastDeletedColumnIndex = null;
+
+    deleteColumnButton.addEventListener('click', deleteSelectedColumn);
+
+    // Λειτουργία για την διαγραφή της επιλεγμένης στήλης
+    function deleteSelectedColumn() {
+      const selectedColumnName = deleteByColumnSelect.value;
+      if (selectedColumnName) {
+        const selectedTableHead = document.querySelector('#selectedTable thead tr');
+        const selectedTableBody = document.querySelector('#selectedTable tbody');
+        const headers = Array.from(selectedTableHead.querySelectorAll('th')).map(th => th.textContent);
+        const columnIndexToDelete = headers.indexOf(selectedColumnName);
+
+        if (columnIndexToDelete !== -1) {
+          // Αποθήκευση των δεδομένων της στήλης για την λειτουργία undo
+          lastDeletedColumnData = {
+            header: selectedTableHead.children[columnIndexToDelete].cloneNode(true),
+            cells: []
+          };
+
+          // Διαγραφή της επικεφαλίδας
+          selectedTableHead.removeChild(selectedTableHead.children[columnIndexToDelete]);
+
+          // Διαγραφή των κελιών δεδομένων σε κάθε γραμμή
+          const rows = selectedTableBody.querySelectorAll('tr');
+          rows.forEach(row => {
+            if (row.children[columnIndexToDelete]) {
+              lastDeletedColumnData.cells.push(row.children[columnIndexToDelete].cloneNode(true));
+              row.removeChild(row.children[columnIndexToDelete]);
+            }
+          });
+
+          lastDeletedColumnIndex = columnIndexToDelete;
+          undoDeleteColumnButton.disabled = false;
+
+          // Ενημέρωση των λιστών select μετά τη διαγραφή
+          updateSelectLists();
+        } else {
+          alert('Η επιλεγμένη στήλη δεν βρέθηκε στον πίνακα.');
+        }
+      } else {
+        alert('Παρακαλώ επιλέξτε μια στήλη για διαγραφή.');
+      }
+    }
+
+    // Λειτουργία για την αναίρεση της διαγραφής στήλης
+    function undoDeleteColumn() {
+      if (lastDeletedColumnData !== null && lastDeletedColumnIndex !== null) {
+        const selectedTableHead = document.querySelector('#selectedTable thead tr');
+        const selectedTableBody = document.querySelector('#selectedTable tbody');
+
+        // Επαναφορά της επικεφαλίδας
+        if (lastDeletedColumnIndex <= selectedTableHead.children.length) {
+          selectedTableHead.insertBefore(lastDeletedColumnData.header, selectedTableHead.children[
+            lastDeletedColumnIndex]);
+        } else {
+          selectedTableHead.appendChild(lastDeletedColumnData.header);
+        }
+
+        // Επαναφορά των κελιών δεδομένων σε κάθε γραμμή
+        const rows = selectedTableBody.querySelectorAll('tr');
+        rows.forEach((row, index) => {
+          if (lastDeletedColumnData.cells[index]) {
+            if (lastDeletedColumnIndex <= row.children.length) {
+              row.insertBefore(lastDeletedColumnData.cells[index], row.children[lastDeletedColumnIndex]);
+            } else {
+              row.appendChild(lastDeletedColumnData.cells[index]);
+            }
+          }
+        });
+
+        lastDeletedColumnData = null;
+        lastDeletedColumnIndex = null;
+        undoDeleteColumnButton.disabled = true;
+
+        // Ενημέρωση των λιστών select μετά την αναίρεση
+        updateSelectLists();
+      }
+    }
+
+    // Προσθέτουμε event listener στο column select για να ενημερώνεται το columnName input
+    deleteByColumnSelect.addEventListener('change', function () {
+      document.getElementById('columnName').value = this.value || 'None Selected';
+    });
+
+    // Προσθέτουμε event listener για το πάτημα του πλήκτρου Delete στο document
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Delete') {
+        deleteSelectedColumn();
+      }
+    });
+
+    function addSelectedTableEventListeners() {
+      const selectedTableHeaders = document.querySelectorAll('#selectedTable thead th');
+      selectedTableHeaders.forEach(header => {
+        header.addEventListener('click', function () {
+          // Προσθέστε εδώ τον κώδικα για το highlight της στήλης
+          const columnIndex = Array.from(this.parentNode.children).indexOf(this);
+          const rows = document.querySelectorAll('#selectedTable tr');
+          rows.forEach(row => {
+            const cells = row.querySelectorAll('td, th');
+            cells.forEach((cell, index) => {
+              if (index === columnIndex) {
+                cell.classList.add('highlighted');
+              } else {
+                cell.classList.remove('highlighted');
+              }
+            });
+          });
+          // Ενημερώστε το columnName αν χρειάζεται
+          const headerText = this.textContent;
+          document.getElementById('columnName').value = headerText;
+        });
+      });
+
+      const selectedTableBodyRows = document.querySelectorAll('#selectedTable tbody tr');
+      selectedTableBodyRows.forEach(row => {
+        row.addEventListener('click', function () {
+          // Προσθέστε εδώ τον κώδικα για το highlight της γραμμής
+          const allRows = document.querySelectorAll('#selectedTable tbody tr');
+          allRows.forEach(r => r.classList.remove('row-highlighted'));
+          this.classList.add('row-highlighted');
+          // Ενημερώστε το row αν χρειάζεται
+          // const rowIndex = this.dataset.rowIndex; // Αν έχετε data-row-index
+          // document.getElementById('row').value = rowIndex;
+        });
+      });
+    }
+
+    function highlightSelectedTableColumnByName(columnName) {
+      if (columnName === "__none__") {
+        console.log("Δεν επιλέχθηκε στήλη (None)");
+        return;
+      }
+
+      const selectedTable = document.getElementById('selectedTable');
+      if (!selectedTable) return;
+
+      const headerRow = selectedTable.querySelector('thead tr');
+      if (headerRow) {
+        const headers = Array.from(headerRow.querySelectorAll('th'));
+        // Χρησιμοποιούμε ακριβή σύγκριση — μπορεί να ψάχνεις για ""
+        const columnIndex = headers.findIndex(header => header.textContent === columnName);
+
+        if (columnIndex === -1) {
+          console.warn(`Η στήλη "${columnName}" δεν βρέθηκε στον πίνακα.`);
+          return;
+        }
+
+        highlightSelectedTableColumn(columnIndex);
+      }
+    }
+
+    function highlightSelectedTableRowByIndex(rowIndex) {
+      const selectedTable = document.getElementById('selectedTable');
+      if (!selectedTable) return;
+
+      // Remove existing highlights from all rows
+      selectedTable.querySelectorAll('tr').forEach(row => row.classList.remove('row-highlighted'));
+
+      const rows = selectedTable.querySelectorAll('tbody tr'); // Focus on tbody rows
+      if (rows[parseInt(rowIndex) - 1]) {
+        rows[parseInt(rowIndex) - 1].classList.add('row-highlighted');
+      }
+    }
+
+
+
+
+
+    function highlightSelectedTableColumn(columnIndex) {
+      const selectedTable = document.getElementById('selectedTable');
+      if (!selectedTable) return;
+
+      // Remove existing highlights
+      selectedTable.querySelectorAll('th, td').forEach(cell => cell.classList.remove('highlighted'));
+
+      const rows = selectedTable.querySelectorAll('tr');
+      rows.forEach(row => {
+        const cell = row.cells[columnIndex];
+        if (cell) {
+          cell.classList.add('highlighted');
+        }
+      });
+    }
+
+    function updateSelectedTableColumnSelectLists() {
+      const deleteByColumnSelect = document.getElementById('deleteByColumnSelect');
+      const moveByColumn = document.getElementById('moveByColumn');
+      const selectedTableHead = document.querySelector('#selectedTable thead tr');
+
+      // Clear existing options
+      deleteByColumnSelect.innerHTML = '<option value="">None</option>';
+      moveByColumn.innerHTML = '<option value="">None</option>';
+
+      if (selectedTableHead) {
+        const headers = selectedTableHead.querySelectorAll('th');
+        headers.forEach((header) => {
+          const columnName = header.textContent;
+
+          const optionDelete = document.createElement('option');
+          optionDelete.value = columnName;
+          optionDelete.textContent = columnName;
+          deleteByColumnSelect.appendChild(optionDelete);
+
+          const optionMove = document.createElement('option');
+          optionMove.value = columnName;
+          optionMove.textContent = columnName;
+          moveByColumn.appendChild(optionMove);
+        });
+      }
+    }
+
+    function deselectAll() {
+      // Αφαιρέστε το highlight από τις στήλες του main table αν υπάρχει
+      const highlightedColumnsMain = document.querySelectorAll('#tableContainer .highlighted');
+      highlightedColumnsMain.forEach(cell => cell.classList.remove('highlighted'));
+
+      // Αφαιρέστε το highlight από τις γραμμές του main table αν υπάρχει
+      const highlightedRowsMain = document.querySelectorAll('#tableContainer .row-highlighted');
+      highlightedRowsMain.forEach(row => row.classList.remove('row-highlighted'));
+
+      // Αφαιρέστε το highlight από τις στήλες του selectedTable αν υπάρχει
+      const highlightedColumnsSelected = document.querySelectorAll('#selectedTable .highlighted');
+      highlightedColumnsSelected.forEach(cell => cell.classList.remove('highlighted'));
+
+      // Αφαιρέστε το highlight από τις γραμμές του selectedTable αν υπάρχει
+      const highlightedRowsSelected = document.querySelectorAll('#selectedTable .row-highlighted');
+      highlightedRowsSelected.forEach(row => row.classList.remove('row-highlighted'));
+
+      // Επαναφέρετε τις τιμές των textboxes
+      document.getElementById('columnName').value = 'None Selected';
+      document.getElementById('row').value = 'None Selected';
+
+      // Προσθέστε ξανά τους event listeners στο selectedTable
+      addSelectedTableEventListeners();
+    }
+
+    // Generic placeholder if you are using a different library or custom implementation
+    function clearBoxplotHighlight() {
+      // Replace this with the specific logic for your boxplot library
+      // or custom drawing method to remove any highlighting.
+      console.log("Function to clear boxplot highlight needs to be implemented based on your charting library.");
+
+      readSelectedTable();
+      updateSelectedTable(selectedTableData);
+
+      // Example actions you might need to take:
+      // - Resetting a selection variable
+      // - Updating the data array to remove highlight properties
+      // - Calling a redraw method of your chart
+    }
+
+    let selectedTableData; // Μεταβλητή για την αποθήκευση των δεδομένων του selectedTable
+
+    function readSelectedTable() {
+      const selectedTable = document.getElementById('selectedTable');
+      if (!selectedTable) {
+        console.error("Ο πίνακας 'selectedTable' δεν βρέθηκε.");
+        return;
+      }
+
+      selectedTableData = [];
+      const headers = [];
+      const headerRow = selectedTable.querySelector('thead tr');
+      if (headerRow) {
+        headerRow.querySelectorAll('th').forEach(th => {
+          headers.push(th.textContent);
+        });
+      }
+
+      const bodyRows = selectedTable.querySelectorAll('tbody tr');
+      bodyRows.forEach(row => {
+        const rowData = {};
+        row.querySelectorAll('td').forEach((td, index) => {
+          if (headers[index]) {
+            rowData[headers[index]] = td.textContent;
+          } else {
+            rowData[`column_${index + 1}`] = td.textContent; // Αν δεν υπάρχουν headers
+          }
+        });
+        selectedTableData.push(rowData);
+      });
+
+      console.log("Δεδομένα του selectedTable διαβάστηκαν:", selectedTableData);
+      return selectedTableData;
+    }
+
+    function updateSelectedTable(selectedTableData) {
+      const selectedTableContainer = document.getElementById('selectedTable');
+      if (!selectedTableContainer) {
+        console.error("Το container 'selectedTableContainer' δεν βρέθηκε.");
+        return;
+      }
+
+      selectedTableContainer.innerHTML = ''; // Καθαρισμός του container
+
+      if (!selectedTableData || selectedTableData.length === 0) {
+        selectedTableContainer.innerHTML =
+          '<table id="selectedTable"><thead><tr><th>Κανένα δεδομένο</th></tr></thead><tbody></tbody></table>';
+        return;
+      }
+
+      let tableHTML = '<table id="selectedTable"><thead><tr>';
+      const headers = Object.keys(selectedTableData[0]); // Υποθέτουμε ότι όλα τα αντικείμενα έχουν τις ίδιες ιδιότητες
+
+      headers.forEach(header => {
+        tableHTML += `<th>${header}</th>`;
+      });
+      tableHTML += '</tr></thead><tbody>';
+
+      selectedTableData.forEach(rowData => {
+        tableHTML += '<tr>';
+        headers.forEach(header => {
+          tableHTML += `<td>${rowData[header] || ''}</td>`;
+        });
+        tableHTML += '</tr>';
+      });
+
+      tableHTML += '</tbody></table>';
+      selectedTableContainer.innerHTML = tableHTML;
+
+      console.log("Ο πίνακας selectedTable αναδημιουργήθηκε με τα δεδομένα:", selectedTableData);
+    }
+
+
+
+
+
+    // Μεταβλητή για την αποθήκευση της τελευταίας διαγραμμένης γραμμής από τον selectedTable
+    let lastDeletedSelectedRow = null;
+    const undoDeleteRowButton = document.getElementById('undoDeleteRow');
+
+    function deleteRowFromSelectedTable() {
+      const selectElement = document.getElementById('deleteByRowSelect');
+      const selectedRowIndexToDelete = selectElement.value;
+      const selectedTableBody = document.querySelector('#selectedTable tbody');
+      const rows = selectedTableBody.querySelectorAll('tr');
+
+      if (selectedRowIndexToDelete && selectedRowIndexToDelete !== "") {
+        const indexToDelete = parseInt(selectedRowIndexToDelete) - 1; // Adjust index for 0-based array
+        if (indexToDelete >= 0 && indexToDelete < rows.length) {
+          const rowToDelete = rows[indexToDelete];
+          lastDeletedSelectedRow = {
+            element: rowToDelete.cloneNode(true),
+            originalIndex: indexToDelete
+          };
+          rowToDelete.remove();
+          selectElement.value = ""; // Reset the select element
+          highlightSelectedTableRow(); // Clear highlight in the main table
+          undoDeleteRowButton.disabled = false;
+        } else {
+          alert('The selected row does not exist in the combined table.');
+        }
+      } else {
+        alert('Please select a row to delete from the combined table.');
+      }
+    }
+
+    function undoDelete() {
+      if (lastDeletedSelectedRow) {
+        const selectedTableBody = document.querySelector('#selectedTable tbody');
+        const rows = selectedTableBody.querySelectorAll('tr');
+        const originalIndex = lastDeletedSelectedRow.originalIndex;
+        const elementToRestore = lastDeletedSelectedRow.element;
+
+        if (originalIndex <= rows.length) {
+          const beforeRow = rows[originalIndex];
+          selectedTableBody.insertBefore(elementToRestore, beforeRow);
+        } else {
+          selectedTableBody.appendChild(elementToRestore);
+        }
+
+        lastDeletedSelectedRow = null;
+        undoDeleteRowButton.disabled = true;
+      }
+    }
+
+    let originalSelectedTableOrder = null;
+
+    function sortTable() {
+      const table = document.getElementById("selectedTable");
+      const tbody = table.querySelector("tbody");
+      const rows = Array.from(tbody.querySelectorAll("tr"));
+
+      const sortByColumnSelect = document.getElementById("sortByColumn");
+      const selectedColumnName = sortByColumnSelect.value;
+
+      if (!selectedColumnName) {
+        alert("Επιλέξτε μια στήλη για ταξινόμηση.");
+        return;
+      }
+
+      const headers = Array.from(table.querySelectorAll("thead th")).map(th => th.textContent);
+      const columnIndex = headers.indexOf(selectedColumnName);
+
+      if (columnIndex === -1) {
+        alert("Η επιλεγμένη στήλη δεν υπάρχει στον πίνακα.");
+        return;
+      }
+
+      // Αποθήκευση της αρχικής κατάστασης για undo (αν δεν έχει ήδη αποθηκευτεί)
+      if (!originalSelectedTableOrder) {
+        originalSelectedTableOrder = rows.map(row => row.cloneNode(true));
+      }
+
+      // Ταξινόμηση γραμμών
+      rows.sort((a, b) => {
+        const cellA = (a.cells[columnIndex] && a.cells[columnIndex].textContent.trim()) || "";
+        const cellB = (b.cells[columnIndex] && b.cells[columnIndex].textContent.trim()) || "";
+        return cellA.localeCompare(cellB, undefined, {
+          numeric: true,
+          sensitivity: 'base'
+        });
+      });
+
+      // Αντικατάσταση των γραμμών στο tbody
+      tbody.innerHTML = "";
+      rows.forEach(row => tbody.appendChild(row));
+
+      // Ενεργοποίηση του κουμπιού Undo
+      document.getElementById("undoSortTableID").disabled = false;
+    }
+
+    function undoSortTable() {
+      const table = document.getElementById("selectedTable");
+      const tbody = table.querySelector("tbody");
+
+      if (!originalSelectedTableOrder) {
+        alert("Δεν υπάρχει προηγούμενη ταξινόμηση για αναίρεση.");
+        return;
+      }
+
+      tbody.innerHTML = "";
+      originalSelectedTableOrder.forEach(row => tbody.appendChild(row.cloneNode(true)));
+
+      originalSelectedTableOrder = null; // καθαρίζουμε για να μην επιτρέπεται διπλό undo
+      document.getElementById("undoSortTableID").disabled = true;
+    }
+
+
+
+
+    function highlightSortColumn() {
+      const sortByColumnSelect = document.getElementById('sortByColumn');
+      const selectedColumnName = sortByColumnSelect.value;
+      const mainTableHeaders = document.querySelectorAll('#tableContainer table th');
+      const selectedTableHeader = document.querySelector(
+        `#selectedTable thead th:nth-child(${Array.from(document.querySelectorAll('#selectedTable thead th')).findIndex(th => th.textContent === selectedColumnName) + 1})`
+      );
+      const mainTableRows = document.querySelectorAll('#tableContainer table tr');
+
+      // Clear previous highlights in the main table
+      mainTableRows.forEach(row => {
+        const cells = row.querySelectorAll('td, th');
+        cells.forEach(cell => cell.classList.remove('highlight'));
+      });
+
+      // Highlight the selected column in the main table
+      if (selectedColumnName) {
+        const columnIndex = Array.from(mainTableHeaders).findIndex(th => th.textContent === selectedColumnName);
+        if (columnIndex !== -1) {
+          mainTableRows.forEach(row => {
+            const cell = row.querySelectorAll('td, th')[columnIndex];
+            if (cell) {
+              cell.classList.add('highlight');
+            }
+          });
+        }
+      }
+
+      // Clear previous highlights in the selected table
+      const selectedTableCells = document.querySelectorAll('#selectedTable td, #selectedTable th');
+      selectedTableCells.forEach(cell => cell.classList.remove('highlight'));
+
+      // Highlight the selected column in the selected table
+      if (selectedTableHeader) {
+        const columnIndex = Array.from(document.querySelectorAll('#selectedTable thead th')).findIndex(th => th
+          .textContent === selectedColumnName);
+        const selectedTableRows = document.querySelectorAll('#selectedTable tr');
+        selectedTableRows.forEach(row => {
+          const cell = row.querySelectorAll('td, th')[columnIndex];
+          if (cell) {
+            cell.classList.add('highlight');
+          }
+        });
+      }
+    }
+
+    // Store the last sorted state for undo functionality   
+
+    // Initially disable the undo sort button
+    if (undoSortTableButton) {
+      undoSortTableButton.disabled = true;
+    }
+
+
+    function reloadTable() {
+      if (originalCsvData) {
+        displayCsvInTable(originalCsvData);
+        // Επιπλέον λογική που μπορεί να χρειάζεται μετά την επαναφόρτωση
+        document.getElementById('columnName').value = 'None Selected';
+        document.getElementById('row').value = 'None Selected';
+        const headerElements = document.querySelectorAll('th');
+        headerElements.forEach(header => header.classList.remove('highlighted'));
+        const tableRows = document.querySelectorAll('#tableContainer table tr');
+        tableRows.forEach(row => row.classList.remove('row-highlighted'));
+      } else {
+        alert('Δεν υπάρχει αποθηκευμένο αρχικό CSV για επαναφόρτωση.');
+      }
+    }
+
+    // Συνδέστε τη συνάρτηση reloadTable στο κουμπί "Reload"
+    document.querySelector('.reload-button').addEventListener('click', reloadTable);
+
+    function updatePlot() {
+      // Make selectedTable visible
+      document.getElementById('selected-table-container').style.display = 'block';
+    }
+
+    function hideCombination() {
+      // Κάντε το selectedTable αόρατο
+      document.getElementById('selected-table-container').style.display = 'none';
+      enlargeboxPlot();
+    }
+
+    function enlargeboxPlot() {
+      // Βρείτε το στοιχείο με την κλάση boxPlot
+      const boxPlotElement = document.querySelector('.boxPlot');
+
+      // Αν υπάρχει το στοιχείο, αλλάξτε το padding
+      if (boxPlotElement) {
+        boxPlotElement.style.padding = '1.0rem'; // Αλλάξτε το padding σε 1.0rem
+      }
+    }
+
+    function undoenlargeboxPlot() {
+      // Βρείτε το στοιχείο με την κλάση boxPlot
+      const boxPlotElement = document.querySelector('.boxPlot');
+
+      // Αν υπάρχει το στοιχείο, αλλάξτε το padding
+      if (boxPlotElement) {
+        boxPlotElement.style.padding = '0.4rem'; // Αλλάξτε το padding σε 1.0rem
+      }
+    }
+
+    // Placeholder functions for Histogram
+    function setAlltoCardMap() {
+      const cardIdList = ["card1"];
+      cardIdList.forEach(cardId => {
+        const cardElement = document.getElementById(cardId);
+        if (cardElement) {
+          // Remove any existing card-related classes
+          cardElement.classList.remove(
+            'activemap'); // Only remove activemap, keep cardmap if it exists
+          cardElement.classList.add('cardmap');
+        } else {
+          console.warn(`Card element with ID '${cardId}' not found.`);
+        }
+      });
+    }
+
+    function changeCardColor(buttonId, classtype) {
+      const buttonElement = document.getElementById(buttonId);
+      if (buttonElement) {
+        const parentDiv = buttonElement.parentNode;
+        if (parentDiv) {
+          // Remove any existing card-related classes
+          parentDiv.classList.remove('cardmap', 'activemap');
+          // Add the new class specified by classtype
+          parentDiv.classList.add(classtype);
+        } else {
+          console.error(`Parent node not found for button with ID: ${buttonId}`);
+        }
+      } else {
+        console.error(`Button with ID "${buttonId}" not found.`);
+      }
+    }
+
+    //Scroll to main Plot
+    function scrollToMainPlot() {
+      const mainPlot = document.getElementById('CanvasBoxPlot'); // Corrected ID
+      if (mainPlot && window.getComputedStyle(mainPlot).display === 'block') { // Ensure it's visible
+        mainPlot.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }
+
+
+
+    function createTable() {
+      const rowsInput = document.getElementById('rows');
+      const columnsInput = document.getElementById('columns');
+      const selectedTable = document.getElementById('selectedTable');
+      const thead = selectedTable.querySelector('thead tr');
+      const tbody = selectedTable.querySelector('tbody');
+      const sortByColumnSelect = document.getElementById('sortByColumn');
+      const deleteByRowSelect = document.getElementById('deleteByRowSelect');
+      const deleteByColumnSelect = document.getElementById('deleteByColumnSelect');
+      const sortByRowSelect = document.getElementById('sortByRowSelect');
+      const moveByColumn = document.getElementById('moveByColumn');
+
+      thead.innerHTML = '';
+      tbody.innerHTML = '';
+      sortByColumnSelect.innerHTML = '<option value="">None</option>';
+      deleteByRowSelect.innerHTML = '<option value="">None</option>';
+      deleteByColumnSelect.innerHTML = '<option value="">None</option>';
+      sortByRowSelect.innerHTML = '<option value="">None</option>';
+      moveByColumn.innerHTML = '<option value="">None</option>';
+
+      const numRows = parseInt(rowsInput.value) || 0;
+      const numCols = parseInt(columnsInput.value) || 0;
+
+      // Δημιουργία της κεφαλίδας
+      for (let i = 0; i < numCols; i++) {
+        const th = document.createElement('th');
+        th.textContent = `Column ${i + 1}`;
+        thead.appendChild(th);
+        // Προσθήκη επιλογών στις λίστες select για στήλες
+        const optionColumn1 = document.createElement('option');
+        optionColumn1.value = i;
+        optionColumn1.textContent = `Column ${i + 1}`;
+        sortByColumnSelect.appendChild(optionColumn1);
+
+        const optionColumn2 = document.createElement('option');
+        optionColumn2.value = i;
+        optionColumn2.textContent = `Column ${i + 1}`;
+        deleteByColumnSelect.appendChild(optionColumn2);
+
+        const optionColumn3 = document.createElement('option');
+        optionColumn3.value = i;
+        optionColumn3.textContent = `Column ${i + 1}`;
+        moveByColumn.appendChild(optionColumn3);
+      }
+
+      // Δημιουργία των γραμμών του σώματος
+      for (let i = 0; i < numRows; i++) {
+        const tr = document.createElement('tr');
+        tr.dataset.rowIndex = i + 1; // Προσθέτουμε ένα dataset attribute για την αναγνώριση της γραμμής
+        tr.style.height = '2.1em'; // Προσθήκη στυλ για ύψος γραμμής
+        for (let j = 0; j < numCols; j++) {
+          const td = document.createElement('td');
+          td.textContent = '';
+          tr.appendChild(td);
+        }
+        tbody.appendChild(tr);
+        // Προσθήκη επιλογών στη λίστα select για γραμμές
+        const optionRow1 = document.createElement('option');
+        optionRow1.value = i;
+        optionRow1.textContent = `Row ${i + 1}`;
+        deleteByRowSelect.appendChild(optionRow1);
+
+        const optionRow2 = document.createElement('option');
+        optionRow2.value = i;
+        optionRow2.textContent = `Row ${i + 1}`;
+        sortByRowSelect.appendChild(optionRow2);
+
+        tr.addEventListener('click', function () {
+          const allRows = tbody.querySelectorAll('tr');
+          allRows.forEach(r => r.classList.remove('row-highlighted'));
+          this.classList.add('row-highlighted');
+          document.getElementById('row').value = this.dataset.rowIndex;
+        });
+      }
+
+      // Ενημέρωση των λιστών select όταν προστίθενται στήλες μέσω CSV
+      updateSelectLists();
+    }
+
+    // Συνάρτηση για την ενημέρωση των λιστών select με τις στήλες του selectedTable
+    function updateSelectLists() {
+      const deleteByRowSelect = document.getElementById('deleteByRowSelect');
+      const sortByRowSelect = document.getElementById('sortByRowSelect');
+      const deleteByColumnSelect = document.getElementById('deleteByColumnSelect');
+      const sortByColumnSelect = document.getElementById('sortByColumn');
+      const moveByColumnSelect = document.getElementById('moveByColumn');
+      const selectedTableHead = document.querySelector('#selectedTable thead tr');
+      const selectedTableBodyRows = document.querySelectorAll('#selectedTable tbody tr');
+
+      // Clear existing row options
+      deleteByRowSelect.innerHTML = '<option value="">None</option>';
+      sortByRowSelect.innerHTML = '<option value="">None</option>';
+
+      // Populate row options from the selected table with the content of the first cell
+      selectedTableBodyRows.forEach((row) => {
+        const firstCell = row.querySelector('td:first-child');
+        if (firstCell) {
+          const rowName = firstCell.textContent;
+          const rowIndex = row.dataset.rowIndex ? row.dataset.rowIndex : Array.from(row.parentNode.children)
+            .indexOf(row) + 1; // Fallback to index if data-row-index is missing
+
+          const optionDelete = document.createElement('option');
+          optionDelete.value = rowIndex; // Keep the index as the value for easier handling
+          optionDelete.textContent = rowName;
+          deleteByRowSelect.appendChild(optionDelete);
+
+          const optionSort = document.createElement('option');
+          optionSort.value = rowIndex; // Keep the index as the value for easier handling
+          optionSort.textContent = rowName;
+          sortByRowSelect.appendChild(optionSort);
+        }
+      });
+
+      // Clear existing column options
+      deleteByColumnSelect.innerHTML = '<option value="">None</option>';
+      sortByColumnSelect.innerHTML = '<option value="">None</option>';
+      moveByColumnSelect.innerHTML = '<option value="">None</option>';
+
+      // Populate column options from the selected table header
+      if (selectedTableHead) {
+        const selectedTableHeaders = selectedTableHead.querySelectorAll('th');
+        selectedTableHeaders.forEach((header) => {
+          const columnName = header.textContent;
+
+          const optionDelete = document.createElement('option');
+          optionDelete.value = columnName;
+          optionDelete.textContent = columnName;
+          deleteByColumnSelect.appendChild(optionDelete);
+
+          const optionSort = document.createElement('option');
+          optionSort.value = columnName;
+          optionSort.textContent = columnName;
+          sortByColumnSelect.appendChild(optionSort);
+
+          const optionMove = document.createElement('option');
+          optionMove.value = columnName;
+          optionMove.textContent = columnName;
+          moveByColumnSelect.appendChild(optionMove);
+        });
+      }
+    }
+
+    function highlightSortByRow() {
+      const selectElement = document.getElementById('sortByRowSelect');
+      const selectedRowIndex = selectElement.value;
+      const tableRows = document.querySelectorAll('#selectedTable tbody tr');
+
+      tableRows.forEach((row, index) => {
+        row.classList.remove('highlight');
+        if (selectedRowIndex && parseInt(selectedRowIndex) === index + 1) {
+          row.classList.add('highlight');
+        }
+      });
+    }
+
+    function moveRowUp() {
+      const selectElement = document.getElementById('sortByRowSelect');
+      const selectedRowIndex = parseInt(selectElement.value);
+      const tbody = document.querySelector('#selectedTable tbody');
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+
+      if (selectedRowIndex > 1 && selectedRowIndex <= rows.length) {
+        const currentRow = rows[selectedRowIndex - 1];
+        const previousRow = rows[selectedRowIndex - 2];
+        tbody.insertBefore(currentRow, previousRow);
+        updateSelectLists(); // Ενημέρωση των λιστών select
+        selectElement.value = selectedRowIndex - 1;
+      }
+    }
+
+    function moveRowdown() {
+      const selectElement = document.getElementById('sortByRowSelect');
+      const selectedRowIndex = parseInt(selectElement.value);
+      const tbody = document.querySelector('#selectedTable tbody');
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+
+      if (selectedRowIndex >= 1 && selectedRowIndex < rows.length) {
+        const currentRow = rows[selectedRowIndex - 1];
+        const nextRow = rows[selectedRowIndex];
+        tbody.insertBefore(nextRow, currentRow);
+        updateSelectLists(); // Ενημέρωση των λιστών select
+        selectElement.value = selectedRowIndex + 1;
+      }
+    }
+
+    function updateRowSelectList() {
+      const selectedTableBodyRows = document.querySelectorAll('#selectedTable tbody tr');
+      const deleteByRowSelect = document.getElementById('deleteByRowSelect');
+      const sortByRowSelect = document.getElementById('sortByRowSelect');
+
+      // Καθαρισμός των λιστών select για τις γραμμές
+      deleteByRowSelect.innerHTML = '<option value="">None</option>';
+      sortByRowSelect.innerHTML = '<option value="">None</option>';
+
+      const option = document.createElement('option');
+      option.value = headerText; // μπορεί να είναι ""
+      option.textContent = headerText === "" ? "(κενή στήλη)" : headerText;
+
+
+      selectedTableBodyRows.forEach((row, index) => {
+        const rowNumber = index + 1;
+        const optionDelete = document.createElement('option');
+        optionDelete.value = index;
+        optionDelete.textContent = `Row ${rowNumber}`;
+        deleteByRowSelect.appendChild(optionDelete);
+
+        const optionSort = document.createElement('option');
+        optionSort.value = index;
+        optionSort.textContent = `Row ${rowNumber}`;
+        sortByRowSelect.appendChild(optionSort);
+      });
+    }
+
+    function moveColumnLeft() {
+      const selectElement = document.getElementById('moveByColumn');
+      const selectedColumnNameBeforeMove = selectElement.value; // Αποθήκευση της τρέχουσας επιλογής
+
+      if (!selectedColumnNameBeforeMove) {
+        alert('Please select a column to move.');
+        return;
+      }
+
+      const table = document.getElementById('selectedTable');
+      const theadRow = table.querySelector('thead tr');
+      const tbody = table.querySelector('tbody');
+      const headerCells = Array.from(theadRow.querySelectorAll('th'));
+      const columnIndex = headerCells.findIndex(th => th.textContent === selectedColumnNameBeforeMove);
+
+      if (columnIndex > 0) {
+        // Move header
+        const currentHeader = theadRow.children[columnIndex];
+        const previousHeader = theadRow.children[columnIndex - 1];
+        theadRow.insertBefore(currentHeader, previousHeader);
+
+        // Move body cells for each row
+        Array.from(tbody.rows).forEach(row => {
+          const currentCell = row.cells[columnIndex];
+          const previousCell = row.cells[columnIndex - 1];
+          row.insertBefore(currentCell, previousCell);
+        });
+
+        // Επαναφορά της επιλεγμένης τιμής μετά τη μετακίνηση (αν υπάρχει ακόμα στις επιλογές)
+        if (Array.from(selectElement.options).some(option => option.value === selectedColumnNameBeforeMove)) {
+          selectElement.value = selectedColumnNameBeforeMove;
+        } else if (selectElement.options.length > 0) {
+          selectElement.selectedIndex = 0; // Ή επιλέξτε κάποια άλλη προεπιλεγμένη τιμή
+        }
+      }
+    }
+
+    function moveColumnRight() {
+      const selectElement = document.getElementById('moveByColumn');
+      const selectedColumnNameBeforeMove = selectElement.value; // Αποθήκευση της τρέχουσας επιλογής
+
+      if (!selectedColumnNameBeforeMove) {
+        alert('Please select a column to move.');
+        return;
+      }
+
+      const table = document.getElementById('selectedTable');
+      const theadRow = table.querySelector('thead tr');
+      const tbody = table.querySelector('tbody');
+      const headerCells = Array.from(theadRow.querySelectorAll('th'));
+      const columnIndex = headerCells.findIndex(th => th.textContent === selectedColumnNameBeforeMove);
+
+      if (columnIndex < headerCells.length - 1) {
+        // Move header
+        const currentHeader = theadRow.children[columnIndex];
+        const nextHeader = theadRow.children[columnIndex + 1];
+        theadRow.insertBefore(nextHeader, currentHeader);
+
+        // Move body cells for each row
+        Array.from(tbody.rows).forEach(row => {
+          const currentCell = row.cells[columnIndex];
+          const nextCell = row.cells[columnIndex + 1];
+          row.insertBefore(nextCell, currentCell);
+        });
+
+        // Επαναφορά της επιλεγμένης τιμής μετά τη μετακίνηση (αν υπάρχει ακόμα στις επιλογές)
+        if (Array.from(selectElement.options).some(option => option.value === selectedColumnNameBeforeMove)) {
+          selectElement.value = selectedColumnNameBeforeMove;
+        } else if (selectElement.options.length > 0) {
+          selectElement.selectedIndex = 0; // Ή επιλέξτε κάποια άλλη προεπιλεγμένη τιμή
+        }
+      }
+    }
+  </script>
+
+</body>
+
+</html>
