@@ -1,0 +1,2014 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Schedule</title>
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        #input-container {
+            margin-bottom: 20px;
+            background-color: #ecf0f1;
+            padding: 20px;
+            display: flex;
+            /* Make the input container a flex container */
+            gap: 20px;
+            /* Add some space between the cards */
+            align-items: flex-start;
+            /* Align items to the top to handle different heights */
+        }
+
+        #results {
+            width: 100%;
+            height: 420px;
+            /* Or whatever height you prefer */
+            margin: 10px auto;
+            overflow: auto;
+            /* Add scrollbars when needed */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            display: none;
+            /* Initially hidden */
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            /* Add transition for smooth hover effect */
+        }
+
+        /* Highlight table row on hover */
+        tbody tr:hover td {
+            background-color: #ffffff;
+            /* Light blue or any color you prefer */
+        }
+
+        th {
+            cursor: pointer;
+            background-color: #3498db !important;
+            /* Blue background */
+            color: white !important;
+            /* White text */
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        th:hover {
+            background-color: #2980b9 !important;
+            /* Darker blue on hover, !important added */
+        }
+
+        div {
+            background-color: rgb(236, 246, 247);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .select-by-label {
+            font-size: 1.5em;
+            /* Use a valid unit like em, px, rem, etc. */
+            color: rgb(52, 152, 219);
+        }
+
+        .sort-by-label {
+            font-size: 1.5em;
+            /* Use a valid unit like em, px, rem, etc. */
+            color: rgb(25, 148, 19);
+        }
+
+        /* BUTTONS */
+
+        /* button */
+        .button {
+            border: none;
+            color: white;
+            padding: 20px 34px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+
+        /* button1 */
+
+        .button1 {
+            background-color: white;
+            color: black;
+            border: 2px solid #04AA6D;
+            padding: 3px 8px;
+        }
+
+        .button1:hover {
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        /* button2 */
+
+        .button2 {
+            background-color: white;
+            color: black;
+            border: 2px solid #008CBA;
+            padding: 3px 8px;
+        }
+
+        .button2:hover {
+            background-color: #008CBA;
+            color: white;
+        }
+
+        /* button3 */
+
+        .button3 {
+            background-color: #f1f4f5;
+            color: black;
+            border: 1px solid #04AA6D;
+            padding: 3px 8px;
+            height: 27px;
+            width: 65px;
+            border-radius: 4px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .button3:hover {
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        /* button4 */
+
+        .button4 {
+            background-color: #f1f4f5;
+            color: black;
+            border: 1px solid #04AA6D;
+            padding: 3px 8px;
+            height: 27px;
+            width: 120px;
+            border-radius: 4px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .button4:hover {
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        /* open-button */
+
+        .open-button {
+            background-color: #008CBA;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border-radius: 0px;
+            height: 27px;
+            width: 90px;
+        }
+
+        .open-button:hover {
+            background-color: #0077B3;
+        }
+
+        /* save-button */
+
+        .save-button {
+            background-color: #2dc806;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border-radius: 0px;
+            height: 27px;
+            width: 70px;
+        }
+
+        .save-button:hover {
+            background-color: #069001;
+        }
+
+        /* clear-button */
+
+        .clear-button {
+            background-color: #f44336;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 0px;
+            height: 27px;
+            width: 70px;
+        }
+
+        .clear-button:hover {
+            background-color: #da190b;
+            /* Darker red on hover */
+
+        }
+
+        /* hide-button */
+
+        .hide-button {
+            background-color: #a08785;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 0px;
+            height: 27px;
+            width: 70px;
+        }
+
+        .hide-button:hover {
+            background-color: #8a5d5a;
+        }
+
+        /* reload-button */
+
+        .reload-button {
+            background-color: #ffe100;
+            color: rgb(0, 0, 0);
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border-radius: 0px;
+            height: 27px;
+            width: 70px;
+        }
+
+        .reload-button:hover {
+            background-color: #fff700e0;
+        }
+
+        /* invert-button */
+
+        .invert-button {
+            background-color: #008CBA;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border-radius: 0px;
+            height: 27px;
+            width: 70px;
+        }
+
+        .invert-button:hover {
+            background-color: #0077B3;
+
+        }
+
+        /* left TAP */
+        .tab {
+            Padding-left: 145px;
+        }
+
+
+
+
+        th:hover {
+            background-color: #1abc9c;
+            color: white;
+        }
+
+        th,
+        td {
+            transition: background-color 0.3s;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        #Plot {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Optional: Set a specific height if needed */
+            /* height: 400px; */
+        }
+
+        /* Row highlighted */
+        .row-highlighted {
+            background-color: lightgreen !important;
+        }
+
+        /* Column highlighted */
+        .highlight-column {
+            background-color: lightgreen !important;
+        }
+
+        .box1 {
+            margin-left: 2px;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+
+        .box2 {
+            margin-left: 2px;
+            width: 83px;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+
+        .box3 {
+            margin-left: 2px;
+            width: 140px;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background-color: #2c3e50;
+            padding: 1rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .navbar .nav-links a {
+            text-decoration: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            background-color: #34495e;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar .nav-links a.active {
+            background-color: #e74c3c;
+            /* Example: Red for active */
+            color: white;
+        }
+
+
+        .navbar .nav-links a:hover {
+            background-color: #1abc9c;
+        }
+
+
+
+        .editable {
+            cursor: pointer;
+        }
+
+        #valueTable tbody td {
+            height: 2.2rem;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #34495e;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+
+
+        /* Gantt*/
+
+        .gantt-row {
+            position: relative;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+        }
+
+        .task-name {
+            width: 20%;
+            font-weight: bold;
+        }
+
+        .gantt-bar {
+            position: absolute;
+            top: 5;
+            height: 20px;
+            background-color: #4caf50;
+        }
+
+        .gantt-container {
+            width: 80%;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding: 10px;
+            display: none;
+            position: relative;
+            /* Add this for gridlines */
+            /* Initially hidden */
+        }
+
+        /* Gridlines for Gantt Chart */
+        .gantt-gridline {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background-color: #f26161;
+            z-index: 1;
+            /* Ensure gridlines are behind the bars */
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            padding: 1rem;
+            background-color: #ecf0f1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .card {
+            background: white;
+            padding: 1rem;
+            border-radius: 0px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            flex: 1;
+            /* Distribute available space equally between the cards */
+        }
+
+        .field {
+            background: white;
+            padding: 1rem;
+            border-radius: 0px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            flex: 1;
+            /* Distribute available space equally between the cards */
+        }
+
+        .boxPlot1 {
+            background: rgb(200, 237, 202);
+            padding: 1.0rem;
+            border-radius: 0px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 4;
+            text-align: center;
+        }
+
+        .boxPlot {
+            background: rgb(200, 237, 202);
+            padding: 1.0rem;
+            border-radius: 0px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 4;
+            text-align: center;
+        }
+
+        .cardmap {
+            background: rgb(224, 218, 218);
+            padding: 1.0rem;
+            border-radius: 0px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 4;
+            text-align: center;
+        }
+
+        .activemap {
+            background: rgb(200, 195, 195);
+            padding: 1.0rem;
+            border-radius: 0px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 4;
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    <!-- Navigation Bar -->
+
+    <nav class="navbar">
+        <h1>Clinical Dashboard</h1>
+        <ul class="nav-links">
+            <li><a href="main.html" id="dashboardTabLink" target="_blank">Main</a></li>
+            <li><a href="combine.html" id="combineTabLink" target="_blank">Combine</a></li>
+            <li><a href="create.html" id="createTabLink" target="_blank">Create</a></li>
+            <li><a href="schedule.html" class="active">Schedule</a></li>
+            <li><a href="help.html" id="helpTabLink" target="_blank">Help</a></li>
+        </ul>
+    </nav>
+
+    <br>
+
+    <!-- Open CSV -->
+
+    <button class="open-button" id="openCsvButton">Open CSV</button>
+
+    <!--Space-->
+    &#8202;&#8202;
+
+    <input type="text" id="selectedFileName" placeholder="Select file to open" readonly class="box1">
+
+    <input type="file" id="csvFileInput" accept=".csv" style="display: none;">
+
+    <!--Space-->
+    &#8202;&#8202;
+
+    <!-- Save Button -->
+    <button onclick="saveAsCSV()" class="save-button" id="saveTableButton">Save</button>
+
+    <!--Space-->
+    &#8202;
+
+    <!-- Clear Button -->
+    <button class="clear-button" onclick="clearTable()">Clear</button>
+
+    <!--Space-->
+    &#8202;
+
+    <!-- Hide Button -->
+    <button class="hide-button" onclick="hideTable()">Hide</button>
+
+    <!--Space-->
+    &#8202;
+
+    <!-- Reload Button -->
+    <button class="reload-button" onclick="reloadTable()">Reload</button>
+
+    &#8202;
+
+    <!-- Deselect Button -->
+    <button class="button2" id="deselectButton">Deselect</button>
+
+    <br> <br>
+
+
+    <!--Fields container-->
+
+    <div id="input-container">
+
+        <!--Card 1-->
+
+        <div id="topCard1" class="field">
+            <!-- Field 1 - Textbox to add value for field #1 -->
+            <label for="field1">
+                <font size=4 color="#34495e"><b>Field 1:</b></font>
+            </label>
+            <input type="text" id="field1" name="field1" placeholder="Add Task"
+                style="margin-left: 16px; width: 150px; border: 1px solid #ccc; padding: 5px;">
+
+            <br><br>
+
+            <!-- Field 2 - Textbox to add value for field #2 -->
+            <label for="field2">
+                <font size=4 color="#34495e"><b>Field 2:</b></font>
+            </label>
+            <input type="number" id="field2" name="field2" placeholder="Add Start"
+                style="margin-left: 16px; width: 150px; border: 1px solid #ccc; padding: 5px;">
+
+            <br><br>
+
+            <!-- Field 3 - Textbox to add value for field #3 -->
+            <label for="field3">
+                <font size=4 color="#34495e"><b>Field 3:</b></font>
+            </label>
+            <input type="number" id="field3" name="field3" placeholder="Add End"
+                style="margin-left: 16px; width: 150px; border: 1px solid #ccc; padding: 5px;">
+
+            <!--Space-->
+            &#8202;
+
+            <button class="button3" id="registerButton">Add</button>
+        </div>
+
+
+        <!--Card 2-->
+
+        <div id="topCard2" class="field">
+            <!-- Task - Textbox to retreive Task name -->
+            <label for="task">
+                <font size=4 color="red"><b>Task:&#8202;</b></font>
+            </label>
+            <input type="text" id="task" name="task" placeholder="None Selected"
+                style="margin-left: 30px; width: 150px; border: 1px solid #ccc; padding: 5px;">
+
+            <!--Space-->
+            &#8202;
+
+            <button class="button3" id="deleteButton">Delete</button>
+
+            <!--Space-->
+            &#8202;
+
+            <button class="button3" id="undoButton">Undo</button>
+
+            <br><br>
+
+            <!-- Start - Textbox to retreve Start value-->
+            <label for="start">
+                <font size=4 color="#34495e"><b>Start:</b></font>
+            </label>
+            <input type="number" id="start" name="start" placeholder="None Selected"
+                style="margin-left: 30px; width: 150px; border: 1px solid #ccc; padding: 5px;">
+
+            <!--Space-->
+            &#8202;
+
+            <button class="button3" id="updateButtonStart">Update</button>
+
+            <br><br>
+
+            <!-- End - Textbox to retreive End value  -->
+            <label for="End">
+                <font size=4 color="#34495e"><b>End:&nbsp;&#8202;</b></font>
+            </label>
+            <input type="number" id="End" name="End" placeholder="None Selected"
+                style="margin-left: 30px; width: 150px; border: 1px solid #ccc; padding: 5px;">
+
+            <!--Space-->
+            &#8202;
+
+            <button class="button3" id="updateButtonEnd">Update</button>
+        </div>
+
+        <!--Card 3-->
+
+        <div id="topCard3" class="field">
+
+            <label for="sortByColumn" class="sort-by-label"><b>Sort
+                    by:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></font>
+            </label>
+
+            <br><br>
+
+            <label for="sortByRow">
+                <font size=4 color="#34495e">
+                    <b>Row:&nbsp;&nbsp;&nbsp;&#8202;&nbsp;&nbsp;&#8202;&nbsp;&nbsp;&#8202;&#8202;</b>
+                </font>
+            </label>
+
+            <select id="upDown" class="box3">
+                <option value="">None</option>
+            </select>
+
+            <!--Space-->
+            &#8202;
+
+            <button class="button3" onclick="upRow()">Up</button>
+
+            <!--Space-->
+            &#8202;
+
+            <button class="button3" onclick="downRow()">Down</button>
+
+            <br><br>
+
+            <label for="sortByColumn">
+                <font size=4 color="#34495e"><b>Column:&nbsp;&nbsp;&#8202;&#8202;</b></font>
+            </label>
+
+            <select id="sortByColumn" class="box3" onchange="highlightColumn(this)">
+                <option value="">None</option>
+            </select>
+
+            <!--Space-->
+            &#8202;
+
+            <button class="button3" onclick="sortTable()">Sort</button>
+
+            <!--Space-->
+            &#8202;
+
+            <button class="button3" onclick="undoSort()">Undo</button>
+
+        </div>
+
+    </div>
+
+
+    <script>
+        const csvFileInput = document.getElementById('csvFileInput');
+        const openCsvButton = document.getElementById('openCsvButton');
+        const selectedFileName = document.getElementById('selectedFileName');
+        const upDownSelect = document.getElementById('upDown');
+        const selectedFileNameInput = document.getElementById('selectedFileName'); // Get the input element
+        const task = document.getElementById('task'); // Get the input element
+        const start = document.getElementById('start'); // Get the input element
+        const End = document.getElementById('End'); // Get the input element
+
+        // Set selectedFileName to empty on initial load
+        selectedFileNameInput.value = '';
+        task.value = '';
+        start.value = '';
+        End.value = '';
+
+        let savedData = []; // Variable to store table data
+        let currentlyHighlightedColumn = -1;
+        let sortHistory = [];
+        let currentlySortedColumn = null;
+        let previouslyHighlightedRow = null;
+
+
+        // Deselect Button
+        document.addEventListener('DOMContentLoaded', function () {
+            const deselectButton = document.getElementById('deselectButton');
+            const taskInput = document.getElementById('task');
+            const startInput = document.getElementById('start');
+            const endInput = document.getElementById('End');
+            const upDownSelect = document.getElementById('upDown');
+            const sortByColumnSelect = document.getElementById('sortByColumn');
+            const table = document.getElementById('valueTable');
+
+            deselectButton.addEventListener('click', function () {
+                // Clear text fields in topCard2
+                taskInput.value = '';
+                startInput.value = '';
+                End.value = '';
+
+                // Set "None" choice in topCard3 select elements
+                upDownSelect.value = ''; // This will select the "None" option
+                sortByColumnSelect.value = ''; // This will select the "None" option
+
+                // Remove highlighting from any row in the table
+                removeRowHighlighting(table);
+
+                // Remove highlighting from any column in the table
+                removeColumnHighlighting(table);
+            });
+
+            function removeRowHighlighting(tableElement) {
+                if (!tableElement || !tableElement.getElementsByTagName('tbody')[0]) return;
+
+                const tableBody = tableElement.getElementsByTagName('tbody')[0];
+                for (let i = 0; i < tableBody.rows.length; i++) {
+                    tableBody.rows[i].classList.remove('row-highlighted');
+                }
+                if (previouslyHighlightedRow) {
+                    previouslyHighlightedRow.classList.remove('row-highlighted');
+                    previouslyHighlightedRow = null;
+                }
+            }
+
+            function removeColumnHighlighting(tableElement) {
+                if (!tableElement || !tableElement.rows.length === 0) return;
+
+                for (let i = 0; i < tableElement.rows.length; i++) {
+                    for (let j = 0; j < tableElement.rows[i].cells.length; j++) {
+                        tableElement.rows[i].cells[j].classList.remove('highlight-column');
+                    }
+                }
+                if (tableElement.getElementsByTagName('thead')[0] && tableElement.getElementsByTagName('thead')[
+                        0].rows.length > 0) {
+                    const headerRow = tableElement.getElementsByTagName('thead')[0].rows[0];
+                    for (let i = 0; i < headerRow.cells.length; i++) {
+                        headerRow.cells[i].classList.remove('highlight-column');
+                    }
+                }
+                currentlyHighlightedColumn = -1;
+            }
+        });
+
+
+        openCsvButton.addEventListener('click', () => {
+            csvFileInput.click(); // Trigger file input click           
+        });
+
+        csvFileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+
+            document.getElementById('results').style.display = 'block'; // Make container visible
+            document.querySelector('.hide-button').textContent = 'Hide'; // Change button text
+
+            if (file) {
+                selectedFileName.value = file.name; // Display the file name
+                const reader = new FileReader();
+                const boxPlotContainer = document.querySelector(
+                    '.boxPlot'); // Get the Gantt Plot container
+                reader.onload = (e) => {
+                    const csvContent = e.target.result;
+                    processCsv(csvContent);
+                    updatePlot(); // Update the plot after loading CSV
+
+                    // Move this line to after updatePlot()
+                    boxPlotContainer.style.display = 'none';
+
+                    scrollToMainPlot
+                        (); // Scroll to main plot after opening file and updating plot
+                };
+                reader.readAsText(file);
+            }
+        });
+
+
+        // Highlight row selected by list populated
+        upDownSelect.addEventListener('change', function () {
+            const selectedIndex = parseInt(this.value);
+            const tableBody = document.getElementById('valueTable').getElementsByTagName('tbody')[
+                0];
+
+            if (previouslyHighlightedRow) {
+                previouslyHighlightedRow.classList.remove('row-highlighted');
+            }
+
+            if (!isNaN(selectedIndex) && tableBody && tableBody.rows[selectedIndex]) {
+                const selectedRow = tableBody.rows[selectedIndex];
+                selectedRow.classList.add('row-highlighted');
+                previouslyHighlightedRow = selectedRow;
+            } else {
+                previouslyHighlightedRow = null;
+            }
+        });
+
+
+        function processCsv(csv) {
+            const lines = csv.split('\n');
+            const table = document.getElementById('valueTable').getElementsByTagName('tbody')[0];
+            const thead = document.getElementById('valueTable').getElementsByTagName('thead')[0];
+            const sortByColumnSelect = document.getElementById('sortByColumn');
+            let headers = [];
+
+            if (lines.length > 0 && lines[0].trim() !== "") {
+                headers = lines[0].split(',').map(header => header.trim());
+            }
+
+            sortByColumnSelect.innerHTML = '<option value="">None</option>'; // Clear existing options
+            headers.forEach((header, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = header;
+                sortByColumnSelect.appendChild(option);
+            });
+
+            thead.innerHTML = '';
+            const headerRow = thead.insertRow();
+            headers.forEach((headerText, index) => {
+                const th = document.createElement('th');
+                th.textContent = headerText;
+                headerRow.appendChild(th);
+            });
+
+            table.innerHTML = ''; // Clear existing table data.
+            savedData = []; // Clear saved data when new CSV is loaded
+
+            for (let i = 1; i < lines.length; i++) {
+                const row = lines[i].split(',');
+                if (row.length === headers.length && row.some(cell => cell.trim() !== "")) {
+                    const newRow = table.insertRow();
+                    const rowData = [];
+                    for (let j = 0; j < headers.length; j++) {
+                        const cell = newRow.insertCell(j);
+                        cell.textContent = row[j].trim();
+                        rowData.push(row[j].trim());
+                        // Πρόσθεσε contenteditable στο πρώτο κελί (Field 1)
+                        if (j === 0) {
+                            cell.contentEditable = "true";
+                            cell.classList.add('editable');
+                        }
+                    }
+                    savedData.push(rowData); // Save row data
+                }
+            }
+            highlightColumn(document.getElementById(
+                'sortByColumn')); // Ensure highlighting is reset on new load
+
+            populateUpDownSelect(); // Call this after processing the CSV
+        }
+
+
+        function clearTable() {
+            const table = document.getElementById('valueTable').getElementsByTagName('tbody')[0];
+            const resultsContainer = document.getElementById('results');
+            const hideButton = document.querySelector('.hide-button');
+            document.getElementById('selectedFileName').value = '';
+            document.getElementById('field1').value = '';
+            document.getElementById('field2').value = '';
+            document.getElementById('field3').value = '';
+            document.getElementById('task').value = '';
+            document.getElementById('start').value = '';
+            document.getElementById('End').value = '';
+            savedData = []; // clear previous stored data.
+            for (let i = 0; i < table.rows.length; i++) {
+                const rowData = [];
+                for (let j = 0; j < table.rows[i].cells.length; j++) {
+                    rowData.push(table.rows[i].cells[j].textContent);
+                }
+                savedData.push(rowData);
+            }
+            table.innerHTML = '';
+            clearBoxPlot(); // Clear the plot when table is cleared            
+            resultsContainer.style.display = 'none';
+            hideButton.textContent = 'Show';
+            // ΚΑΘΑΡΙΣΜΟΣ ΤΗΣ ΤΙΜΗΣ ΤΟΥ INPUT ΑΡΧΕΙΟΥ ΕΔΩ
+            document.getElementById('csvFileInput').value = '';
+        }
+
+
+        function hideTable() {
+            const resultsContainer = document.getElementById('results');
+            const hideButton = document.querySelector('.hide-button');
+
+            if (resultsContainer.style.display === 'none' || window.getComputedStyle(resultsContainer)
+                .display ===
+                'none') {
+                resultsContainer.style.display = 'block';
+                hideButton.textContent = 'Hide';
+            } else {
+                resultsContainer.style.display = 'none';
+                hideButton.textContent = 'Show';
+            }
+        }
+
+
+        function reloadTable() {
+
+            document.getElementById('task').value = '';
+            document.getElementById('start').value = '';
+            document.getElementById('End').value = '';
+
+            if (savedData.length === 0) {
+                alert("No file stored to reload.");
+                return;
+            }
+
+            const table = document.getElementById('valueTable').getElementsByTagName('tbody')[0];
+            table.innerHTML = ''; // Clear the table first
+            savedData.forEach(rowData => {
+                const newRow = table.insertRow();
+                rowData.forEach(cellData => {
+                    const cell = newRow.insertCell();
+                    cell.textContent = cellData;
+                });
+
+            });
+            updatePlot(); // Update plot after reload
+            hideTableboxPlot(); // Hide chart
+            scrollToMainPlot() // Scroll after table generation
+
+
+            const rows = table.rows;
+
+            // Επανάληψη όλων των γραμμών του πίνακα (αρχίζοντας από το 0, αν δεν υπάρχει header row, αλλιώς από το 1)
+            for (let i = 0; i < rows.length; i++) {
+                const firstCell = rows[i].cells[0]; // Παίρνουμε το πρώτο κελί κάθε γραμμής
+                if (firstCell) { // Ελέγχουμε ότι υπάρχει το κελί
+                    firstCell.contentEditable = "true"; // Το κάνουμε επεξεργάσιμο
+                    firstCell.classList.add('editable'); // Προσθέτουμε την κλάση 'editable'
+                }
+            }
+
+            // Ενημέρωση του upDownSelect μετά την ανανέωση του πίνακα
+            populateUpDownSelect();
+        }
+
+        function populateUpDownSelect() {
+            const tableBody = document.getElementById('valueTable').getElementsByTagName('tbody')[0];
+            const firstColumnIndex = 0; // Assuming the first column contains the identifier
+            upDownSelect.innerHTML = '<option value="">None</option>';
+            if (tableBody) {
+                for (let i = 0; i < tableBody.rows.length; i++) {
+                    const row = tableBody.rows[i];
+                    if (row.cells.length > firstColumnIndex) {
+                        const firstCellValue = row.cells[firstColumnIndex].textContent;
+                        const option = document.createElement('option');
+                        option.value = i;
+                        option.textContent = firstCellValue;
+                        upDownSelect.appendChild(option);
+                    }
+                }
+            }
+        }
+
+        // Highlight row selected by list populated
+        upDownSelect.addEventListener('change', function () {
+            const selectedIndex = parseInt(this.value);
+            const tableBody = document.getElementById('valueTable').getElementsByTagName('tbody')[
+                0];
+
+            if (previouslyHighlightedRow) {
+                previouslyHighlightedRow.classList.remove('row-highlighted');
+            }
+
+            if (!isNaN(selectedIndex) && tableBody && tableBody.rows[selectedIndex]) {
+                const selectedRow = tableBody.rows[selectedIndex];
+                selectedRow.classList.add('row-highlighted');
+                previouslyHighlightedRow = selectedRow;
+            } else {
+                previouslyHighlightedRow = null;
+            }
+        });
+
+
+
+        function upRow() {
+            const selectedIndex = parseInt(upDownSelect.value);
+            const tableBody = document.getElementById('valueTable').getElementsByTagName('tbody')[0];
+
+            if (!isNaN(selectedIndex) && selectedIndex > 0 && tableBody && tableBody.rows.length > 1) {
+                const rowToMove = tableBody.rows[selectedIndex];
+                const previousRow = tableBody.rows[selectedIndex - 1];
+                tableBody.insertBefore(rowToMove, previousRow);
+                populateUpDownSelect(); // Re-populate the dropdown to reflect the new order
+                upDownSelect.value = selectedIndex - 1; // Update the dropdown value to the new position
+                highlightSelectedRow(selectedIndex - 1);
+            } else if (isNaN(selectedIndex)) {
+                alert('Please select a row to move.');
+            } else if (selectedIndex === 0) {
+                alert('Cannot move the first row up.');
+            } else if (!tableBody || tableBody.rows.length <= 1) {
+                alert('Not enough rows to move.');
+            }
+        }
+
+        function downRow() {
+            const selectedIndex = parseInt(upDownSelect.value);
+            const tableBody = document.getElementById('valueTable').getElementsByTagName('tbody')[0];
+
+            if (!isNaN(selectedIndex) && tableBody && selectedIndex < tableBody.rows.length - 1 && tableBody
+                .rows
+                .length > 1) {
+                const rowToMove = tableBody.rows[selectedIndex];
+                const nextRow = tableBody.rows[selectedIndex + 1];
+                tableBody.insertBefore(nextRow, rowToMove);
+                populateUpDownSelect(); // Re-populate the dropdown to reflect the new order
+                upDownSelect.value = selectedIndex + 1; // Update the dropdown value to the new position
+                highlightSelectedRow(selectedIndex + 1);
+            } else if (isNaN(selectedIndex)) {
+                alert('Please select a row to move.');
+            } else if (!tableBody || tableBody.rows.length <= 1) {
+                alert('Not enough rows to move.');
+            } else if (selectedIndex === tableBody.rows.length - 1) {
+                alert('Cannot move the last row down.');
+            }
+        }
+
+        function highlightSelectedRow(index) {
+            const tableBody = document.getElementById('valueTable').getElementsByTagName('tbody')[0];
+            if (previouslyHighlightedRow) {
+                previouslyHighlightedRow.classList.remove('row-highlighted');
+            }
+            if (tableBody && tableBody.rows[index]) {
+                const selectedRow = tableBody.rows[index];
+                selectedRow.classList.add('row-highlighted');
+                previouslyHighlightedRow = selectedRow;
+                upDownSelect.value = index; // Update the dropdown
+            } else {
+                previouslyHighlightedRow = null;
+                upDownSelect.value = ''; // Clear dropdown if no row is highlighted
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const resultsTable = document.getElementById('valueTable');
+            const tableBody = resultsTable.getElementsByTagName('tbody')[0];
+
+            resultsTable.addEventListener('click', (event) => {
+                const target = event.target;
+                if (target.tagName === 'TD') {
+                    const row = target.parentNode;
+                    const rowIndex = row
+                        .rowIndex; // Get the index of the clicked row (excluding header)
+                    if (rowIndex > 0) { // Ensure it's not the header row
+                        const actualIndex = rowIndex -
+                            1; // Adjust index for tbody rows (0-based)
+                        highlightSelectedRow(actualIndex);
+                    }
+                }
+            });
+        });
+
+
+
+        function highlightColumn(selectElement) {
+            const columnIndex = parseInt(selectElement.value);
+            const table = document.getElementById('valueTable');
+
+            // Remove highlight from previously highlighted column
+            if (currentlyHighlightedColumn !== -1 && table && table.rows.length > 0) {
+                for (let i = 0; i < table.rows.length; i++) {
+                    if (table.rows[i].cells[currentlyHighlightedColumn]) {
+                        table.rows[i].cells[currentlyHighlightedColumn].classList.remove(
+                            'highlight-column');
+                    }
+                }
+                const headerRow = table.getElementsByTagName('thead')[0].rows[0];
+                if (headerRow && headerRow.cells[currentlyHighlightedColumn]) {
+                    headerRow.cells[currentlyHighlightedColumn].classList.remove('highlight-column');
+                }
+            }
+
+            // Highlight the newly selected column
+            if (!isNaN(columnIndex) && columnIndex >= 0 && table && table.rows.length > 0) {
+                for (let i = 0; i < table.rows.length; i++) {
+                    if (table.rows[i].cells[columnIndex]) {
+                        table.rows[i].cells[columnIndex].classList.add('highlight-column');
+                    }
+                }
+                const headerRow = table.getElementsByTagName('thead')[0].rows[0];
+                if (headerRow && headerRow.cells[columnIndex]) {
+                    headerRow.cells[columnIndex].classList.add('highlight-column');
+                }
+                currentlyHighlightedColumn = columnIndex;
+            } else {
+                currentlyHighlightedColumn = -1;
+            }
+        }
+
+        // Function to change Cardclass when button clicked
+
+        function changeCardColor(buttonId, classtype) {
+            const buttonElement = document.getElementById(buttonId);
+            if (buttonElement) {
+                const parentDiv = buttonElement.parentNode;
+                if (parentDiv) {
+                    // Remove any existing card-related classes
+                    parentDiv.classList.remove('cardmap', 'activemap');
+                    // Add the new class specified by classtype
+                    parentDiv.classList.add(classtype);
+                } else {
+                    console.error(`Parent node not found for button with ID: ${buttonId}`);
+                }
+            } else {
+                console.error(`Button with ID "${buttonId}" not found.`);
+            }
+        }
+
+
+        // Function to set cardmap to all classes
+
+        function setAlltoCardMap() {
+            const cardIdList = ["card1"];
+            cardIdList.forEach(cardId => {
+                const cardElement = document.getElementById(cardId);
+                if (cardElement) {
+                    // Remove any existing card-related classes
+                    cardElement.classList.remove(
+                        'activemap'); // Only remove activemap, keep cardmap if it exists
+                    cardElement.classList.add('cardmap');
+                } else {
+                    console.warn(`Card element with ID '${cardId}' not found.`);
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const sortByColumnSelect = document.getElementById('sortByColumn');
+            const table = document.getElementById('valueTable');
+            const thead = table ? table.getElementsByTagName('thead')[0] :
+                null; // Check if table exists
+
+            function updateSortByOptions() {
+                sortByColumnSelect.innerHTML = '<option value="">None</option>';
+                if (thead && thead.rows.length > 0) {
+                    const headers = thead.rows[0].getElementsByTagName('th');
+                    for (let i = 0; i < headers.length; i++) {
+                        const option = document.createElement('option');
+                        option.value = i;
+                        option.textContent = headers[i].textContent;
+                        sortByColumnSelect.appendChild(option);
+                    }
+                }
+                highlightColumn(sortByColumnSelect); // Maintain highlight on options update
+            }
+
+            const csvFileInput = document.getElementById('csvFileInput');
+            csvFileInput.addEventListener('change', function () {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const csvContent = e.target.result;
+                        processCsv(
+                            csvContent); // Ensure processCsv updates the table and headers
+                        updateSortByOptions();
+                        populateUpDownSelect
+                            (); // Ensure populateUpDownSelect is called here as well
+                    };
+                    reader.readAsText(file);
+                }
+            });
+
+            if (table && table.rows.length > 0) { // Check if table exists before calling
+                updateSortByOptions();
+                populateUpDownSelect();
+            }
+            highlightColumn(sortByColumnSelect); // Initial highlight setup
+        });
+
+
+
+        function sortTable() {
+            const table = document.getElementById('valueTable').getElementsByTagName('tbody')[0];
+            const sortByColumnSelect = document.getElementById('sortByColumn');
+            const columnIndex = sortByColumnSelect.value;
+
+            if (columnIndex === "" || !table || table.rows.length === 0) {
+                return;
+            }
+
+            const currentTableDataSnapshot = Array.from(table.rows).map(row =>
+                Array.from(row.cells).map(cell => cell.textContent)
+            );
+
+            // Αποθήκευσε την τρέχουσα κατάσταση για τη λειτουργία αναίρεσης *ΠΡΙΝ* την ταξινόμηση
+            sortHistory.push({
+                rows: currentTableDataSnapshot, // Αποθηκεύει το περιεχόμενο των γραμμών
+                sortedColumn: currentlySortedColumn // Αποθηκεύει τη στήλη που μόλις ταξινομήθηκε
+            });
+            // --- ΤΕΛΟΣ ΚΡΙΣΙΜΟΥ ΣΗΜΕΙΟΥ ---
+
+            let rows = Array.from(table.rows);
+
+            let isAscending = true; // Υποθέτουμε αύξουσα ταξινόμηση
+
+            rows.sort((rowA, rowB) => {
+                // ... (ο κώδικας φυσικής ταξινόμησης που προσθέσαμε πριν) ...
+                const cellA = rowA.cells[columnIndex].textContent.trim();
+                const cellB = rowB.cells[columnIndex].textContent.trim();
+
+                const re = /(\D*)(\d*)/;
+                const partsA = cellA.match(re);
+                const partsB = cellB.match(re);
+
+                const textA = partsA[1] || '';
+                const numA = parseInt(partsA[2], 10) || 0;
+
+                const textB = partsB[1] || '';
+                const numB = parseInt(partsB[2], 10) || 0;
+
+                let comparison = 0;
+
+                if (textA < textB) {
+                    comparison = -1;
+                } else if (textA > textB) {
+                    comparison = 1;
+                } else {
+                    if (numA < numB) {
+                        comparison = -1;
+                    } else if (numA > numB) {
+                        comparison = 1;
+                    }
+                }
+                return isAscending ? comparison : -comparison;
+            });
+
+            // Επανα-προσθήκη των ταξινομημένων γραμμών στον πίνακα
+            while (table.firstChild) {
+                table.removeChild(table.firstChild);
+            }
+            rows.forEach(row => table.appendChild(row));
+
+            currentlySortedColumn = parseInt(columnIndex);
+
+            // Αφού ξαναδημιουργηθούν οι γραμμές, επανεφάρμοσε contenteditable
+
+            for (let i = 0; i < rows.length; i++) {
+                const firstCell = rows[i].cells[0];
+                if (firstCell) { // Βεβαιώσου ότι υπάρχει το κελί
+                    firstCell.contentEditable = "true";
+                    firstCell.classList.add('editable');
+                }
+            }
+            populateUpDownSelect(); // Επίσης, ενημέρωσε τον επιλογέα μετά την ταξινόμηση
+        }
+
+        function undoSort() {
+            const table = document.getElementById('valueTable').getElementsByTagName('tbody')[0];
+            if (sortHistory.length > 0) {
+                const previousState = sortHistory.pop(); // Παίρνει την τελευταία αποθηκευμένη κατάσταση
+
+                // Καθαρίζει τις υπάρχουσες γραμμές
+                while (table.firstChild) {
+                    table.removeChild(table.firstChild);
+                }
+
+                // Επανα-γεμίζει τον πίνακα με την προηγούμενη σειρά δεδομένων
+                previousState.rows.forEach(rowData => {
+                    const newRow = table.insertRow();
+                    rowData.forEach(cellData => {
+                        const cell = newRow.insertCell();
+                        cell.textContent = cellData;
+                    });
+                });
+
+                // Επαναφορά της προηγούμενα ταξινομημένης στήλης για επισήμανση (προαιρετικό)
+                currentlySortedColumn = previousState.sortedColumn;
+                const sortByColumnSelect = document.getElementById('sortByColumn');
+                sortByColumnSelect.value = currentlySortedColumn === null ? "" : currentlySortedColumn.toString();
+                highlightColumn(sortByColumnSelect); // Επαναφορά επισήμανσης
+
+                updatePlot(); // Ενημέρωση και του γραφήματος
+                // hideTableboxPlot(); // Ενεργοποιήστε ή απενεργοποιήστε αυτή τη γραμμή ανάλογα με το αν θέλετε να κρύβεται το γράφημα στην αναίρεση
+            } else {
+                alert("No previous sort state to undo.");
+            }
+
+            // Αφού ξαναδημιουργηθούν οι γραμμές, επανεφάρμοσε contenteditable
+
+            const rows = table.rows;
+
+            for (let i = 0; i < rows.length; i++) {
+                const firstCell = rows[i].cells[0];
+                if (firstCell) { // Βεβαιώσου ότι υπάρχει το κελί
+                    firstCell.contentEditable = "true";
+                    firstCell.classList.add('editable');
+                }
+            }
+            populateUpDownSelect(); // Επίσης, ενημέρωσε τον επιλογέα μετά την ταξινόμηση
+        }
+
+        function removeHighlight() {
+            const table = document.getElementById('valueTable');
+            if (table && table.rows.length > 0) {
+                for (let i = 0; i < table.rows.length; i++) {
+                    for (let j = 0; j < table.rows[i].cells.length; j++) {
+                        table.rows[i].cells[j].classList.remove('highlight-column');
+                    }
+                }
+                const headerRow = table.getElementsByTagName('thead')[0].rows[0];
+                if (headerRow) {
+                    for (let i = 0; i < headerRow.cells.length; i++) {
+                        headerRow.cells[i].classList.remove('highlight-column');
+                    }
+                }
+            }
+        }
+    </script>
+
+
+    <div id="results">
+        <table id="valueTable">
+            <thead>
+                <tr>
+                    <th>Field 1</th>
+                    <th>Field 2</th>
+                    <th>Field 3</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <br>
+
+    <script>
+        const field1 = document.getElementById('field1');
+        const field2 = document.getElementById('field2');
+        const field3 = document.getElementById('field3');
+        const registerButton = document.getElementById('registerButton');
+        const saveCsvButton = document.getElementById('saveTableButton');
+        const valueTable = document.getElementById('valueTable').getElementsByTagName('tbody')[0];
+        let data = [];
+
+        registerButton.addEventListener('click', () => {
+            const value1 = field1.value;
+            const value2 = field2.value;
+            const value3 = field3.value;
+
+            document.getElementById('results').style.display = 'block'; // Make container visible
+            document.querySelector('.hide-button').textContent = 'Hide'; // Change button text
+
+            data.push([value1, value2, value3]);
+
+            let newRow = valueTable.insertRow();
+            let cell1 = newRow.insertCell(0);
+            let cell2 = newRow.insertCell(1);
+            let cell3 = newRow.insertCell(2);
+
+            cell1.textContent = value1;
+            // Πρόσθεσε contenteditable στο πρώτο κελί (Field 1)
+            cell1.contentEditable = "true";
+            cell1.classList.add('editable');
+
+            cell2.textContent = value2;
+            cell3.textContent = value3;
+
+            field1.value = '';
+            field2.value = '';
+            field3.value = '';
+
+            updatePlot(); // Update the plot after adding a row
+            scrollToMainPlot(); //scroll to main plot
+            populateUpDownSelect(); // Ενημέρωσε τον επιλογέα μετά την προσθήκη νέας γραμμής
+        });
+
+
+        // Delete row selected
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const deleteButton = document.getElementById('deleteButton');
+            const resultsTable = document.getElementById('valueTable');
+            const ganttContainer = document.getElementById('gantt-container');
+
+            function updateGanttChart(data) {
+                if (!ganttContainer) return;
+                ganttContainer.innerHTML = ''; // Clear previous Gantt chart
+
+                if (!data || data.length === 0) {
+                    ganttContainer.style.display = 'none';
+                    return;
+                }
+
+                ganttContainer.style.display = 'block';
+
+                const minStart = Math.min(...data.map(item => parseInt(item.Field2)));
+                const maxEnd = Math.max(...data.map(item => parseInt(item.Field3)));
+                const totalDuration = maxEnd - minStart;
+
+                data.forEach(item => {
+                    const row = document.createElement('div');
+                    row.classList.add('gantt-row');
+
+                    const taskName = document.createElement('div');
+                    taskName.classList.add('task-name');
+                    taskName.textContent = item.Field1;
+                    row.appendChild(taskName);
+
+                    const bar = document.createElement('div');
+                    bar.classList.add('gantt-bar');
+                    const startOffset = parseInt(item.Field2) - minStart;
+                    const barDuration = parseInt(item.Field3) - parseInt(item.Field2);
+
+                    if (totalDuration > 0) {
+                        const startPercentage = (startOffset / totalDuration) * 100;
+                        const durationPercentage = (barDuration / totalDuration) * 100;
+                        bar.style.left = `${startPercentage}%`;
+                        bar.style.width = `${durationPercentage}%`;
+                        bar.textContent = `${item.Field2}-${item.Field3}`;
+                    } else {
+                        bar.style.left = `0%`;
+                        bar.style.width = `0%`;
+                        bar.textContent = `${item.Field2}-${item.Field3}`;
+                    }
+                    row.appendChild(bar);
+
+                    ganttContainer.appendChild(row);
+                });
+
+                // Add gridlines (optional)
+                if (totalDuration > 0) {
+                    for (let i = 0; i <= totalDuration; i++) {
+                        const gridline = document.createElement('div');
+                        gridline.classList.add('gantt-gridline');
+                        const positionPercentage = (i / totalDuration) * 100;
+                        gridline.style.left = `${positionPercentage}%`;
+                        ganttContainer.appendChild(gridline);
+                    }
+                }
+            }
+
+            function getTableData() {
+                const headers = [];
+                const data = [];
+                const resultsTable = document.getElementById('valueTable');
+                if (resultsTable && resultsTable.rows.length > 0) {
+                    const headerRow = resultsTable.rows[0];
+                    for (let i = 0; i < headerRow.cells.length; i++) {
+                        headers.push(headerRow.cells[i].textContent.trim());
+                    }
+
+                    for (let i = 1; i < resultsTable.rows.length; i++) {
+                        const rowData = {};
+                        const dataRow = resultsTable.rows[i];
+                        for (let j = 0; j < dataRow.cells.length; j++) {
+                            const cellValue = dataRow.cells[j].textContent.trim();
+                            if (headers[j]) {
+                                rowData[headers[j]] = cellValue;
+                            } else {
+                                console.warn(`Warning: Cell at index ${j} has no corresponding header.`);
+                                rowData[`field${j + 1}`] = cellValue;
+                            }
+                        }
+                        data.push(rowData);
+                    }
+                } else {
+                    console.log("valueTable is not found or has no rows.");
+                }
+                return data;
+            }
+
+            if (deleteButton) {
+                deleteButton.addEventListener('click', function () {
+                    const selectedRow = resultsTable.querySelector('.row-highlighted');
+                    if (selectedRow) {
+                        const tbody = selectedRow.parentNode;
+                        lastDeletedRowIndex = Array.from(tbody.children).indexOf(selectedRow);
+                        lastDeletedRow = selectedRow; // Store the actual row
+                        selectedRow.remove();
+                        // Clear the highlight immediately after deletion
+                        lastDeletedRow.classList.remove('row-highlighted');
+                        // Update Gantt chart after deleting a row
+                        const updatedData = getTableData();
+                        console.log("updatedData:", updatedData);
+                        updateGanttChart(updatedData);
+                        updatePlot();
+                        scrollToMainPlot();
+                    } else {
+                        alert('Please select a row to delete.');
+                    }
+                });
+            }
+
+            if (resultsTable) {
+                resultsTable.addEventListener('click', function (event) {
+                    const clickedRow = event.target.closest('tr');
+                    if (clickedRow && clickedRow.parentNode.tagName === 'TBODY') {
+                        // Remove previous highlighting
+                        const previouslyHighlighted = resultsTable.querySelector('.row-highlighted');
+                        if (previouslyHighlighted) {
+                            previouslyHighlighted.classList.remove('row-highlighted');
+                        }
+                        // Add highlighting to the clicked row
+                        clickedRow.classList.add('row-highlighted');
+                    }
+                });
+            }
+
+            // Προσθήκη event listener για αλλαγές σε επεξεργάσιμα κελιά
+            document.getElementById('valueTable').addEventListener('input', function (event) {
+                const target = event.target;
+                // Ελέγχει αν το επεξεργασμένο κελί είναι το πρώτο σε μια σειρά (index 0)
+                if (target.tagName === 'TD' && target.cellIndex === 0 && target.classList.contains(
+                        'editable')) {
+                    // Ενημέρωση του upDownSelect
+                    populateUpDownSelect();
+                }
+            });
+        });
+
+        // Undo
+        let lastDeletedRow = null;
+        let lastDeletedRowIndex = null;
+        const undoButton = document.getElementById('undoButton');
+
+        if (undoButton) {
+            undoButton.addEventListener('click', function () {
+                if (lastDeletedRow !== null && lastDeletedRowIndex !== null) {
+                    const tbody = document.getElementById('valueTable').getElementsByTagName('tbody')[0];
+                    if (lastDeletedRowIndex >= tbody.children.length) {
+                        tbody.appendChild(lastDeletedRow); // Append if index was at the end
+                    } else {
+                        tbody.insertBefore(lastDeletedRow, tbody.children[lastDeletedRowIndex]);
+                    }
+                    lastDeletedRow.classList.remove('row-highlighted');
+                    lastDeletedRow = null;
+                    lastDeletedRowIndex = null;
+                    updatePlot();
+                    scrollToMainPlot();
+                } else {
+                    alert('No recent deletion to undo.');
+                }
+            });
+        }
+
+        // Retreive values from table to card2
+        const valueTableBody = document.querySelector('#valueTable tbody');
+        let taskInputField;
+        let startInputField;
+        let endInputField;
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            taskInputField = document.getElementById('task');
+            startInputField = document.getElementById('start');
+            endInputField = document.getElementById('End');
+
+            if (valueTableBody) {
+                valueTableBody.addEventListener('click', (event) => {
+                    const clickedRow = event.target.closest('tr');
+                    if (clickedRow) {
+                        const cells = clickedRow.querySelectorAll('td');
+                        if (cells.length === 3) {
+                            const field1 = cells[0].textContent;
+                            const field2 = cells[1].textContent;
+                            const field3 = cells[2].textContent;
+
+                            if (taskInputField) taskInputField.value = field1;
+                            if (startInputField) startInputField.value = field2;
+                            if (endInputField) endInputField.value = field3;
+
+                            // Remove highlight from previously highlighted row
+                            let previouslyHighlightedRow = null;
+                            if (previouslyHighlightedRow && previouslyHighlightedRow !== clickedRow) {
+                                previouslyHighlightedRow.classList.remove('highlight');
+                            }
+
+                            // Highlight the clicked row
+                            clickedRow.classList.add('highlight');
+                            previouslyHighlightedRow = clickedRow;
+                        } else {
+                            console.warn("Warning: Clicked row does not have 3 data cells.");
+                        }
+                    }
+                });
+            } else {
+                console.error("Error: #valueTable tbody element not found.");
+            }
+        });
+
+
+        const updateButtonStart = document.getElementById('updateButtonStart');
+        updateButtonStart.addEventListener('click', () => {
+            const taskValue = document.getElementById('task').value;
+            const startValue = document.getElementById('start').value;
+            const endValue = document.getElementById('End').value;
+
+            document.getElementById('field1').value = taskValue;
+            document.getElementById('field2').value = startValue;
+            document.getElementById('field3').value = endValue;
+
+            if (previouslyHighlightedRow) {
+                const cellsToUpdate = previouslyHighlightedRow.querySelectorAll('td');
+                if (cellsToUpdate.length === 3) {
+                    cellsToUpdate[0].textContent = taskValue;
+                    cellsToUpdate[1].textContent = startValue;
+                    cellsToUpdate[2].textContent = endValue;
+                    updatePlot(); // Update the Gantt chart after updating the table
+                } else {
+                    console.warn("Warning: Highlighted row does not have 3 data cells for update.");
+                }
+            } else {
+                alert("Please select a row in the table to update.");
+            }
+        });
+
+        const updateButtonEnd = document.getElementById('updateButtonEnd');
+        updateButtonEnd.addEventListener('click', () => {
+            const taskValue = document.getElementById('task').value;
+            const startValue = document.getElementById('start').value;
+            const endValue = document.getElementById('End').value;
+
+            document.getElementById('field1').value = taskValue;
+            document.getElementById('field2').value = startValue;
+            document.getElementById('field3').value = endValue;
+
+            if (previouslyHighlightedRow) {
+                const cellsToUpdate = previouslyHighlightedRow.querySelectorAll('td');
+                if (cellsToUpdate.length === 3) {
+                    cellsToUpdate[0].textContent = taskValue;
+                    cellsToUpdate[1].textContent = startValue;
+                    cellsToUpdate[2].textContent = endValue;
+                    updatePlot(); // Update the Gantt chart after updating the table
+                } else {
+                    console.warn("Warning: Highlighted row does not have 3 data cells for update.");
+                }
+            } else {
+                alert("Please select a row in the table to update.");
+            }
+        });
+
+
+        // Corrected saveAsCSV function
+        function saveAsCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,";
+
+            // Get table headers
+            const headers = Array.from(document.querySelectorAll('#valueTable th')).map(th => th.textContent).join(',');
+            csvContent += headers + '\r\n';
+
+            // Get table rows
+            const rows = document.querySelectorAll('#valueTable tr');
+            for (let i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+                const cells = rows[i].querySelectorAll('td');
+                const rowData = Array.from(cells).map(td => td.textContent).join(',');
+                csvContent += rowData + '\r\n';
+            }
+
+            let encodedUri = encodeURI(csvContent);
+            let link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "schedule.csv"); // Changed filename for clarity
+            document.body.appendChild(link);
+
+            link.click();
+        }
+
+
+        function clearBoxPlot() {
+            document.getElementById('CanvasBoxPlot').innerHTML = ''; // Clear the canvas content
+            document.getElementById('CanvasBoxPlot').style.display = 'none';
+        }
+
+        // Hide table 'boxPlot'
+        function hideTableboxPlot() {
+            const boxPlotContainer = document.querySelector('.boxPlot'); // Get the Gantt Plot container
+
+            boxPlotContainer.style.display = 'none'
+            scrollToMainPlot(); // Scroll to the main plot area
+        }
+
+        // Set initial button text based on the initial state of the results container
+        window.onload = function () {
+            const resultsContainer = document.getElementById('results');
+            const hideButton = document.querySelector('.hide-button');
+            const boxPlotContainer = document.querySelector('.boxPlot'); // Get the Gantt Plot container
+
+            // Check the computed style to reliably get the actual display value
+            if (window.getComputedStyle(resultsContainer).display === 'none') {
+                hideButton.textContent = 'Show';
+            } else {
+                hideButton.textContent = 'Hide';
+            }
+
+            // Initially hide the Gantt Plot container
+            boxPlotContainer.style.display = 'none';
+        };
+
+
+        // Gantt chart plot
+
+        function updatePlot() {
+            try {
+                const table = document.getElementById('valueTable');
+                const boxPlotContainer = document.querySelector('.boxPlot');
+
+                field1.value = '';
+                field2.value = '';
+                field3.value = '';
+
+                if (!table || !boxPlotContainer) {
+                    console.error("Error: Table or boxPlot container not found.");
+                    return;
+                }
+
+                const data = [];
+                let minStart = Infinity;
+                let maxEnd = -Infinity;
+
+                for (let i = 1; i < table.rows.length; i++) {
+                    const row = table.rows[i];
+                    if (row.cells.length >= 3) {
+                        const task = row.cells[0].textContent.trim();
+                        const start = parseInt(row.cells[1].textContent.trim());
+                        const end = parseInt(row.cells[2].textContent.trim());
+
+                        if (isNaN(start) || isNaN(end)) {
+                            console.warn(`Warning: Invalid start or end value in row ${i}. Skipping row.`);
+                            continue;
+                        }
+
+                        data.push({
+                            task,
+                            start,
+                            end
+                        });
+                        minStart = Math.min(minStart, start);
+                        maxEnd = Math.max(maxEnd, end);
+                    } else {
+                        console.warn(`Warning: Row ${i} has less than 3 cells. Skipping row.`);
+                    }
+                }
+
+                if (data.length === 0) {
+                    boxPlotContainer.innerHTML = "No valid data to display.";
+                    return;
+                }
+
+                boxPlotContainer.innerHTML = '';
+                boxPlotContainer.style.display = 'block';
+                boxPlotContainer.style.position = 'relative'; // Ensure container is positioned for gridlines
+
+                const containerWidth = boxPlotContainer.offsetWidth; // Get the actual width of the container
+                const rowHeight = 30;
+                const barHeight = 20;
+                const barMargin = 4;
+                const chartAreaWidth = containerWidth * 0.8; // 80% for the bars
+                const taskNameWidth = containerWidth * 0.15; // 15% for task names
+
+                // --- Create Numerical Time Scale ---
+                const timeScaleContainer = document.createElement('div');
+                timeScaleContainer.style.position = 'relative';
+                timeScaleContainer.style.width = `${containerWidth-33}px`;
+                timeScaleContainer.style.marginLeft = `0px`; // Align with the chart area
+                timeScaleContainer.style.height = '30px'; // Height for the time units
+                timeScaleContainer.style.borderBottom = '1px solid #ccc'; // Separator
+
+
+                const totalDuration = maxEnd - minStart + 1;
+                const pixelsPerUnit = totalDuration > 0 ? chartAreaWidth / totalDuration :
+                    chartAreaWidth; // Avoid division by zero
+                const interval = Math.ceil(totalDuration / 10); // Adjust interval as needed to avoid overcrowding
+
+                // Add gridlines to the time scale container
+                for (let i = 0; i <= totalDuration - 1; i += 1) {
+                    const timeValue = minStart + i;
+                    const xPosition = i * pixelsPerUnit;
+
+                    const unitMarker = document.createElement('div');
+                    unitMarker.style.position = 'absolute';
+                    unitMarker.style.left = `${xPosition}px`;
+                    unitMarker.style.top = '0';
+                    unitMarker.style.height = '100%';
+                    unitMarker.style.borderRight = '1px solid #eee';
+                    unitMarker.style.width = '1px';
+
+                    const unitLabel = document.createElement('div');
+                    unitLabel.style.position = 'absolute';
+                    unitLabel.style.left = `${xPosition+1.08*taskNameWidth}px`; // Adjust for centering
+                    unitLabel.style.top = '8px';
+                    unitLabel.style.fontSize = '0.8em';
+                    unitLabel.textContent = `${timeValue}`; // Display only the numerical value
+
+                    timeScaleContainer.appendChild(unitMarker);
+                    timeScaleContainer.appendChild(unitLabel);
+
+
+                    // Create and append gridline to the main container
+                    const gridline = document.createElement('div');
+                    gridline.className = 'gantt-gridline';
+                    gridline.style.left = `${taskNameWidth + xPosition + 25}px`;
+                    boxPlotContainer.appendChild(gridline);
+                }
+
+                boxPlotContainer.appendChild(timeScaleContainer);
+                // --- End Numerical Time Scale ---
+
+                data.forEach((item, index) => {
+                    const row = document.createElement('div');
+                    row.className = 'gantt-row';
+                    row.style.position = 'relative';
+                    row.style.height = `${rowHeight}px`;
+
+                    const taskName = document.createElement('div');
+                    taskName.className = 'task-name';
+                    taskName.textContent = item.task;
+                    taskName.style.width = `${taskNameWidth}px`;
+                    row.appendChild(taskName);
+
+                    const barStartPos = (item.start - minStart) * pixelsPerUnit;
+                    const barWidth = (item.end - item.start + 1) * pixelsPerUnit;
+
+                    const bar = document.createElement('div');
+                    bar.className = 'gantt-bar';
+                    bar.style.position = 'absolute';
+                    bar.style.top = `${barMargin}px`;
+                    bar.style.left = `${taskNameWidth + barStartPos+9}px`;
+                    bar.style.width = `${barWidth}px`;
+                    bar.style.height = `${barHeight}px`;
+                    bar.style.backgroundColor = '#4caf50';
+                    row.appendChild(bar);
+
+                    boxPlotContainer.appendChild(row);
+                });
+
+            } catch (error) {
+                console.error("An error occurred in updatePlot:", error);
+            }
+        }
+    </script>
+
+    <!--boxPlot-->
+    <div class="boxPlot1"></div>
+
+    <div class="boxPlot">
+        <div id="Plot"></div>
+    </div>
+
+    <br>
+
+    <!-- Main Content -->
+    <main class="main">
+
+        <!--Card 1-->
+        <!--GanttPlot Handlers-->
+        <div id="card1" class="cardmap">
+            <font size=4 color="#9900FF"><b>Gantt Plot</b></font><br><br>
+            <button id="showganttbutt" class="button1"
+                onclick="setAlltoCardMap(); changeCardColor('showganttbutt', 'activemap'); updatePlot(); scrollToMainPlot();">Show</button>
+            <button id="hideganttbutt" class="button2" onclick="setAlltoCardMap(); hideTableboxPlot()">Hide</button><br>
+            <div id="CanvasBoxPlot"></div>
+        </div>
+
+    </main>
+
+    <script>
+        //Scroll to main Plot
+        function scrollToMainPlot() {
+            const mainPlot = document.getElementById('CanvasBoxPlot'); // Corrected ID
+            if (mainPlot && window.getComputedStyle(mainPlot).display === 'block') { // Ensure it's visible
+                mainPlot.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+    </script>
+
+    <!--Windows-->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let dashboardWindow = null;
+            let combineWindow = null;
+            let createWindow = null;
+            let helpWindow = null;
+
+
+            document.getElementById('dashboardTabLink').addEventListener('click', function (event) {
+                event.preventDefault(); // Prevent default link behavior
+
+                if (dashboardWindow && !dashboardWindow.closed) {
+                    dashboardWindow.focus(); // Focus on the existing window
+                } else {
+                    dashboardWindow = window.open('main.html', '_blank'); // Open a new window
+                }
+            });
+
+            document.getElementById('combineTabLink').addEventListener('click', function (event) {
+                event.preventDefault(); // Prevent default link behavior
+
+                if (combineWindow && !combineWindow.closed) {
+                    combineWindow.focus(); // Focus on the existing window
+                } else {
+                    combineWindow = window.open('combine.html', '_blank'); // Open a new window
+                }
+            });
+
+            document.getElementById('createTabLink').addEventListener('click', function (event) {
+                event.preventDefault(); // Prevent default link behavior
+
+                if (createWindow && !createWindow.closed) {
+                    createWindow.focus(); // Focus on the existing window
+                } else {
+                    createWindow = window.open('create.html', '_blank'); // Open a new window
+                }
+            });
+
+            document.getElementById('helpTabLink').addEventListener('click', function (event) {
+                event.preventDefault(); // Prevent default link behavior
+
+                if (helpWindow && !helpWindow.closed) {
+                    helpWindow.focus(); // Focus on the existing window
+                } else {
+                    helpWindow = window.open('help.html', '_blank'); // Open a new window
+                }
+            });
+
+        });
+    </script>
+
+    <br>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 Dashboard</p>
+    </footer>
+
+
+</body>
+
+</html>
