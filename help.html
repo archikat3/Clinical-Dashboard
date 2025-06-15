@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Help</title>
+
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    #input-container {
+      margin-bottom: 20px;
+      background-color: #ecf0f1;
+      padding: 20px;
+      display: flex;
+      /* Make the input container a flex container */
+      gap: 20px;
+      /* Add some space between the cards */
+      align-items: flex-start;
+      /* Align items to the top to handle different heights */
+    }
+
+    #csv-container {
+      width: 100%;
+      height: 420px;
+      /* Or whatever height you prefer */
+      margin: 10px auto;
+      overflow: auto;
+      /* Add scrollbars when needed */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 10px;
+      display: none;
+      /* Initially hidden */
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th,
+    td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: center;
+      transition: background-color 0.2s;
+    }
+
+
+    th {
+      cursor: pointer;
+      background-color: #3498db;
+      color: white;
+      /* Changed header text color to white */
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+
+    th:hover {
+      background-color: #0077B3;
+      color: white;
+    }
+
+    div {
+      background-color: rgb(236, 246, 247);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+
+    /* BUTTONS */
+
+    /* button */
+    .button {
+      border: none;
+      color: white;
+      padding: 20px 34px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      transition-duration: 0.4s;
+      cursor: pointer;
+    }
+
+    /* button1 */
+
+    .button1 {
+      background-color: white;
+      color: black;
+      border: 2px solid #04AA6D;
+      padding: 3px 8px;
+    }
+
+    .button1:hover {
+      background-color: #04AA6D;
+      color: white;
+    }
+
+    /* button2 */
+
+    .button2 {
+      background-color: white;
+      color: black;
+      border: 2px solid #008CBA;
+      padding: 3px 8px;
+    }
+
+    .button2:hover {
+      background-color: #008CBA;
+      color: white;
+    }
+
+    /* button3 */
+
+    .button3 {
+      background-color: #f1f4f5;
+      color: black;
+      border: 1px solid #04AA6D;
+      padding: 3px 8px;
+      height: 27px;
+      width: 65px;
+      border-radius: 4px;
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .button3:hover {
+      background-color: #04AA6D;
+      color: white;
+    }
+
+    /* button4 */
+
+    .button4 {
+      background-color: #f1f4f5;
+      color: black;
+      border: 1px solid #04AA6D;
+      padding: 3px 8px;
+      height: 27px;
+      width: 120px;
+      border-radius: 4px;
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .button4:hover {
+      background-color: #04AA6D;
+      color: white;
+    }
+
+    /* open-button */
+
+    .open-button {
+      background-color: #008CBA;
+      color: rgb(255, 255, 255);
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      margin-bottom: 10px;
+      border-radius: 0px;
+      height: 27px;
+      width: 90px;
+    }
+
+    .open-button:hover {
+      background-color: #0077B3;
+    }
+
+    /* save-button */
+
+    .save-button {
+      background-color: #2dc806;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      margin-bottom: 10px;
+      border-radius: 0px;
+      height: 27px;
+      width: 70px;
+    }
+
+    .save-button:hover {
+      background-color: #069001;
+    }
+
+    /* clear-button */
+
+    .clear-button {
+      background-color: #f44336;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      margin: 10px 2px;
+      cursor: pointer;
+      border-radius: 0px;
+      height: 27px;
+      width: 70px;
+    }
+
+    .clear-button:hover {
+      background-color: #da190b;
+      /* Darker red on hover */
+
+    }
+
+    /* hide-button */
+
+    .hide-button {
+      background-color: #a08785;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      margin: 10px 2px;
+      cursor: pointer;
+      border-radius: 0px;
+      height: 27px;
+      width: 70px;
+    }
+
+    .hide-button:hover {
+      background-color: #8a5d5a;
+    }
+
+    /* reload-button */
+
+    .reload-button {
+      background-color: #ffe100;
+      color: rgb(0, 0, 0);
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      margin-bottom: 10px;
+      border-radius: 0px;
+      height: 27px;
+      width: 70px;
+    }
+
+    .reload-button:hover {
+      background-color: #fff700e0;
+    }
+
+    /* invert-button */
+
+    .invert-button {
+      background-color: #008CBA;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      margin-bottom: 10px;
+      border-radius: 0px;
+      height: 27px;
+      width: 70px;
+    }
+
+    .invert-button:hover {
+      background-color: #0077B3;
+
+    }
+
+    /* labels */
+
+    .row-label {
+      font-size: 1.5em;
+      /* Use a valid unit like em, px, rem, etc. */
+      color: rgb(148, 19, 96);
+    }
+
+    .column-label {
+      font-size: 1.5em;
+      /* Use a valid unit like em, px, rem, etc. */
+      color: rgb(18, 117, 12);
+    }
+
+    .zero-label {
+      font-size: 1.5em;
+      /* Use a valid unit like em, px, rem, etc. */
+      color: rgb(34, 19, 148);
+    }
+
+    .log2-label {
+      font-size: 1.5em;
+      /* Use a valid unit like em, px, rem, etc. */
+      color: rgb(197, 7, 7);
+    }
+
+    /* left TAP */
+    .tab {
+      Padding-left: 145px;
+    }
+
+
+    .container {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    #Plot {
+      text-align: left;
+      /* Ευθυγράμμιση αριστερά */
+      line-height: 2;
+      /* Αυξάνει την απόσταση μεταξύ των γραμμών */
+      padding-left: 20px;
+      /* Απόσταση από αριστερά */
+      padding-right: 20px;
+      /* Απόσταση από δεξιά */
+      color: #202d3a;
+    }
+
+    /* Row highlighted */
+    .row-highlighted {
+      background-color: rgba(173, 216, 230, 0.5);
+      /* lightblue με 50% διαφάνεια */
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      background-color: #2c3e50;
+      padding: 1rem;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .navbar .nav-links a {
+      text-decoration: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      background-color: #34495e;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .navbar .nav-links a.active {
+      background-color: #e74c3c;
+      /* Example: Red for active */
+      color: white;
+    }
+
+
+    .navbar .nav-links a:hover {
+      background-color: #1abc9c;
+    }
+
+    /* Highlighting */
+    .highlight {
+      background-color: rgba(173, 216, 230, 0.5) !important;
+      /* lightblue με 50% διαφάνεια */
+    }
+
+    /* Highlighted Header */
+    .highlighted-header {
+      background-color: #0077B3 !important;
+      color: white !important;
+    }
+
+
+    /* Main Content */
+    .main {
+      flex: 1;
+      padding: 1rem;
+      background-color: #ecf0f1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .field {
+      background: white;
+      padding: 1rem;
+      border-radius: 0px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: left;
+      flex: 1;
+      /* Distribute available space equally between the cards */
+    }
+
+
+    .boxPlot {
+      background: rgb(200, 237, 202);
+      padding: 1.0rem;
+      border-radius: 0px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      font-size: 4;
+      text-align: center;
+    }
+
+    .barchart {
+      background: rgb(241, 237, 237);
+      padding: 1.0rem;
+      border-radius: 0px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      font-size: 4;
+      text-align: center;
+    }
+
+    .piechart {
+      background: rgb(ecf0f1);
+      padding: 1.0rem;
+      border-radius: 0px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      font-size: 4;
+      text-align: center;
+    }
+
+    .cardmap {
+      background: rgb(224, 218, 218);
+      padding: 1.0rem;
+      border-radius: 0px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      font-size: 4;
+      text-align: center;
+    }
+
+    .activemap {
+      background: rgb(200, 195, 195);
+      padding: 1.0rem;
+      border-radius: 0px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      font-size: 4;
+      text-align: center;
+    }
+
+    /* Στυλ για την κλάση 'no-bullets-list' */
+    .no-bullets-list {
+      list-style-type: none;
+      /* Αυτό αφαιρεί τις κουκκίδες */
+      padding: 0;
+      /* Προαιρετικά: Αφαιρεί το προεπιλεγμένο padding */
+      margin: 0;
+      /* Προαιρετικά: Αφαιρεί το προεπιλεγμένο margin */
+    }
+
+
+
+    .button-container {
+      display: flex;
+      /* Ενεργοποιεί το Flexbox */
+      justify-content: space-between;
+      /* Σπρώχνει τα στοιχεία στα άκρα */
+      align-items: center;
+      /* Ευθυγραμμίζει τα στοιχεία κάθετα στο κέντρο */
+      width: 100%;
+      /* Εξασφαλίζει ότι καταλαμβάνει όλο το πλάτος */
+      margin-top: 0px;
+      margin-left: 0px;
+      background-color: white;
+    }
+
+    /* Footer */
+    .footer {
+      background-color: #34495e;
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+    }
+  </style>
+
+</head>
+
+
+<body>
+
+  <!-- Navigation Bar -->
+
+  <nav class="navbar">
+    <h1>Clinical Dashboard</h1>
+    <ul class="nav-links">
+      <li><a href="main.html" id="mainTabLink" target="_blank">Main</a></li>
+      <li><a href="combine.html" id="combineTabLink" target="_blank">Combine</a></li>
+      <li><a href="create.html" id="createTabLink" target="_blank">Create</a></li>
+      <li><a href="schedule.html" id="scheduleTabLink" target="_blank">Schedule</a></li>
+      <li><a href="help.html" class="active">Help</a></li>
+    </ul>
+  </nav>
+
+  <br>
+
+  <!-- Open CSV -->
+
+  <button class="open-button" id="openFileButton">Open CSV</button>
+
+  <!--Space-->
+  &#8202;&#8202;
+
+  <input type="text" id="selectedFileName" placeholder="Select file to open" readonly
+    style="margin-left: 2px; border: 1px solid #ccc; padding: 5px;">
+  <input type="file" id="csvFileInput" accept=".csv" style="display: none;">
+
+  <!--Space-->
+  &#8202;&#8202;
+
+  <!-- Save Button -->
+  <button class="save-button" id="saveTableButton">Save</button>
+
+  <!--Space-->
+  &#8202;
+
+  <!-- Clear Button -->
+  <button class="clear-button" id="clearTableButton">Clear</button>
+
+  <!--Space-->
+  &#8202;
+
+  <!-- Hide Button -->
+  <button class="hide-button" id="hideTableButton">Hide</button>
+
+  <!--Space-->
+  &#8202;
+
+  <!-- Reload Button -->
+  <button class="reload-button" id="reloadTableButton">Reload</button>
+
+  <!--Space-->
+  &#8202;
+
+  <!-- Sort button by zero column-->
+  <button class="button2" id="deselectTableButton">Deselect</button>
+
+  <!--Space-->
+  &#8202;
+
+  <!-- Invert Rows to Columns Button -->
+  <button class="invert-button" id="invertTableButton">Invert</button>
+
+  <!--Space-->
+  &#8202;
+
+  <!-- Sort button by zero column-->
+  <button class="button2" id="sortByZeroButton">Sort by 0</button>
+
+  <br><br>
+
+
+  <!--Columns and Rows Textfields container-->
+
+  <div id="input-container">
+
+
+
+    <!-- * topCard1 * Main container-->
+
+    <div id="topCard1" class="field">      
+
+      <div class="button-container">
+        <label for="row-label" class="row-label">< <b>Main</b>  ></label>
+        <button class="button4" id="mainCreate" onclick="mainCreate()">Δημιουργία</button>
+      </div>
+
+      <br>
+
+      <div style="text-align: right; background-color: white;">
+        <button class="button4" id="mainEdit" onclick="mainEdit()">Επεξεργασία</button>
+      </div>
+
+      <br>
+
+      <div style="text-align: right; background-color: white;">
+        <button class="button4" id="mainShow" onclick="mainShow()">Προβολή</button>
+      </div>
+    </div>
+
+    <!-- * topCard2 * Combine container-->
+
+    <div id="topCard2" class="field">
+
+      <div class="button-container">
+        <label for="column-label" class="column-label">< <b>Combine</b>  ></label>
+        <button class="button4" id="combineCreate" onclick="combineCreate()">Δημιουργία</button>
+      </div>
+
+      <br>
+
+      <div style="text-align: right; background-color: white;">
+        <button class="button4" id="combineEdit" onclick="combineEdit()">Επεξεργασία</button>
+      </div>
+
+      <br>
+
+      <div style="text-align: right; background-color: white;">
+        <button class="button4" id="combineShow" onclick="combineShow()">Προβολή</button>
+      </div>
+    </div>
+
+    <!-- * topCard3 * Create container-->
+
+    <div id="topCard3" class="field">
+
+
+      <div class="button-container">
+        <label for="zero-value" class="zero-label">< <b>Create</b>  ></label>
+        <button class="button4" id="createCreate" onclick="createCreate()">Δημιουργία</button>
+      </div>
+
+      <br>
+
+      <div style="text-align: right; background-color: white;">
+        <button class="button4" id="createEdit" onclick="createEdit()">Επεξεργασία</button>
+      </div>
+
+      <br>
+
+      <div style="text-align: right; background-color: white;">
+        <button class="button4" id="createShow" onclick="createShow()">Προβολή</button>
+      </div>
+
+    </div>
+
+    <!-- * topCard4 * Schedule container-->
+
+    <div id="topCard4" class="field">
+      <div class="button-container">
+        <label for="log2-label" class="log2-label">< <b>Schedule</b>  ></label>
+        <button class="button4" id="scheduleCreate" onclick="scheduleCreate()">Δημιουργία</button>
+      </div>
+
+      <br>
+
+      <div style="text-align: right; background-color: white;">
+        <button class="button4" id="scheduleEdit" onclick="scheduleEdit()">Επεξεργασία</button>
+      </div>
+
+      <br>
+
+      <div style="text-align: right; background-color: white;">
+        <button class="button4" id="scheduleShow" onclick="scheduleShow()">Προβολή</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Table-->
+
+  <!-- Table container -->
+
+  <div id="csv-container">
+    <table id="csvTable"></table>
+  </div>
+
+  <br>
+
+
+  <!--Blue bar-->
+
+  <div class="boxPlot">
+    <div id="Plot"></div>
+  </div>
+
+  <br>
+
+
+  <!-- Main Content -->
+
+  <main class="main">
+
+    <!--Card 1-->
+    <!--BoxPlot Handlers-->
+    <div id="card1" class="cardmap">
+      <font size=4 color="#9900FF"><b>Box Plot</b></font><br><br>
+      <button id="showboxbutt" class="button1"
+        onclick="setAlltoCardMap(); changeCardColor('showboxbutt', 'activemap'); generateBoxPlot(); scrollToMainPlot();">Show</button>
+      <button id="hideboxbutt" class="button2" onclick="setAlltoCardMap(); clearPlot()">Hide</button><br>
+      <div id="CanvasBoxPlot"></div>
+    </div>
+
+
+    <!--Card 2-->
+    <!--HeatMap Handlers-->
+    <div id="card2" class="cardmap">
+      <font size=4 color="#9900FF"><b>Heatmap</b></font><br><br>
+      <button id="showheatbutt" class="button1"
+        onclick="setAlltoCardMap(); changeCardColor('showheatbutt', 'activemap'); generateHeatmap(); scrollToMainPlot();">Show</button>
+      <button id="hideheatbutt" class="button2" onclick="setAlltoCardMap(); clearPlot()">Hide</button><br>
+      <div id="heatmapPlot"></div>
+    </div>
+
+
+    <!--Card 3-->
+    <!-- BarChart Handlers-->
+    <div id="card3" class="cardmap">
+      <font size=4 color="#9900FF"><b>Bar Chart</b></font><br><br>
+      <button id="showbarbutt" class="button1"
+        onclick="setAlltoCardMap(); changeCardColor('showbarbutt', 'activemap'); generateBarChart(); scrollToMainPlot();">Show</button>
+      <button id="hidebarbutt" class="button2" onclick="setAlltoCardMap(); clearPlot()">Hide</button>
+      <div id="myCanvasBar"></div>
+    </div>
+
+
+    <!--Card 4-->
+    <!-- Pie Chart Handlers-->
+    <div id="card4" class="cardmap">
+      <font size=4 color="#9900FF"><b>Pie Chart</b></font><br><br>
+      <button id="showpiebutt" class="button1"
+        onclick="setAlltoCardMap(); changeCardColor('showpiebutt', 'activemap'); generatePieChart(); scrollToMainPlot();">Show</button>
+      <button id="hidepiebutt" class="button2" onclick="setAlltoCardMap(); clearPlot()">Hide</button><br>
+      <div id="pieChartCanvas"></div>
+    </div>
+
+    <!--Card 5-->
+    <!-- Line Chart Handlers-->
+    <div id="card5" class="cardmap">
+      <font size=4 color="#9900FF"><b>Line Chart</b></font><br><br>
+      <button id="showlinebutt" class="button1"
+        onclick="setAlltoCardMap(); changeCardColor('showlinebutt', 'activemap'); generateLineChart(); scrollToMainPlot();">Show</button>
+      <button id="hidelinebutt" class="button2" onclick="setAlltoCardMap(); clearPlot()">Hide</button>
+      <div id="myLineChart"></div>
+    </div>
+
+    <!--Card 6-->
+    <!-- Histogram Handlers-->
+    <div id="card6" class="cardmap">
+      <font size=4 color="#9900FF"><b>Histogram</b></font><br><br>
+      <button id="showhistobutt" class="button1"
+        onclick="setAlltoCardMap(); changeCardColor('showhistobutt', 'activemap'); generateHistogramChart(); scrollToMainPlot();">Show</button>
+      <button id="hidehistobutt" class="button2" onclick="setAlltoCardMap(); clearPlot()">Hide</button><br>
+      <div id="histogramCanvas"></div>
+    </div>
+
+    <!--Card 7-->
+    <!-- Gantt Plot Handlers-->
+    <div id="card7" class="cardmap">
+      <font size=4 color="#9900FF"><b>Gantt Plot</b></font><br><br>
+      <button id="showganttbutt" class="button1"
+        onclick="setAlltoCardMap(); changeCardColor('showganttbutt', 'activemap'); generateGanttChart(); scrollToMainPlot();">Show</button>
+      <button id="hideganttbutt" class="button2" onclick="setAlltoCardMap(); clearPlot()">Hide</button><br>
+      <div id="ganttCanvas"></div>
+    </div>
+
+  </main>
+
+  <script>
+    // BOX PLOT - Generate INFO
+    function generateBoxPlot() {
+      const plotDiv = document.getElementById('Plot');
+      if (plotDiv) {
+        plotDiv.innerHTML = `
+
+        <span style="font-size: 25px; color: rgb(148, 19, 96);"><b>Box Plot</b></span>
+
+        <ul class="no-bullets-list">
+            <li>Το <b>Box Plot</b> είναι ένα γραφικό εργαλείο που χρησιμοποιείται στην στατιστική για την <b>οπτικοποίηση της κατανομής</b> ενός συνόλου αριθμητικών δεδομένων. </li>
+            <li>Είναι ένα εξαιρετικά χρήσιμο διάγραμμα για τη <b>σύγκριση της κατανομής</b> μεταξύ διαφορετικών ομάδων δεδομένων ή για τον γρήγορο εντοπισμό της <b>κεντρικής τάσης</b>, της <b>διασποράς</b> και των <b>ακραίων τιμών</b> ενός συνόλου δεδομένων.</li>
+        </ul> 
+        <br>
+        <span style="font-size: 18px; color: rgb(18, 117, 12);"><u><b>Εφαρμογές στην Βιοπληροφορική:</b></u></span>
+
+        <ul>
+          <li><b>Σύγκριση επιπέδων έκφρασης γονιδίων:</b> Για να δείξει πώς διαφέρουν τα επίπεδα έκφρασης ενός γονιδίου (ή ομάδας γονιδίων) μεταξύ διαφορετικών τύπων ιστών, καταστάσεων ασθένειας (π.χ., υγιείς έναντι καρκινικοί ιστοί) ή μετά από συγκεκριμένες θεραπείες.</li>
+          <li><b>Ποιοτικός έλεγχος δεδομένων αλληλούχισης:</b> Για να οπτικοποιήσει την ποιότητα των αναγνώσεων (reads) από πειράματα αλληλούχισης (π.χ., RNA-Seq, DNA-Seq) μεταξύ διαφορετικών δειγμάτων, βοηθώντας στον εντοπισμό δειγμάτων με προβλήματα ποιότητας που χρειάζονται περαιτέρω κανονικοποίηση ή απόρριψη.</li>
+          <li><b>Ανάλυση πρωτεομικών δεδομένων:</b> Για τη σύγκριση των επιπέδων αφθονίας πρωτεϊνών σε διαφορετικές πειραματικές συνθήκες ή βιολογικά δείγματα.</li>
+          <li><b>Διαφορές βιοδεικτών:</b> Για την απεικόνιση της κατανομής των τιμών συγκεκριμένων βιοδεικτών σε διαφορετικές ομάδες ασθενών (π.χ. με και χωρίς μια συγκεκριμένη πάθηση).</li>
+          <li><b>Κανονικοποίηση Δεδομένων:</b> Πριν από πιο σύνθετες στατιστικές αναλύσεις, τα box plots μπορούν να χρησιμοποιηθούν για να επιβεβαιώσουν ότι τα δεδομένα έχουν κανονικοποιηθεί σωστά και ότι οι κατανομές τους είναι συγκρίσιμες μεταξύ των δειγμάτων.</li>
+        </ul>
+        `;
+      } else {
+        console.error("Το στοιχείο με ID 'Plot' δεν βρέθηκε.");
+      }
+    }
+
+    // HEATMAP - Generate INFO
+    function generateHeatmap() {
+      const plotDiv = document.getElementById('Plot');
+      if (plotDiv) {
+        plotDiv.innerHTML = `
+
+        <span style="font-size: 25px; color: rgb(148, 19, 96);"><b>Heatmap</b></span>
+
+        <ul class="no-bullets-list">
+            <li>Ένα διάγραμμα <b>Heatmap</b> (Θερμικός Χάρτης) στη Βιοπληροφορική είναι ένα ισχυρό οπτικό εργαλείο που χρησιμοποιεί ένα φάσμα χρωμάτων για να αναπαραστήσει ποσοτικά δεδομένα σε ένα δισδιάστατο πλέγμα (πίνακα).</li>
+            <li>Κάθε κελί του πίνακα έχει ένα <b>χρώμα</b> που αντιστοιχεί στην τιμή των δεδομένων του, με τις χρωματικές διαβαθμίσεις να υποδεικνύουν την <b>ένταση</b> ή το <b>μέγεθος</b> της τιμής.</li>
+            <li>Τα πιο <b>"θερμά"</b> χρώματα (π.χ., κόκκινο, κίτρινο) συνήθως αντιστοιχούν σε <b>υψηλές τιμές</b>, ενώ τα πιο <b>"ψυχρά"</b> χρώματα (π.χ., μπλε, πράσινο) σε <b>χαμηλές</b>.</li>
+        </ul> 
+        <br>
+        <span style="font-size: 18px; color: rgb(18, 117, 12);"><u><b>Εφαρμογές στην Βιοπληροφορική:</b></u></span>
+
+        <ul>
+          <li><b>Σύγκριση επιπέδων έκφρασης:</b> Η πιο κοινή χρήση. Τα heatmaps δείχνουν πώς τα επίπεδα έκφρασης χιλιάδων γονιδίων (σειρές) διαφέρουν σε διαφορετικά δείγματα, συνθήκες ή χρονικά σημεία (στήλες). Αυτό βοηθά στον εντοπισμό γονιδίων που υπερεκφράζονται ή υποεκφράζονται σε συγκεκριμένες καταστάσεις (π.χ., καρκινικά έναντι υγιών ιστών).</li>
+          <li><b>Αναγνώριση συν-εκφραζόμενων γονιδίων:</b> Μέσω της ομαδοποίησης, τα γονίδια με παρόμοια μοτίβα έκφρασης ομαδοποιούνται μαζί, υποδεικνύοντας πιθανές λειτουργικές συσχετίσεις ή συμμετοχή σε κοινά βιολογικά μονοπάτια.</li>
+          
+          <li><b>Έλεγχος συνοχής δειγμάτων:</b> Χρησιμοποιούνται για να δουν αν βιολογικά επαναλαμβανόμενα δείγματα ομαδοποιούνται μεταξύ τους, επιβεβαιώνοντας την αναπαραγωγιμότητα του πειράματος και εντοπίζοντας τυχόν "περίεργα" δείγματα.</li>
+          <li><b>Εντοπισμός προβλημάτων:</b> Μπορούν να αποκαλύψουν τεχνικά προβλήματα ή ακραίες τιμές στα δεδομένα που μπορεί να επηρεάσουν την ανάλυση.</li>
+          
+          <li><b>Αφθονία μικροοργανισμών:</b> Απεικονίζουν τη σχετική αφθονία διαφορετικών μικροβιακών taxa (π.χ., είδη, γένη) σε διάφορα δείγματα (π.χ., από διαφορετικά σημεία του σώματος, ή από ασθενείς/υγιή άτομα), επιτρέποντας τη σύγκριση των κοινοτήτων.</li>
+          
+          <li><b>Επίπεδα πρωτεϊνών/μεταβολιτών:</b> Παρόμοια με την έκφραση γονιδίων, τα heatmaps μπορούν να δείξουν την ποσοτική αφθονία πρωτεϊνών ή μεταβολιτών σε διαφορετικές συνθήκες, βοηθώντας στην ανακάλυψη βιοδεικτών.</li>
+        
+          <li><b>Προφίλ Ασθενών (Patient Stratification):</b> Σε κλινικές μελέτες, τα heatmaps μπορούν να χρησιμοποιηθούν για την ομαδοποίηση ασθενών με βάση τα μοριακά τους προφίλ (π.χ., γονιδιακή έκφραση, μεταλλάξεις), οδηγώντας σε υποομάδες ασθενών με διαφορετική πρόγνωση ή ανταπόκριση σε θεραπείες.</li>
+          </ul>
+        `;
+      } else {
+        console.error("Το στοιχείο με ID 'Plot' δεν βρέθηκε.");
+      }
+    }
+
+    // BAR CHART - Generate INFO
+    function generateBarChart() {
+      const plotDiv = document.getElementById('Plot');
+      if (plotDiv) {
+        plotDiv.innerHTML = `
+
+        <span style="font-size: 25px; color: rgb(148, 19, 96);"><b>Bar Chart</b></span>
+
+        <ul class="no-bullets-list">
+            <li>Το <b>Bar Chart</b>, ή Ραβδόγραμμα, είναι ένα θεμελιώδες και ευέλικτο εργαλείο <b>οπτικοποίησης δεδομένων</b>, που χρησιμοποιείται ευρέως στη βιοπληροφορική για την <b>παρουσίαση</b> και τη <b>σύγκριση</b> κατηγορικών δεδομένων. </li>
+            <li>Αποτελείται από <b>ορθογώνιες ράβδους</b>, όπου το μήκος ή το ύψος κάθε ράβδου είναι ανάλογο της τιμής που αναπαριστά.</li>
+            <li>Είναι ιδανικό για την ανάδειξη <b>διαφορών</b> και <b>τάσεων</b> όταν έχουμε <b>διακριτές κατηγορίες δεδομένων</b>.</li> 
+            <li>Η απλότητά του το καθιστά πολύ αποτελεσματικό για την γρήγορη <b>κατανόηση</b> και <b>σύγκριση δεδομένων</b> με μια ματιά.</li>
+        </ul> 
+        <br>
+        <span style="font-size: 18px; color: rgb(18, 117, 12);"><u><b>Εφαρμογές στην Βιοπληροφορική:</b></u></span>
+
+        <ul>
+          <li><b>Έκφραση Γονιδίων/Πρωτεϊνών:</b> Σύγκριση των επιπέδων έκφρασης συγκεκριμένων γονιδίων ή πρωτεϊνών μεταξύ διαφορετικών δειγμάτων (π.χ., υγιών έναντι ασθενών), ιστών, ή συνθηκών. Κάθε ράβδος αντιπροσωπεύει ένα γονίδιο/πρωτεΐνη και το ύψος της την έκφρασή του.</li>
+          <li><b>Μικροβίωμα:</b> Απεικόνιση της σχετικής αφθονίας διαφορετικών μικροβιακών ειδών (ή ταξονομικών μονάδων) σε διάφορα περιβάλλοντα ή δείγματα. Για παράδειγμα, μπορεί να δείξει πόσο άφθονη είναι κάθε ομάδα βακτηρίων στο έντερο ενός υγιούς ατόμου σε σύγκριση με έναν ασθενή.</li>
+          <li><b>Συχνότητα Μεταλλάξεων:</b> Εμφάνιση της συχνότητας εμφάνισης συγκεκριμένων μεταλλάξεων σε ένα γονίδιο ή σε διάφορα δείγματα καρκίνου.</li>
+          <li><b>Τύποι Μεταλλάξεων:</b> Σύγκριση του αριθμού διαφορετικών τύπων μεταλλάξεων (π.χ., σημειακές, ελλείψεις, εισαγωγές) που βρίσκονται σε ένα γονιδίωμα.</li>
+          <li><b>Ποιοτικά Σκορ:</b> Απεικόνιση των μέσων ποιοτικών σκορ των αναγνώσεων (reads) από πειράματα αλληλούχισης (π.χ., FastQC reports), βοηθώντας στον εντοπισμό προβλημάτων στα δεδομένα.</li>
+          <li><b>Κατανομή Βάσεων:</b> Εμφάνιση της κατανομής των τεσσάρων βάσεων (A, T, C, G) σε συγκεκριμένες θέσεις μιας αλληλουχίας ή συνολικά, για να ελεγχθεί η ομοιογένεια.</li>
+          <li><b>Αριθμός Διαφορικά Εκφραζόμενων Γονιδίων:</b> Σύγκριση του αριθμού των γονιδίων που βρέθηκαν να εκφράζονται διαφορικά μεταξύ δύο ή περισσοτέρων συνθηκών.</li>
+          <li><b>Αποτελέσματα Εμπλουτισμού Μονοπατιών:</b> Εμφάνιση του αριθμού των γονιδίων που εμπλουτίζονται σε συγκεκριμένα βιολογικά μονοπάτια ή λειτουργικές κατηγορίες.</li>
+          <li><b>Γενικές Στατιστικές Περιλήψεις:</b> Οποιαδήποτε περίπτωση όπου πρέπει να συγκριθούν διακριτές κατηγορίες (π.χ., αριθμός γονιδίων ανά χρωμόσωμα, αριθμός πρωτεϊνών σε ένα σύμπλεγμα).</li>
+        </ul>
+        `;
+      } else {
+        console.error("Το στοιχείο με ID 'Plot' δεν βρέθηκε.");
+      }
+    }
+
+    // PIE CHART - Generate INFO
+    function generatePieChart() {
+      const plotDiv = document.getElementById('Plot');
+      if (plotDiv) {
+        plotDiv.innerHTML = `
+
+        <span style="font-size: 25px; color: rgb(148, 19, 96);"><b>Pie Chart</b></span>
+
+        <ul class="no-bullets-list">
+            <li>Τα <b>Pie Charts</b> (διαγράμματα πίτας), είναι κυκλικά στατιστικά γραφήματα που χωρίζονται σε <b>τομές</b> για να απεικονίσουν <b>αριθμητικές αναλογίες</b>.</li>
+            <li>Σε ένα Pie Chart, το <b>μήκος</b> του τόξου κάθε τομής (και κατά συνέπεια η κεντρική του γωνία και η περιοχή του) είναι ανάλογο με την <b>ποσότητα</b> που αντιπροσωπεύει.</li>
+            <li>Ενώ είναι <b>διαισθητικά</b> για την εμφάνιση μερών ενός συνόλου, η <b>χρήση</b> τους στη <b>Βιοπληροφορική</b> είναι πιο <b>περιορισμένη</b> σε σύγκριση με άλλα είδη γραφημάτων όπως τα <b>Box Plots</b>, τα <b>Heatmaps</b> ή τα <b>Bar Charts</b>.</li>
+        </ul> 
+        <br>
+        <span style="font-size: 18px; color: rgb(18, 117, 12);"><u><b>Εφαρμογές στην Βιοπληροφορική:</b></u></span>
+
+        <ul>
+          <li><b>Κατανομή Ταξονομικών Μονάδων (Μικροβίωμα):</b> Είναι μία από τις πιο συνηθισμένες χρήσεις. Ένα Pie Chart μπορεί να δείξει τη σχετική αφθονία διαφορετικών μικροβιακών ομάδων (π.χ., φυλών, γενών) σε ένα συγκεκριμένο δείγμα μικροβιώματος (π.χ., δείγμα εντέρου, δέρματος). Κάθε τομέας αντιπροσωπεύει ένα taxon και το μέγεθός του δείχνει το ποσοστό της συνολικής μικροβιακής κοινότητας που καταλαμβάνει.</li>
+          <li><b>Τύποι Μεταλλάξεων/Παραλλαγών:</b> Για να απεικονιστεί το ποσοστό των διαφορετικών τύπων μεταλλάξεων σε ένα γονιδίωμα ή μια σειρά δειγμάτων (π.χ., ποσοστό σημειακών μεταλλάξεων, μικρών εισαγωγών/ελλείψεων, μετατοπίσεων).</li>
+          <li><b>Κατανομή Αλληλουχιών:</b> Σε πειράματα αλληλούχισης, ένα Pie Chart μπορεί να δείξει το ποσοστό των reads που χαρτογραφήθηκαν επιτυχώς σε ένα γονιδίωμα, έναντι αυτών που δεν χαρτογραφήθηκαν ή χαρτογραφήθηκαν σε μιτοχονδριακό DNA, RNA κ.λπ.</li>
+          <li><b>Σύνθεση Πρωτεϊνών:</b> Για να αναπαρασταθεί το ποσοστό των διαφόρων αμινοξέων σε μια πρωτεΐνη ή το ποσοστό διαφορετικών δομικών στοιχείων (π.χ., άλφα-έλικες, βήτα-πτυχές) σε μια δευτεροταγή δομή πρωτεΐνης.</li>
+          <li><b>Κατηγορίες Λειτουργικού Εμπλουτισμού:</b> Όταν μια ανάλυση εμπλουτισμού γονιδίων εντοπίζει πολλές κατηγορίες (π.χ., GO terms, Pathways) που είναι σημαντικές, ένα Pie Chart μπορεί να δείξει το ποσοστό των γονιδίων που ανήκουν σε κάθε λειτουργική κατηγορία. Ωστόσο, για αυτή τη χρήση, συχνά προτιμώνται τα Bar Charts καθώς επιτρέπουν καλύτερη σύγκριση, ειδικά αν οι κατηγορίες είναι πολλές ή οι διαφορές μικρές.</li>
+        </ul>
+        `;
+      } else {
+        console.error("Το στοιχείο με ID 'Plot' δεν βρέθηκε.");
+      }
+    }
+
+    // LINE CHART - Generate INFO
+    function generateLineChart() {
+      const plotDiv = document.getElementById('Plot');
+      if (plotDiv) {
+        plotDiv.innerHTML = `
+
+        <span style="font-size: 25px; color: rgb(148, 19, 96);"><b>Line Chart</b></span>
+
+        <ul class="no-bullets-list">
+            <li>Το <b>Line Chart</b> (διάγραμμα γραμμής) είναι ένα <b>ευέλικτο</b> και ευρέως χρησιμοποιούμενο <b>εργαλείο οπτικοποίησης</b> στη βιοπληροφορική, ιδανικό για την εμφάνιση <b>τάσεων</b> και <b>αλλαγών</b> σε συνεχή δεδομένα κατά μήκος μιας <b>συνεχούς μεταβλητής</b>, όπως ο χρόνος, η συγκέντρωση ή η θέση στο γονιδίωμα.</li>
+        </ul> 
+        <br>
+        <span style="font-size: 18px; color: rgb(18, 117, 12);"><u><b>Εφαρμογές στην Βιοπληροφορική:</b></u></span>
+
+        <ul>
+            <li><b>Έκφραση γονιδίων:</b> Εμφανίζει πώς η έκφραση ενός γονιδίου αλλάζει σε διαφορετικά χρονικά σημεία ή υπό διαφορετικές συνθήκες.</li>
+            <li><b>Ανάλυση αλληλουχιών:</b> Μπορεί να απεικονίσει την κατανομή βάσεων ή άλλων χαρακτηριστικών κατά μήκος μιας αλληλουχίας DNA ή πρωτεΐνης.</li>
+            <li><b>Κινητική ενζύμων:</b> Δείχνει πώς η ταχύτητα μιας αντίδρασης αλλάζει με τη συγκέντρωση του υποστρώματος ή του χρόνου.</li>
+            <li><b>Ανάπτυξη μικροοργανισμών:</b> Παρακολουθεί την αύξηση πληθυσμών βακτηρίων ή κυττάρων με την πάροδο του χρόνου.</li>
+            </ul> 
+        `;
+      } else {
+        console.error("Το στοιχείο με ID 'Plot' δεν βρέθηκε.");
+      }
+    }
+
+    // HISTOGRAM - Generate INFO
+    function generateHistogramChart() {
+      const plotDiv = document.getElementById('Plot');
+      if (plotDiv) {
+        plotDiv.innerHTML = `
+
+        <span style="font-size: 25px; color: rgb(34, 19, 148);"><b>Histogram</b></span>
+
+        <ul class="no-bullets-list">
+            <li>Το διάγραμμα <b>Histogram</b> (ιστόγραμμα) είναι ένα γραφικό εργαλείο που χρησιμοποιείται στη βιοπληροφορική για την αναπαράσταση της <b>κατανομής συχνότητας</b> ποσοτικών δεδομένων. Ουσιαστικά, χωρίζει ένα σύνολο δεδομένων σε <b>"κλάσεις"</b> (bins) και δείχνει πόσες <b>παρατηρήσεις</b> εμπίπτουν σε κάθε κλάση.</li>
+        </ul> 
+        <br>
+        <span style="font-size: 18px; color: rgb(18, 117, 12);"><u><b>Εφαρμογές στην Βιοπληροφορική:</b></u></span>
+
+        <ul>
+            <li><b>Ανάλυση έκφρασης γονιδίων:</b> Μπορεί να δείξει την κατανομή των επιπέδων έκφρασης για χιλιάδες γονίδια, βοηθώντας στην αναγνώριση γονιδίων με υψηλή ή χαμηλή έκφραση.</li>
+            <li><b>Ποιοτικός έλεγχος αλληλουχίσεων:</b> Χρησιμοποιείται για να απεικονίσει την ποιότητα των αναγνώσεων (reads) σε δεδομένα αλληλούχισης DNA, δείχνοντας τη συχνότητα των βάσεων σε διαφορετικές θέσεις.</li>
+            <li><b>Κατανομή μεγέθους θραυσμάτων DNA:</b> Σε πειράματα όπως η αλληλούχιση επόμενης γενιάς (NGS), ένα ιστόγραμμα μπορεί να δείξει την κατανομή του μήκους των θραυσμάτων DNA που αναλύθηκαν.</li>
+            <li><b>Στατιστικά χαρακτηριστικά βιολογικών δεδομένων:</b> Οπτικοποιεί την κατανομή τιμών για διάφορες μετρήσεις, όπως συγκεντρώσεις πρωτεϊνών, ενεργότητα ενζύμων ή άλλες βιολογικές παραμέτρους.</li>
+            </ul> 
+        `;
+      } else {
+        console.error("Το στοιχείο με ID 'Plot' δεν βρέθηκε.");
+      }
+    }
+
+    // GANTT CHART - Generate INFO
+    function generateGanttChart() {
+      const plotDiv = document.getElementById('Plot');
+      if (plotDiv) {
+        plotDiv.innerHTML = `
+
+        <span style="font-size: 25px; color: rgb(197, 7, 7);"><b>Gantt Chart</b></span>
+        
+        <ul class="no-bullets-list">
+            <li>Το διάγραμμα <b>Gantt Chart</b> (Διάγραμμα Gantt) στη βιοπληροφορική είναι ένα εργαλείο <b>διαχείρισης έργων</b> που χρησιμοποιείται για την οπτική απεικόνιση του <b>χρονοδιαγράμματος</b> και της <b>προόδου</b> των διαφόρων εργασιών ενός βιοπληροφορικού έργου ή πειράματος.</li>
+        </ul> 
+        <br>
+        <span style="font-size: 18px; color: rgb(18, 117, 12);"><u><b>Εφαρμογές στην Βιοπληροφορική:</b></u></span>
+        
+        <ul>
+            <li><b>Σχεδιασμός Πειραμάτων:</b> Βοηθά στον καθορισμό της σειράς των βημάτων σε ένα βιολογικό πείραμα (π.χ., συλλογή δειγμάτων, εξαγωγή DNA/RNA, αλληλούχιση, βιοπληροφορική ανάλυση).</li>
+            <li><b>Διαχείριση Workflows:</b> Απεικονίζει τις αλληλεξαρτήσεις και τη χρονική διάρκεια των επιμέρους βημάτων σε πολύπλοκα βιοπληροφορικά workflows (π.χ., ανάλυση δεδομένων αλληλούχισης επόμενης γενιάς, συναρμολόγηση γονιδιωμάτων).</li>
+            <li><b>Προγραμματισμός Έργων Έρευνας:</b> Χρησιμοποιείται για να θέσει χρονοδιαγράμματα για μεταπτυχιακές εργασίες, ερευνητικά έργα ή υποβολές αιτήσεων χρηματοδότησης, με σαφείς αρχικές και τελικές ημερομηνίες για κάθε εργασία.</li>
+            <li><b>Παρακολούθηση Προόδου:</b> Επιτρέπει στους ερευνητές να παρακολουθούν εύκολα την πρόοδο κάθε εργασίας σε σχέση με τον αρχικό σχεδιασμό και να εντοπίζουν πιθανές καθυστερήσεις ή σημεία συμφόρησης.</li>
+            </ul> 
+        `;
+      } else {
+        console.error("Το στοιχείο με ID 'Plot' δεν βρέθηκε.");
+      }
+    }
+
+
+    // Clear INFO
+    function clearPlot() {
+      const plotDiv = document.getElementById('Plot');
+      if (plotDiv) {
+        plotDiv.innerHTML = ''; // Αδειάζει το περιεχόμενο του div
+      } else {
+        console.error("Το στοιχείο με ID 'Plot' δεν βρέθηκε.");
+      }
+    }
+  </script>
+
+
+
+
+  <!-- FUNCTIONS-->
+
+  <script>
+    // Function to set cardmap to all classes
+
+    function setAlltoCardMap() {
+      const cardIdList = ["card1", "card2", "card3", "card4", "card5", "card6", "card7"];
+      cardIdList.forEach(cardId => {
+        const cardElement = document.getElementById(cardId);
+        if (cardElement) {
+          // Remove any existing card-related classes
+          cardElement.classList.remove('activemap'); // Only remove activemap, keep cardmap if it exists
+          cardElement.classList.add('cardmap');
+        } else {
+          console.warn(`Card element with ID '${cardId}' not found.`);
+        }
+      });
+    }
+
+    // Function to change Cardclass when button clicked
+
+    function changeCardColor(buttonId, classtype) {
+      const buttonElement = document.getElementById(buttonId);
+      if (buttonElement) {
+        const parentDiv = buttonElement.parentNode;
+        if (parentDiv) {
+          // Remove any existing card-related classes
+          parentDiv.classList.remove('cardmap', 'activemap');
+          // Add the new class specified by classtype
+          parentDiv.classList.add(classtype);
+        } else {
+          console.error(`Parent node not found for button with ID: ${buttonId}`);
+        }
+      } else {
+        console.error(`Button with ID "${buttonId}" not found.`);
+      }
+    }
+
+
+    // Scroll to main Plot
+    function scrollToMainPlot() {
+      const mainPlot = document.getElementById('Plot');
+      if (mainPlot) {
+        mainPlot.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+
+
+
+    }
+  </script>
+
+
+
+  <!--Windows-->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let mainWindow = null;
+      let combineWindow = null;
+      let createWindow = null;
+      let scheduleWindow = null;
+
+      document.getElementById('mainTabLink').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent default link behavior
+
+        if (mainWindow && !mainWindow.closed) {
+          mainWindow.focus(); // Focus on the existing window
+        } else {
+          mainWindow = window.open('main.html', '_blank'); // Open a new window
+        }
+      });
+
+      document.getElementById('combineTabLink').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent default link behavior
+
+        if (combineWindow && !combineWindow.closed) {
+          combineWindow.focus(); // Focus on the existing window
+        } else {
+          combineWindow = window.open('combine.html', '_blank'); // Open a new window
+        }
+      });
+
+      document.getElementById('createTabLink').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent default link behavior
+
+        if (createWindow && !createWindow.closed) {
+          createWindow.focus(); // Focus on the existing window
+        } else {
+          createWindow = window.open('create.html', '_blank'); // Open a new window
+        }
+      });
+
+      document.getElementById('scheduleTabLink').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent default link behavior
+
+        if (scheduleWindow && !scheduleWindow.closed) {
+          scheduleWindow.focus(); // Focus on the existing window
+        } else {
+          scheduleWindow = window.open('schedule.html', '_blank'); // Open a new window
+        }
+      });
+
+      // OPEN CSV - Open CSV Button message
+      const openFileButton = document.getElementById('openFileButton');
+      openFileButton.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Open CSV" για να ανοίξετε ένα αρχείο CSV από τον υπολογιστή σας. Το περιεχόμενο του αρχείου θα εμφανιστεί στον πίνακα παρακάτω.'
+        );
+      });
+
+      // SAVE - Save Button message
+      const saveTableButton = document.getElementById('saveTableButton');
+      saveTableButton.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Save" για να αποθηκεύσετε τον πίνακα σε ένα αρχείο CSV στον υπολογιστή σας.'
+        );
+      });
+
+      // CLEAR - Clear Button message
+      const clearTableButton = document.getElementById('clearTableButton');
+      clearTableButton.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Clear" για να διαγράψετε από την καρτέλα τα δεδομένα που έχουν φορτωθεί.'
+        );
+      });
+
+      // HIDE - Hide Button message
+      const hideTableButton = document.getElementById('hideTableButton');
+      hideTableButton.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Hide" για να αποκρύψετε τον πίνακα. Για να επανεφανίσετε τον πίνακα, πατήστε "Show".'
+        );
+      });
+
+      // RELOAD - Reload Button message
+      const reloadTableButton = document.getElementById('reloadTableButton');
+      reloadTableButton.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Reload" για να επαναφέρετε στην καρτέλα τον αρχικό πίνακα.'
+        );
+      });
+
+      // DESELECT - Deselect Button message
+      const deselectTableButton = document.getElementById('deselectTableButton');
+      deselectTableButton.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Deselect" για να αποεπιλέξετε γραμμές ή/και στήλες του πίνακα που είχατε επιλεγμένες (highlighted).'
+        );
+      });
+
+      // INVERT - Invert Button message
+      const invertTableButton = document.getElementById('invertTableButton');
+      invertTableButton.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Invert" για να αντιστρέψετε τον φορτωμένο πίνακα, αντιστρέφοντας τις γραμμές με τις στήλες.'
+        );
+      });
+
+      // SORT BY 0 - sortByZero Button message
+      const sortByZeroButton = document.getElementById('sortByZeroButton');
+      sortByZeroButton.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Sort By 0" για να ταξινομήσετε τον φορτωμένο πίνακα με βάση την πρώτη του στήλη (0).'
+        );
+      });
+
+      // BOX PLOT - showboxbutt Button message
+      const showboxbutt = document.getElementById('showboxbutt');
+      showboxbutt.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Show" για να εμφανίσετε το διάγραμμα Box Plot μέσα στην καρτέλα "Main".'
+        );
+      });
+
+      // BOX PLOT - hideboxbutt Button message
+      const hideboxbutt = document.getElementById('hideboxbutt');
+      hideboxbutt.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Hide" για να αποκρύψετε το διάγραμμα Box Plot από την καρτέλα "Main".'
+        );
+      });
+
+      // HEATMAP - showheatbutt Button message
+      const showheatbutt = document.getElementById('showheatbutt');
+      showheatbutt.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Show" για να εμφανίσετε το διάγραμμα Heatmap στην καρτέλα "Main".'
+        );
+      });
+
+      // HEATMAP - hideheatbutt Button message
+      const hideheatbutt = document.getElementById('hideheatbutt');
+      hideheatbutt.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Hide" για να αποκρύψετε το διάγραμμα Heatmap από την καρτέλα "Main".'
+        );
+      });
+
+      // BAR CHART - showbarbutt Button message
+      const showbarbutt = document.getElementById('showbarbutt');
+      showbarbutt.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Show" για να εμφανίσετε το διάγραμμα Bar Chart στην καρτέλα "Main".'
+        );
+      });
+
+      // BAR CHART - hideheatbutt Button message
+      const hidebarbutt = document.getElementById('hidebarbutt');
+      hidebarbutt.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Hide" για να αποκρύψετε το διάγραμμα Bar Chart από την καρτέλα "Main".'
+        );
+      });
+
+      // PIE CHART - showpiebutt Button message
+      const showpiebutt = document.getElementById('showpiebutt');
+      showpiebutt.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Show" για να εμφανίσετε το διάγραμμα Pie Chart στην καρτέλα "Main".'
+        );
+      });
+
+      // PIE CHART - hidepiebutt Button message
+      const hidepiebutt = document.getElementById('hidepiebutt');
+      hidepiebutt.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Hide" για να αποκρύψετε το διάγραμμα Pie Chart από την καρτέλα "Main".'
+        );
+      });
+
+      // LINE CHART - showlinebutt Button message
+      const showlinebutt = document.getElementById('showlinebutt');
+      showlinebutt.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Show" για να εμφανίσετε το διάγραμμα Line Chart στην καρτέλα "Main".'
+        );
+      });
+
+      // LINE CHART - hidepiebutt Button message
+      const hidelinebutt = document.getElementById('hidelinebutt');
+      hidelinebutt.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Hide" για να αποκρύψετε το διάγραμμα Line Chart από την καρτέλα "Main".'
+        );
+      });
+
+      // HISTOGRAM - showlinebutt Button message
+      const showhistobutt = document.getElementById('showhistobutt');
+      showhistobutt.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Show" για να εμφανίσετε το διάγραμμα Histogram στην καρτέλα "Create".'
+        );
+      });
+
+      // HISTOGRAM - hidepiebutt Button message
+      const hidehistobutt = document.getElementById('hidehistobutt');
+      hidehistobutt.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Hide" για να αποκρύψετε το διάγραμμα Histogram από την καρτέλα "Create".'
+        );
+      });
+
+      // GANTT PLOT - showganttbutt Button message
+      const showganttbutt = document.getElementById('showganttbutt');
+      showganttbutt.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Show" για να εμφανίσετε το διάγραμμα Gantt Plot στην καρτέλα "Schedule".'
+        );
+      });
+
+      // GANT PLOT - hideganttbutt Button message
+      const hideganttbutt = document.getElementById('hideganttbutt');
+      hideganttbutt.addEventListener('click', function () {
+        alert(
+          'Πατήστε το πλήκτρο "Hide" για να αποκρύψετε το διάγραμμα Gantt Plot από την καρτέλα "Schedule".'
+        );
+      });
+
+    });
+  </script>
+
+  <br>
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 Dashboard</p>
+  </footer>
+
+</body>
+
+</html>
