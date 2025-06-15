@@ -1,0 +1,2125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create</title>
+
+
+    <style>
+        /* Basic styling for the table */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        #tableContainer {
+            width: 100%;
+            height: 420px;
+            /* Or whatever height you prefer */
+            margin: 10px auto;
+            overflow: auto;
+            /* Add scrollbars when needed */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            display: none;
+            /* Initially hidden */
+        }
+
+        #csvTable {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #csvTable th,
+        #csvTable td {
+            border: 1px solid #000000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        #csvTable th {
+            background-color: #f2f2f2;
+        }
+
+        .selected-row {
+            background-color: yellow;
+        }
+
+        .selected-column {
+            background-color: lightblue;
+        }
+
+        /* Style for the histogram container */
+
+        .boxplot {
+            background: rgb(255, 255, 255);
+            padding: 0.0rem;
+            border-radius: 0px;
+            font-size: 4;
+            text-align: center;
+        }
+
+        .white {
+            background: rgb(255, 255, 255);
+            padding: 1.15rem;
+            border-radius: 0px;
+            font-size: 4;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .inbox {
+            display: block;
+            width: calc(100% + 2 * 1.15rem);
+            /* 100% του εσωτερικού χώρου + 2 φορές το padding του white */
+            margin-left: -1.15rem;
+            /* Αρνητικό margin αριστερά ίσο με το padding του white */
+            margin-right: -1.15rem;
+            /* Αρνητικό margin δεξιά ίσο με το padding του white */
+            background: rgb(200, 237, 202);
+            padding: 1.0rem;
+            border-radius: 0px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 4;
+            text-align: center;
+            margin-bottom: 0px;
+        }
+
+        .histogram-container {
+            background: rgb(200, 237, 202);
+            width: 100%;
+            margin: 20px auto;
+            border: 0px solid #ccc;
+            padding: 1.0rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: none;
+            /* Initially hidden */
+            text-align: center;
+        }
+
+        #histogramDiv {
+            padding: 1.0rem;
+            width: 100%;
+            height: 300px;
+            border: 0px solid #ccc;
+            /* You might want to style this div further to visualize the histogram */
+        }
+
+        #histogramControls {
+            padding: 1.0rem;
+            display: none;
+            /* Initially hidden */
+        }
+
+
+        #input-container {
+            margin-bottom: 20px;
+            background-color: #ecf0f1;
+            padding: 20px;
+            display: flex;
+            /* Make the input container a flex container */
+            gap: 20px;
+            /* Add some space between the cards */
+            align-items: flex-start;
+            /* Align items to the top to handle different heights */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            cursor: pointer;
+            background-color: #3498db !important;
+            /* Blue background */
+            color: white !important;
+            /* White text */
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        th:hover {
+            background-color: #2980b9 !important;
+            /* Darker blue on hover, !important added */
+        }
+
+        div {
+            background-color: rgb(236, 246, 247);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .select-by-label {
+            font-size: 1.5em;
+            /* Use a valid unit like em, px, rem, etc. */
+            color: rgb(52, 152, 219);
+        }
+
+        .sort-by-label {
+            font-size: 1.5em;
+            /* Use a valid unit like em, px, rem, etc. */
+            color: rgb(25, 148, 19);
+        }
+
+        /* BUTTONS */
+
+        /* button */
+        .button {
+            border: none;
+            color: white;
+            padding: 20px 34px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+
+        /* button1 */
+
+        .button1 {
+            background-color: white;
+            color: black;
+            border: 2px solid #04AA6D;
+            padding: 3px 8px;
+        }
+
+        .button1:hover {
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        /* button2 */
+
+        .button2 {
+            background-color: white;
+            color: black;
+            border: 2px solid #008CBA;
+            padding: 3px 8px;
+        }
+
+        .button2:hover {
+            background-color: #008CBA;
+            color: white;
+        }
+
+        /* button3 */
+
+        .button3 {
+            background-color: #f1f4f5;
+            color: black;
+            border: 1px solid #04AA6D;
+            padding: 3px 8px;
+            height: 27px;
+            width: 65px;
+            border-radius: 4px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .button3:hover {
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        /* button4 */
+
+        .button4 {
+            background-color: #f1f4f5;
+            color: black;
+            border: 1px solid #04AA6D;
+            padding: 3px 8px;
+            height: 27px;
+            width: 120px;
+            border-radius: 4px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .button4:hover {
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        /* open-button */
+
+        .open-button {
+            background-color: #008CBA;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border-radius: 0px;
+            height: 27px;
+            width: 90px;
+        }
+
+        .open-button:hover {
+            background-color: #0077B3;
+        }
+
+        /* save-button */
+
+        .save-button {
+            background-color: #2dc806;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border-radius: 0px;
+            height: 27px;
+            width: 70px;
+        }
+
+        .save-button:hover {
+            background-color: #069001;
+        }
+
+        /* clear-button */
+
+        .clear-button {
+            background-color: #f44336;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 0px;
+            height: 27px;
+            width: 70px;
+        }
+
+        .clear-button:hover {
+            background-color: #da190b;
+            /* Darker red on hover */
+
+        }
+
+        /* hide-button */
+
+        .hide-button {
+            background-color: #a08785;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 0px;
+            height: 27px;
+            width: 70px;
+        }
+
+        .hide-button:hover {
+            background-color: #8a5d5a;
+        }
+
+        /* reload-button */
+
+        .reload-button {
+            background-color: #ffe100;
+            color: rgb(0, 0, 0);
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border-radius: 0px;
+            height: 27px;
+            width: 70px;
+        }
+
+        .reload-button:hover {
+            background-color: #fff700e0;
+        }
+
+        /* invert-button */
+
+        .invert-button {
+            background-color: #008CBA;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border-radius: 0px;
+            height: 27px;
+            width: 70px;
+        }
+
+        .invert-button:hover {
+            background-color: #0077B3;
+
+        }
+
+        th:hover {
+            background-color: #1abc9c;
+            color: white;
+        }
+
+        th,
+        td {
+            transition: background-color 0.3s;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        #Plot {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Optional: Set a specific height if needed */
+            /* height: 400px; */
+        }
+
+        /* Highlighting ROW to DELETE */
+        .row-highlighted {
+            background-color: lightblue;
+        }
+
+        /* Highlighting COLUMN to DELETE */
+        .highlight-col-del {
+            background-color: lightblue !important;
+        }
+
+        /* Highlighting ROW to SORT */
+        .sort-highlight {
+            background-color: lightgreen !important;
+            /* Or any color you prefer */
+        }
+
+        /* Highlighting COLUMN to SORT */
+        .highlight {
+            background-color: lightgreen !important;
+        }
+
+
+
+        .box1 {
+            margin-left: 2px;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+
+        .box2 {
+            margin-left: 2px;
+            width: 83px;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+
+        .box3 {
+            margin-left: 2px;
+            width: 160px;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background-color: #2c3e50;
+            padding: 1rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .navbar .nav-links a {
+            text-decoration: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            background-color: #34495e;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar .nav-links a.active {
+            background-color: #e74c3c;
+            /* Example: Red for active */
+            color: white;
+        }
+
+
+        .navbar .nav-links a:hover {
+            background-color: #1abc9c;
+        }
+
+        .editable {
+            cursor: pointer;
+        }
+
+        /* Main Content */
+
+        .main {
+            flex: 1;
+            padding: 1rem;
+            background-color: #ecf0f1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .field {
+            background: white;
+            padding: 1rem;
+            border-radius: 0px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            flex: 1;
+            /* Distribute available space equally between the cards */
+        }
+
+
+        .cardmap {
+            background: rgb(224, 218, 218);
+            padding: 1.0rem;
+            border-radius: 0px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 4;
+            text-align: center;
+        }
+
+        .activemap {
+            background: rgb(200, 195, 195);
+            padding: 1.0rem;
+            border-radius: 0px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 4;
+            text-align: center;
+        }
+
+
+
+        /* Footer */
+        .footer {
+            background-color: #34495e;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <h1>Clinical Dashboard</h1>
+        <ul class="nav-links">
+            <li><a href="main.html" id="dashboardTabLink" target="_blank">Main</a></li>
+            <li><a href="combine.html" id="combineTabLink" target="_blank">Combine</a></li>
+            <li><a href="create.html" class="active">Create</a></li>
+            <li><a href="schedule.html" id="scheduleTabLink" target="_blank">Schedule</a></li>
+            <li><a href="help.html" id="helpTabLink" target="_blank">Help</a></li>
+        </ul>
+    </nav>
+
+    <br>
+
+    <button class="open-button" id="openFileButton">Open CSV</button>
+
+    &#8202;&#8202;
+
+    <input type="text" id="selectedFileName" placeholder="Select file to open" readonly class="box1">
+    <input type="file" id="csvFileInput" accept=".csv" style="display: none;">
+
+    &#8202;&#8202;
+
+    <button onclick="saveAsCSV()" class="save-button" id="saveTableButton">Save</button>
+
+    &#8202;
+
+    <button class="clear-button" onclick="clearTable()">Clear</button>
+
+    &#8202;
+
+    <button class="hide-button" onclick="hideTable()">Hide</button>
+
+    &#8202;
+
+    <button class="reload-button" id="reloadButton">Reload</button>
+
+    &#8202;
+
+    <button class="button2" id="deselectButton" onclick="deselectAll()">Deselect</button>
+
+    <br><br>
+
+    <div id="input-container">
+
+        <div id="topCard1" class="field">
+
+            <label for="columns">
+                <font size=4 color="blue"><b>Size:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></font>
+            </label>
+
+            <input type="number" class="box2" id="rows" placeholder="Rows" name="rows">
+
+
+
+            <input type="number" class="box2" id="columns" placeholder="Columns" name="columns">
+
+            &#8202;
+
+            <button class="button3" onclick="createTable()">Create</button>
+
+            <br><br>
+
+            <label for="rows">
+                <font size=4 color="#34495e"><b>Row:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#8202;&#8202;</b>
+                </font>
+            </label>
+            <input class="box1" type="text" id="row" name="row" placeholder="None Selected" readonly>
+
+            &#8202;
+
+            <button class="button3" onclick="addRow()">Add</button>
+
+            &#8202;
+
+            <button class="button3" onclick="undoAddRow()">Undo</button>
+
+            <br><br>
+
+            <label for="columns">
+                <font size=4 color="#34495e"><b>Column:&nbsp;&nbsp;&#8202;&#8202;</b></font>
+            </label>
+            <input class="box1" type="text" id="columnName" placeholder="None Selected" readonly>
+
+            &#8202;
+
+            <button class="button3" onclick="addColumn()">Add</button>
+
+            &#8202;
+
+            <button class="button3" onclick="undoAddColumn()">Undo</button>
+
+        </div>
+
+
+        <div id="topCard2" class="field">
+
+            <label for="sortByColumn">
+                <font size=4 color="red"><b>Sort by:&nbsp;&nbsp;&nbsp;&#8202;</b></font>
+            </label>
+
+            <select id="sortByColumn" class="box3" onchange="highlightSortColumn()">
+                <option value="">None</option>
+            </select>
+
+            &#8202;
+
+            <button class="button3" onclick="sortTable()">Sort</button>
+
+            &#8202;
+
+            <button class="button3" onclick="undoSortTable()">Undo</button>
+
+            <br><br>
+
+            <label for="selectByRow">
+                <font size=4 color="#34495e"><b>Row:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#8202;</b>
+                </font>
+            </label>
+
+            <select id="deleteByRowSelect" class="box3" onchange="highlightSelectedTableRow()">
+                <option value="">None</option>
+            </select>
+
+            &#8202;
+
+            <button class="button3" id="deleteRow" onclick="deleteRow()">Delete</button>
+
+            &#8202;
+
+            <button class="button3" id="undoDeleteRow" onclick="undoDelete()">Undo</button>
+
+            <br><br>
+
+            <label for="deleteByColumn">
+                <font size=4 color="#34495e"><b>Column:&nbsp;&#8202;</b></font>
+            </label>
+
+            &#8202;
+
+            <select id="deleteByColumnSelect" class="box3" onchange="highlightSelectedColumn()">
+                <option value="">None</option>
+            </select>
+
+            &#8202;
+
+            <button class="button3" id="deleteColumn" onclick="deleteColumn()">Delete</button>
+
+            &#8202;
+
+            <button class="button3" id="undoDeleteColumn2" onclick="undoDeleteColumn()">Undo</button>
+
+
+        </div>
+
+
+        <div id="topCard3" class="field">
+
+            <label for="sortBy">
+                <label for="sortBy"
+                    class="sort-by-label"><b>Move:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                    </font>
+                </label>
+
+                <br><br>
+
+                <label for="sortByRow">
+                    <font size=4 color="#34495e">
+                        <b>Row:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#8202;&#8202;</b></font>
+                </label>
+
+                <select id="sortByRowSelect" class="box3" onchange="highlightSortByRow()">
+                    <option value="">None</option>
+                </select>
+
+                &#8202;
+
+                <button class="button3" onclick="moveRowUp()">Up</button>
+
+                &#8202;
+
+                <button class="button3" onclick="moveRowdown()">Down</button>
+
+                <br><br>
+
+                <label for="moveByColumn">
+                    <font size=4 color="#34495e"><b>Column:&nbsp;&nbsp;&#8202;&#8202;</b></font>
+                </label>
+
+                <select id="moveByColumn" class="box3" onchange="highlightSortColumn()">
+                    <option value="">None</option>
+                </select>
+
+                &#8202;
+
+                <button class="button3" onclick="moveColumnLeft()">Left</button>
+
+                &#8202;
+
+                <button class="button3" onclick="moveColumnRight()">Right</button>
+
+        </div>
+
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            let storedCSVData = null; // Variable to store the CSV data
+
+            const reloadButton = document.getElementById('reloadButton');
+            const openFileButton = document.getElementById('openFileButton');
+            const csvFileInput = document.getElementById('csvFileInput');
+            const selectedFileName = document.getElementById('selectedFileName');
+            const csvTable = document.getElementById('csvTable');
+            const hideButton = document.querySelector('.hide-button');
+            const tableContainer = document.getElementById('tableContainer');
+            const histogramContainer = document.querySelector('.histogram-container');
+            const boxPlotContainer = document.querySelector('.boxPlot');
+            const histogramDiv = document.getElementById('histogramDiv');
+            const histogramControls = document.getElementById('histogramControls');
+            const selectedFileNameInput = document.getElementById('selectedFileName'); // Get the input element
+            const row = document.getElementById('row');
+            const columnName = document.getElementById('columnName');
+
+            // Set selectedFileName to empty on initial load
+            selectedFileNameInput.value = '';
+            row.value = '';
+            columnName.value = '';
+
+            function updateVisibility() {
+                const histogramDisplayStyle = window.getComputedStyle(histogramContainer).display;
+                const boxPlotDisplayStyle = window.getComputedStyle(boxPlotContainer).display;
+
+                if (histogramDisplayStyle === 'block' && boxPlotDisplayStyle === 'block') {
+                    // If both are visible, hide the box plot (you can choose to hide the histogram instead)
+                    boxPlotContainer.style.display = 'none';
+                }
+            }
+
+            if (tableContainer && hideButton) {
+                const computedStyle = window.getComputedStyle(tableContainer);
+                if (computedStyle.display === 'none') {
+                    hideButton.textContent = 'Show';
+                } else {
+                    hideButton.textContent = 'Hide';
+                }
+            }
+
+
+            openFileButton.addEventListener('click', () => {
+                csvFileInput.click();
+
+            });
+
+            csvFileInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    selectedFileName.value = file.name;
+
+                    const reader = new FileReader();
+
+                    reader.onload = (e) => {
+                        const csvData = e.target.result;
+                        storedCSVData = csvData; // Store the CSV content
+                        loadCSVDataToTable(csvData);
+                        updateVisibility(); // Call updateVisibility after loading data
+                    };
+
+                    reader.onerror = () => {
+                        alert('Error reading the CSV file.');
+                        selectedFileName.value = '';
+                        csvFileInput.value = ''; // Reset the file input
+                    };
+
+                    reader.readAsText(file);
+
+                } else {
+                    selectedFileName.value = '';
+                }
+
+            });
+
+            reloadButton.addEventListener('click', () => {
+                if (storedCSVData) {
+
+                    loadCSVDataToTable(storedCSVData);
+                    updateVisibility(); // Call updateVisibility after loading data
+                } else {
+
+                    alert('No data to reload. Please open a CSV file first.');
+                }
+            });
+
+            function loadCSVDataToTable(csvData) {
+
+                // Clear any existing table content
+                csvTable.innerHTML = '';
+
+                initializeInput('rows', 'Rows');
+                initializeInput('columns', 'Columns');
+
+                const tableContainer = document.getElementById('tableContainer');
+                const hideButton = document.querySelector('.hide-button');
+                const lines = csvData.trim().split('\n');
+
+                if (lines.length === 0) {
+                    return;
+                }
+
+                const headerRow = document.createElement('thead');
+                const headerCells = lines[0].split(',');
+                const headerTr = document.createElement('tr');
+
+                headerCells.forEach(headerText => {
+                    const th = document.createElement('th');
+                    th.textContent = headerText.trim();
+                    th.addEventListener('dblclick',
+                        editHeaderCell); // Add double click listener for headers
+                    th.addEventListener('click',
+                        selectColumn); // Add single click listener for column selection
+                    headerTr.appendChild(th);
+                });
+                headerRow.appendChild(headerTr);
+                csvTable.appendChild(headerRow);
+
+                const tableBody = document.createElement('tbody');
+                for (let i = 1; i < lines.length; i++) {
+                    const rowData = lines[i].split(',');
+                    const tr = document.createElement('tr');
+                    tr.addEventListener('click', (event) => {
+                        if (event.target.tagName === 'TD') selectTableRow(tr,
+                            i); // Select row only if a cell is clicked
+                    }); // Add single click listener for row selection
+                    rowData.forEach(cellText => {
+                        const td = document.createElement('td');
+                        td.textContent = cellText.trim();
+                        td.addEventListener('dblclick',
+                            editCell); // Add double click listener for cells
+                        tr.appendChild(td);
+                    });
+                    tableBody.appendChild(tr);
+                }
+                csvTable.appendChild(tableBody);
+
+                // Ensure the table container is visible (in case it was hidden)
+                if (tableContainer.style.display === 'none') {
+                    tableContainer.style.display = 'block';
+                }
+                updateBoxPlotVisibility();
+                updateRowDropdown();
+                updateColumnDropdown();
+                updateHistogramColumnDropdown(); // Populate histogram column dropdown
+
+                // Update the select dropdown in topCard3 (Move Column)
+                const moveColumnSelect = document.getElementById('moveByColumn');
+                if (moveColumnSelect) {
+                    // Clear existing options
+                    moveColumnSelect.innerHTML = '<option value="">None</option>';
+                    // Add new options from headers
+                    headerCells.forEach((headerText, index) => {
+                        const option = document.createElement('option');
+                        option.value = index;
+                        option.textContent = headerText.trim();
+                        moveColumnSelect.appendChild(option);
+                    });
+                }
+
+
+                // Βεβαιωθείτε ότι το tableContainer είναι ορατό
+                tableContainer.style.display = 'block';
+                histogramContainer.style.display = 'block'; // Show the histogram container
+
+
+                // Αλλάξτε το κείμενο του κουμπιού σε "Hide"
+                if (hideButton) {
+                    hideButton.textContent = 'Hide';
+                }
+
+                histogramDiv.style.display = 'none';
+
+            }
+        });
+
+        let currentlySelectedColumnIndex = null;
+
+        function selectColumn(event) {
+            const headerCell = event.target;
+            const columnIndex = Array.from(headerCell.parentNode.cells).indexOf(headerCell);
+
+            clearHighlighting();
+
+            "" // Highlight the selected column
+            const table = document.getElementById('csvTable');
+            for (let i = 0; i < table.rows.length; i++) {
+                if (table.rows[i].cells.length > columnIndex) {
+                    table.rows[i].cells[columnIndex].classList.add('selected-column');
+                }
+            }
+            headerCell.classList.add('selected-column');
+            currentlySelectedColumnIndex = columnIndex;
+
+            // Update the column input field in topCard1
+            document.getElementById('columnName').value = headerCell.textContent.trim();
+
+            // Update the select dropdown in topCard2
+            const deleteColumnSelect = document.getElementById('deleteByColumnSelect');
+            if (deleteColumnSelect) {
+                deleteColumnSelect.value = columnIndex;
+            }
+
+            // Update the select dropdown in topCard3 (Move Column)
+            const moveColumnSelect = document.getElementById('moveByColumn');
+            if (moveColumnSelect) {
+                moveColumnSelect.value = columnIndex;
+            }
+
+            updateColumnDropdown(columnIndex);
+        }
+
+
+        let currentlySelectedRow = null;
+
+
+        function selectTableRow(rowElement, rowIndex) {
+            clearHighlighting(); // Clear any previously selected rows/columns
+            rowElement.classList.add('selected-row');
+            currentlySelectedRow = rowElement;
+
+            // Update the row input field
+            document.getElementById('row').value = `Row ${rowIndex + 1}`;
+
+            // Update the row dropdowns for delete and sort
+            const rowSelects = document.querySelectorAll('#deleteByRowSelect, #sortByRowSelect');
+            rowSelects.forEach(select => {
+                select.value = rowIndex;
+            });
+
+            // **Call updateRowDropdown() here to refresh the lists**
+            updateRowDropdown();
+        }
+
+        function editHeaderCell(event) {
+            const cell = event.target;
+            const originalValue = cell.textContent;
+            cell.classList.add('editing');
+            cell.innerHTML = `<input type="text" value="${originalValue}">`;
+            const input = cell.querySelector('input');
+            input.focus();
+
+            input.addEventListener('blur', function () {
+                cell.textContent = this.value;
+                cell.classList.remove('editing');
+                updateColumnDropdown(); // Update dropdown after header change
+                updateHistogramColumnDropdown(); // Update histogram dropdown too
+            });
+
+            input.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    cell.textContent = this.value;
+                    cell.classList.remove('editing');
+                    cell.focus();
+                    updateColumnDropdown(); // Update dropdown after header change
+                    updateHistogramColumnDropdown(); // Update histogram dropdown too
+                } else if (e.key === 'Escape') {
+                    cell.textContent = originalValue;
+                    cell.classList.remove('editing');
+                    cell.focus();
+                }
+            });
+        }
+
+        function updateBoxPlotVisibility() {
+            const histogramContainer = document.querySelector('.histogram-container');
+            const boxPlotContainer = document.querySelector('.boxPlot');
+
+            if (histogramContainer && boxPlotContainer) {
+                if (window.getComputedStyle(histogramContainer).display === 'block') {
+                    boxPlotContainer.style.display = 'block';
+                } else {
+                    boxPlotContainer.style.display = 'none';
+                }
+            }
+
+            // Ensure that on initial load or reload, only one of them is visible.
+            // We can set a default to show the box plot and hide the histogram container.
+            histogramContainer.style.display = 'none';
+            boxPlotContainer.style.display = 'block';
+        }
+
+
+        function editCell(event) {
+            const cell = event.target;
+            const originalValue = cell.textContent;
+            cell.classList.add('editing');
+            cell.innerHTML = `<input type="text" value="${originalValue}">`;
+            const input = cell.querySelector('input');
+            input.focus();
+
+            input.addEventListener('blur', function () {
+                cell.textContent = this.value;
+                cell.classList.remove('editing');
+            });
+
+            input.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    cell.textContent = this.value;
+                    cell.classList.remove('editing');
+                    cell.focus(); // Optional: Return focus to the cell
+                } else if (e.key === 'Escape') {
+                    cell.textContent = originalValue;
+                    cell.classList.remove('editing');
+                    cell.focus(); // Optional: Return focus to the cell
+                }
+            });
+        }
+
+        // Function to update the row dropdown
+        function updateRowDropdown() {
+            const rowSelects = document.querySelectorAll('#deleteByRowSelect, #sortByRowSelect');
+            const tableBody = document.querySelector('#csvTable tbody');
+            rowSelects.forEach(select => {
+                select.innerHTML = '<option value="">None</option>';
+                if (tableBody) {
+                    for (let i = 0; i < tableBody.rows.length; i++) {
+                        const option = document.createElement('option');
+                        option.value = i;
+                        const firstCellText = tableBody.rows[i].cells.length > 0 ? tableBody.rows[i].cells[0]
+                            .textContent.trim() : `Row ${i + 1}`;
+                        option.textContent = firstCellText || `Row ${i + 1}`;
+                        select.appendChild(option);
+                    }
+                }
+            });
+            if (currentlySelectedRow) {
+                const rowIndex = Array.from(document.querySelector('#csvTable tbody').rows).indexOf(
+                    currentlySelectedRow);
+                document.getElementById('deleteByRowSelect').value = rowIndex;
+                document.getElementById('sortByRowSelect').value = rowIndex;
+                document.getElementById('row').value = `Row ${rowIndex + 1}`;
+            } else {
+                document.getElementById('row').value = 'None Selected'; // Reset selected row display
+                document.getElementById('deleteByRowSelect').value = '';
+                document.getElementById('sortByRowSelect').value = '';
+            }
+        }
+
+        // Function to update the column dropdown
+        function updateColumnDropdown(selectedIndex = null) {
+            const columnSelects = document.querySelectorAll('#deleteByColumnSelect, #sortByColumn, #moveByColumn');
+            const headerRow = document.querySelector('#csvTable thead tr');
+
+            columnSelects.forEach(select => {
+                const currentValue = select.value; // Store the current selected value
+                select.innerHTML = '<option value="">None</option>';
+                if (headerRow) {
+                    Array.from(headerRow.cells).forEach((cell, index) => {
+                        const option = document.createElement('option');
+                        option.value = index;
+                        option.textContent = cell.textContent.trim();
+                        select.appendChild(option);
+                    });
+                }
+                // Restore the previously selected value if it still exists
+                if (currentValue !== "" && select.querySelector(`option[value="${currentValue}"]`)) {
+                    select.value = currentValue;
+                } else if (selectedIndex !== null) {
+                    select.value = selectedIndex.toString();
+                }
+            });
+
+            // Update the columnName input field
+            const columnNameInput = document.getElementById('columnName');
+            if (selectedIndex !== null && headerRow && headerRow.cells.length > selectedIndex) {
+                columnNameInput.value = headerRow.cells[selectedIndex].textContent.trim();
+            } else {
+                columnNameInput.value = 'None Selected';
+            }
+        }
+
+
+
+        function clearHighlighting() {
+            const selectedRows = document.querySelectorAll('#csvTable tr.selected-row');
+            selectedRows.forEach(row => {
+                row.classList.remove('selected-row');
+            });
+            const selectedColumns = document.querySelectorAll(
+                '#csvTable td.selected-column, #csvTable th.selected-column');
+            selectedColumns.forEach(cell => {
+                cell.classList.remove('selected-column');
+            });
+            currentlySelectedRow = null;
+        }
+
+
+        // Hide/Show switch button code
+        function hideTable() {
+
+            const tableCon = document.getElementById('tableContainer');
+            const hideButton = document.querySelector('.hide-button'); // Assuming only one hide button
+
+            if (tableCon && hideButton) {
+                if (tableCon.style.display === 'none') {
+                    tableCon.style.display = 'block';
+                    hideButton.textContent = 'Hide'; // Now it will hide on click
+                } else {
+                    tableCon.style.display = 'none';
+                    hideButton.textContent = 'Show'; // Now it will show on click
+                }
+            }
+
+        }
+
+        // Function to initialize Input
+
+        function initializeInput(inputId, placeholderText) {
+            const valInput = document.getElementById(inputId);
+            if (valInput) {
+                valInput.placeholder = placeholderText;
+                valInput.value = ''; // Ensure the value is empty, not the placeholder
+            } else {
+                console.error(`Element with ID '${inputId}' not found.`);
+            }
+        }
+
+        // Add Row and Undo
+        let undoStack = []; // Array to store the previous state of the table
+
+        function saveTableState() {
+            const table = document.getElementById('csvTable');
+            if (!table) return;
+
+            const thead = table.querySelector('thead');
+            const tbody = table.querySelector('tbody');
+            const state = {
+                header: thead ? Array.from(thead.querySelectorAll('th')).map(th => th.textContent) : [],
+                rows: tbody ? Array.from(tbody.querySelectorAll('tr')).map(row =>
+                    Array.from(row.cells).map(cell => cell.textContent)
+                ) : []
+            };
+            undoStack.push(state);
+
+            // Limit the undo stack size to prevent memory issues (optional)
+            const maxUndoSteps = 10;
+            if (undoStack.length > maxUndoSteps) {
+                undoStack.shift();
+            }
+        }
+
+        function restoreTableState(state) {
+            const csvTable = document.getElementById('csvTable');
+            if (!csvTable) return;
+            csvTable.innerHTML = '';
+
+            if (state.header && state.header.length > 0) {
+                const thead = document.createElement('thead');
+                const headerRow = thead.insertRow();
+                state.header.forEach(text => {
+                    const th = document.createElement('th');
+                    th.textContent = text;
+                    th.addEventListener('dblclick', editHeaderCell); // Re-add listener
+                    headerRow.appendChild(th);
+                });
+                csvTable.appendChild(thead);
+            }
+
+            if (state.rows && state.rows.length > 0) {
+                const tbody = document.createElement('tbody');
+                state.rows.forEach((rowData, rowIndex) => {
+                    const tr = tbody.insertRow();
+                    tr.addEventListener('click', () => selectTableRow(tr, rowIndex)); // Re-add listener
+                    rowData.forEach(text => {
+                        const td = tr.insertCell();
+                        td.textContent = text;
+                        td.addEventListener('dblclick', editCell); // Re-add listener
+                    });
+                    tbody.appendChild(tr);
+                });
+                csvTable.appendChild(tbody);
+            }
+            updateRowDropdown();
+            updateColumnDropdown();
+            updateHistogramColumnDropdown(); // Ensure histogram dropdown is also updated
+        }
+
+        function addRow() {
+            const tableBody = document.querySelector('#csvTable tbody');
+            if (!tableBody) return;
+
+            saveTableState(); // Save the current state before adding
+
+            const newRow = tableBody.insertRow();
+            // Set the preferred height for the new row
+            newRow.style.height = '35px'; // Adjust '35px' to your preferred height
+            const headers = document.querySelector('#csvTable thead tr');
+            const numCells = headers ? headers.cells.length : 1; // Default to 1 if no headers
+
+            for (let i = 0; i < numCells; i++) {
+                const newCell = newRow.insertCell();
+                newCell.textContent = ''; // Or some default value
+                newCell.addEventListener('dblclick', editCell); // Add edit listener to new cells
+            }
+            newRow.addEventListener('click', () => selectTableRow(newRow, tableBody.rows.length - 1));
+            updateRowDropdown();
+        }
+
+        function undoAddRow() {
+            const tableBody = document.querySelector('#csvTable tbody');
+            if (!tableBody || tableBody.rows.length === 0 || undoStack.length === 0) {
+                return;
+            }
+            const lastState = undoStack.pop();
+            restoreTableState(lastState);
+        }
+
+        // Add Column and Undo
+        function addColumn() {
+            const table = document.getElementById('csvTable');
+            if (!table) return;
+
+            saveTableState(); // Save the current state before adding
+
+            let headerRow = table.querySelector('thead tr');
+            if (headerRow) {
+                const newHeader = document.createElement('th');
+                newHeader.textContent = 'New Column'; // Or prompt for name
+                newHeader.addEventListener('dblclick', editHeaderCell);
+                headerRow.appendChild(newHeader);
+            } else {
+                const thead = document.createElement('thead');
+                headerRow = thead.insertRow();
+                const newHeader = document.createElement('th');
+                newHeader.textContent = 'New Column';
+                newHeader.addEventListener('dblclick', editHeaderCell);
+                headerRow.appendChild(newHeader);
+                table.appendChild(thead);
+            }
+
+            const tableBody = table.querySelector('tbody');
+            if (tableBody) {
+                for (let i = 0; i < tableBody.rows.length; i++) {
+                    const newCell = tableBody.rows[i].insertCell();
+                    newCell.textContent = '';
+                    newCell.addEventListener('dblclick', editCell);
+                }
+            }
+            updateColumnDropdown();
+            updateHistogramColumnDropdown(); // Update histogram dropdown
+        }
+
+        function undoAddColumn() {
+            const table = document.getElementById('csvTable');
+            if (!table || (table.querySelector('thead') && table.querySelector('thead tr').cells.length === 0) ||
+                undoStack.length === 0) {
+                return;
+            }
+            const lastState = undoStack.pop();
+            restoreTableState(lastState);
+        }
+
+        // Delete Row and Undo
+        let deletedRowData = null;
+        let deletedRowIndex = null;
+
+        function deleteRow() {
+            const deleteByRowSelect = document.getElementById('deleteByRowSelect');
+            const selectedIndex = parseInt(deleteByRowSelect.value);
+            const tableBody = document.querySelector('#csvTable tbody');
+
+            if (tableBody && selectedIndex >= 0 && selectedIndex < tableBody.rows.length) {
+                saveTableState(); // Save state before deletion
+                const deletedRow = tableBody.rows[selectedIndex];
+                deletedRowData = Array.from(deletedRow.cells).map(cell => cell.textContent);
+                deletedRowIndex = selectedIndex;
+                tableBody.deleteRow(selectedIndex);
+                updateRowDropdown();
+                clearHighlighting();
+                document.getElementById('row').value = 'None Selected';
+                document.getElementById('deleteByRowSelect').value = '';
+                document.getElementById('sortByRowSelect').value = '';
+            } else {
+                alert('Please select a row to delete.');
+            }
+        }
+
+        function undoDelete() {
+            const tableBody = document.querySelector('#csvTable tbody');
+            if (deletedRowData && deletedRowIndex !== null) {
+                saveTableState(); // Save state before undo
+                const newRow = tableBody.insertRow(deletedRowIndex);
+                deletedRowData.forEach(text => {
+                    const newCell = newRow.insertCell();
+                    newCell.textContent = text;
+                    newCell.addEventListener('dblclick', editCell);
+                });
+                newRow.addEventListener('click', () => selectTableRow(newRow, deletedRowIndex));
+                deletedRowData = null;
+                deletedRowIndex = null;
+                updateRowDropdown();
+            } else {
+                alert('No row to undo deletion.');
+            }
+        }
+
+        // Delete Column and Undo
+        let deletedColumnData = [];
+        let deletedColumnIndex = null;
+        let deletedHeader = null;
+
+        function deleteColumn() {
+            const deleteByColumnSelect = document.getElementById('deleteByColumnSelect');
+            const selectedIndex = parseInt(deleteByColumnSelect.value);
+            const table = document.getElementById('csvTable');
+            const theadRow = table.querySelector('thead tr');
+
+            if (theadRow && selectedIndex >= 0 && selectedIndex < theadRow.cells.length) {
+                saveTableState(); // Save state before deletion
+                deletedColumnIndex = selectedIndex;
+                deletedColumnData = [];
+
+                // Delete from header
+                deletedHeader = theadRow.cells[selectedIndex].textContent;
+                theadRow.deleteCell(selectedIndex);
+
+                // Delete from body rows
+                const tableBody = table.querySelector('tbody');
+                if (tableBody) {
+                    for (let i = 0; i < tableBody.rows.length; i++) {
+                        deletedColumnData.push(tableBody.rows[i].cells[selectedIndex].textContent);
+                        tableBody.rows[i].deleteCell(selectedIndex);
+                    }
+                }
+                updateColumnDropdown();
+                updateHistogramColumnDropdown(); // Update histogram dropdown
+                clearHighlighting();
+                document.getElementById('columnName').value = 'None Selected';
+                document.getElementById('deleteByColumnSelect').value = '';
+                document.getElementById('sortByColumn').value = '';
+            } else {
+                alert('Please select a column to delete.');
+            }
+        }
+
+        function undoDeleteColumn() {
+            const table = document.getElementById('csvTable');
+            const theadRow = table.querySelector('thead tr');
+            const tableBody = table.querySelector('tbody');
+
+            if (deletedColumnIndex !== null) {
+                saveTableState(); // Save state before undo
+
+                // Undo header deletion
+                const newHeader = document.createElement('th');
+                newHeader.textContent = deletedHeader;
+                newHeader.addEventListener('dblclick', editHeaderCell);
+                theadRow.insertBefore(newHeader, theadRow.cells[deletedColumnIndex]);
+
+                // Undo body cell deletion
+                if (tableBody) {
+                    for (let i = 0; i < tableBody.rows.length; i++) {
+                        const newCell = tableBody.rows[i].insertCell(deletedColumnIndex);
+                        newCell.textContent = deletedColumnData[i] || '';
+                        newCell.addEventListener('dblclick', editCell);
+                    }
+                }
+
+                deletedColumnIndex = null;
+                deletedColumnData = [];
+                deletedHeader = null;
+                updateColumnDropdown();
+                updateHistogramColumnDropdown(); // Update histogram dropdown
+            } else {
+                alert('No column to undo deletion.');
+            }
+        }
+
+        // Highlight selected row/column
+        function highlightSelectedTableRow() {
+            clearHighlighting();
+            const selectElement = document.getElementById('deleteByRowSelect');
+            const selectedIndex = parseInt(selectElement.value);
+            const tableBody = document.querySelector('#csvTable tbody');
+            if (tableBody && selectedIndex >= 0 && selectedIndex < tableBody.rows.length) {
+                tableBody.rows[selectedIndex].classList.add('selected-row');
+                document.getElementById('row').value = `Row ${selectedIndex + 1}`;
+                const sortByRowSelect = document.getElementById('sortByRowSelect');
+                if (sortByRowSelect.value !== selectElement.value) {
+                    sortByRowSelect.value = selectElement.value;
+                }
+                currentlySelectedRow = tableBody.rows[selectedIndex];
+            } else {
+                document.getElementById('row').value = 'None Selected';
+                currentlySelectedRow = null;
+            }
+        }
+
+        function highlightSelectedColumn() {
+            clearHighlighting();
+            const selectElement = document.getElementById('deleteByColumnSelect');
+            const selectedIndex = parseInt(selectElement.value);
+            const table = document.getElementById('csvTable');
+            const theadRow = table.querySelector('thead tr');
+            const tableBody = table.querySelector('tbody');
+
+            if (theadRow && selectedIndex >= 0 && selectedIndex < theadRow.cells.length) {
+                theadRow.cells[selectedIndex].classList.add('selected-column');
+                document.getElementById('columnName').value = theadRow.cells[selectedIndex].textContent.trim();
+                if (tableBody) {
+                    for (let i = 0; i < tableBody.rows.length; i++) {
+                        if (tableBody.rows[i].cells.length > selectedIndex) {
+                            tableBody.rows[i].cells[selectedIndex].classList.add('selected-column');
+                        }
+                    }
+                }
+                const sortByColumnSelect = document.getElementById('sortByColumn');
+                if (sortByColumnSelect.value !== selectElement.value) {
+                    sortByColumnSelect.value = selectElement.value;
+                }
+            } else {
+                document.getElementById('columnName').value = 'None Selected';
+            }
+        }
+
+
+        function deselectAll() {
+            clearHighlighting();
+            document.getElementById('row').value = 'None Selected';
+            document.getElementById('columnName').value = 'None Selected';
+
+            const rowSelects = document.querySelectorAll('#deleteByRowSelect, #sortByRowSelect');
+            rowSelects.forEach(select => select.value = '');
+            const columnSelects = document.querySelectorAll('#deleteByColumnSelect, #sortByColumn');
+            columnSelects.forEach(select => select.value = '');
+
+
+            // Reset dropdown list for Row in topCard3
+            const sortByRowSelect = document.getElementById('sortByRowSelect');
+            if (sortByRowSelect) {
+                sortByRowSelect.value = ''; // Set value to empty, which corresponds to the "None" option
+            }
+            // Reset dropdown list for Column in topCard3
+            const moveByColumn = document.getElementById('moveByColumn');
+            if (moveByColumn) {
+                moveByColumn.value = ''; // Set value to empty, which corresponds to the "None" option
+            }
+        }
+
+        // Sort Table
+        let originalTableState = null;
+
+        function sortTable() {
+            const selectBox = document.getElementById("sortByColumn");
+            const columnIndex = parseInt(selectBox.value);
+            const table = document.getElementById("csvTable").querySelector("tbody");
+            const rows = Array.from(table.rows);
+            let sortHistory = []; // Initialize sortHistory here
+
+            if (isNaN(columnIndex)) {
+                alert("Please select a column to sort by.");
+                return;
+            }
+
+            saveTableState(); // Save state before sorting
+
+            const sortFunction = (rowA, rowB) => {
+                const cellA = rowA.cells[columnIndex].textContent.trim();
+                const cellB = rowB.cells[columnIndex].textContent.trim();
+
+                const numA = parseFloat(cellA);
+                const numB = parseFloat(cellB);
+
+                if (!isNaN(numA) && !isNaN(numB)) {
+                    const decimalsA = (cellA.split('.')[1] || '').length;
+                    const decimalsB = (cellB.split('.')[1] || '').length;
+
+                    if (decimalsA < decimalsB) {
+                        return -1;
+                    }
+                    if (decimalsA > decimalsB) {
+                        return 1;
+                    }
+                    // Αν έχουν τον ίδιο αριθμό δεκαδικών, κάνε κανονική αριθμητική σύγκριση
+                    return numA - numB;
+                }
+                // Αν δεν είναι αριθμοί, κάνε σύγκριση ως κείμενο
+                return cellA.localeCompare(cellB);
+            };
+
+            rows.sort(sortFunction);
+
+            // Remove existing rows
+            while (table.firstChild) {
+                table.removeChild(table.firstChild);
+            }
+
+            // Append the sorted rows
+            rows.forEach(row => table.appendChild(row));
+
+            updateRowDropdown();
+            highlightSortColumn(); // Keep the sorted column highlighted
+        }
+
+        function highlightSortColumn() {
+            const selectBox = document.getElementById("sortByColumn");
+            const columnIndex = parseInt(selectBox.value);
+            const table = document.getElementById("csvTable");
+
+            // Καταργούμε την επισήμανση από όλες τις στήλες
+            for (let i = 0; i < table.rows.length; i++) {
+                for (let j = 0; j < table.rows[i].cells.length; j++) {
+                    table.rows[i].cells[j].classList.remove('selected-column');
+                }
+            }
+            const headerRow = table.querySelector('thead tr');
+            if (headerRow && headerRow.cells.length > columnIndex) {
+                headerRow.cells[columnIndex].classList.add('selected-column');
+            }
+
+            // Επισημαίνουμε την επιλεγμένη στήλη
+            if (!isNaN(columnIndex)) {
+                for (let i = 0; i < table.rows.length; i++) {
+                    if (table.rows[i].cells.length > columnIndex) {
+                        table.rows[i].cells[columnIndex].classList.add('selected-column');
+                    }
+                }
+            }
+        }
+
+        function undoSortTable() {
+            if (undoStack.length > 0) {
+                const lastState = undoStack.pop();
+                restoreTableState(lastState);
+            } else {
+                alert('No previous state to undo sort.');
+            }
+        }
+
+        // Move Row Up/Down
+        function moveRowUp() {
+            const sortByRowSelect = document.getElementById('sortByRowSelect');
+            const selectedIndex = parseInt(sortByRowSelect.value);
+            const tbody = document.querySelector('#csvTable tbody');
+
+            if (tbody && selectedIndex > 0 && selectedIndex < tbody.rows.length) {
+                saveTableState(); // Save state before move
+                const rowToMove = tbody.rows[selectedIndex];
+                const previousRow = tbody.rows[selectedIndex - 1];
+                tbody.insertBefore(rowToMove, previousRow);
+                sortByRowSelect.value = selectedIndex - 1;
+                updateRowDropdown();
+                clearHighlighting();
+                tbody.rows[selectedIndex - 1].classList.add('selected-row');
+                currentlySelectedRow = tbody.rows[selectedIndex - 1];
+                document.getElementById('row').value = `Row ${selectedIndex}`;
+                document.getElementById('deleteByRowSelect').value = selectedIndex - 1;
+            } else if (selectedIndex === 0) {
+                alert('Cannot move the first row up.');
+            } else if (!tbody || tbody.rows.length <= 1) {
+                alert('Not enough rows to move.');
+            } else {
+                alert('Please select a row to move up.');
+            }
+        }
+
+        function moveRowdown() {
+            const sortByRowSelect = document.getElementById('sortByRowSelect');
+            const selectedIndex = parseInt(sortByRowSelect.value);
+            const tbody = document.querySelector('#csvTable tbody');
+
+            if (tbody && selectedIndex >= 0 && selectedIndex < tbody.rows.length - 1) {
+                saveTableState(); // Save state before move
+                const rowToMove = tbody.rows[selectedIndex];
+                const nextRow = tbody.rows[selectedIndex + 1];
+                tbody.insertBefore(nextRow, rowToMove);
+                sortByRowSelect.value = selectedIndex + 1;
+                updateRowDropdown();
+                clearHighlighting();
+                tbody.rows[selectedIndex + 1].classList.add('selected-row');
+                currentlySelectedRow = tbody.rows[selectedIndex + 1];
+                document.getElementById('row').value = `Row ${selectedIndex + 2}`;
+                document.getElementById('deleteByRowSelect').value = selectedIndex + 1;
+            } else if (selectedIndex === tbody.rows.length - 1) {
+                alert('Cannot move the last row down.');
+            } else if (!tbody || tbody.rows.length <= 1) {
+                alert('Not enough rows to move.');
+            } else {
+                alert('Please select a row to move down.');
+            }
+        }
+
+        function moveColumnLeft() {
+            const table = document.getElementById('csvTable');
+            const select = document.getElementById('moveByColumn');
+            if (!table || !select) return;
+            const columnIndex = parseInt(select.value);
+            if (isNaN(columnIndex) || columnIndex <= 0) return;
+
+            saveTableState(); // Save state for undo
+
+            const headerRow = table.querySelector('thead tr');
+            const bodyRows = table.querySelectorAll('tbody tr');
+            const headerText = headerRow.cells[columnIndex].textContent;
+
+            // Move header
+            headerRow.insertBefore(headerRow.cells[columnIndex], headerRow.cells[columnIndex - 1]);
+
+            // Move data cells
+            bodyRows.forEach(row => {
+                row.insertBefore(row.cells[columnIndex], row.cells[columnIndex - 1]);
+            });
+
+            // Update the 'moveByColumn' select value
+            select.value = columnIndex - 1;
+
+            updateColumnDropdown(columnIndex - 1); // Keep the moved column selected
+        }
+
+        function moveColumnRight() {
+            const table = document.getElementById('csvTable');
+            const select = document.getElementById('moveByColumn');
+            if (!table || !select) return;
+            const columnIndex = parseInt(select.value);
+            if (isNaN(columnIndex) || columnIndex >= table.rows[0].cells.length - 1) return;
+
+            saveTableState(); // Save state for undo
+
+            const headerRow = table.querySelector('thead tr');
+            const bodyRows = table.querySelectorAll('tbody tr');
+            const headerText = headerRow.cells[columnIndex].textContent;
+
+            // Move header
+            headerRow.insertBefore(headerRow.cells[columnIndex + 1], headerRow.cells[columnIndex]);
+
+            // Move data cells
+            bodyRows.forEach(row => {
+                row.insertBefore(row.cells[columnIndex + 1], row.cells[columnIndex]);
+            });
+
+            // Update the 'moveByColumn' select value
+            select.value = columnIndex + 1;
+
+            updateColumnDropdown(columnIndex + 1); // Keep the moved column selected
+        }
+
+        function highlightColumn(columnIndex) {
+            clearHighlighting();
+            const table = document.getElementById('csvTable');
+            if (!table || columnIndex === null) {
+                return;
+            }
+            for (let i = 0; i < table.rows.length; i++) {
+                if (table.rows[i].cells.length > columnIndex) {
+                    table.rows[i].cells[columnIndex].classList.add('selected-column');
+                }
+            }
+            const headerRow = table.querySelector('thead tr');
+            if (headerRow && headerRow.cells.length > columnIndex) {
+                headerRow.cells[columnIndex].classList.add('selected-column');
+                document.getElementById('columnName').value = headerRow.cells[columnIndex].textContent.trim();
+            }
+        }
+
+        // Clear Table
+        function clearTable() {
+            const csvTable = document.getElementById('csvTable');
+            const tableContainer = document.getElementById('tableContainer');
+
+            if (confirm('Are you sure you want to clear the table?')) {
+                csvTable.innerHTML = '';
+                undoStack = []; // Clear undo history
+                initializeInput('rows', 'Rows');
+                initializeInput('columns', 'Columns');
+                document.getElementById('row').value = 'None Selected';
+                document.getElementById('columnName').value = 'None Selected';
+                const rowSelects = document.querySelectorAll('#deleteByRowSelect, #sortByRowSelect');
+                rowSelects.forEach(select => select.innerHTML = '<option value="">None</option>');
+                const columnSelects = document.querySelectorAll('#deleteByColumnSelect, #sortByColumn');
+                columnSelects.forEach(select => select.innerHTML = '<option value="">None</option>');
+                updateHistogramColumnDropdown(); // Clear histogram dropdown
+                tableContainer.style.display = 'none';
+            }
+        }
+
+
+
+        // Create Table
+        function createTable() {
+            const rowsInput = document.getElementById('rows');
+            const colsInput = document.getElementById('columns');
+            const numRows = parseInt(rowsInput.value);
+            const numCols = parseInt(colsInput.value);
+            const table = document.getElementById('csvTable');
+            const hideButton = document.querySelector('.hide-button');
+
+            initializeInput('selectedFileName', 'Select file to open');
+
+            if (isNaN(numRows) || isNaN(numCols) || numRows <= 0 || numCols <= 0) {
+                alert('Please enter valid numbers for rows and columns.');
+                return;
+            }
+
+            table.innerHTML = '';
+
+            const csvTable = document.getElementById('csvTable');
+            csvTable.innerHTML = '';
+            const thead = document.createElement('thead');
+            const headerRow = thead.insertRow();
+            for (let i = 0; i < numCols; i++) {
+                const th = document.createElement('th');
+                th.textContent = `Column ${i + 1}`;
+                th.addEventListener('dblclick', editHeaderCell);
+                headerRow.appendChild(th);
+            }
+            csvTable.appendChild(thead);
+
+            const tbody = document.createElement('tbody');
+            for (let i = 0; i < numRows; i++) {
+                const row = tbody.insertRow();
+                // Set the fixed height for the new row
+                row.style.height = '35px'; // Adjust '35px' to your preferred height
+                row.addEventListener('click', () => selectTableRow(row, i));
+                for (let j = 0; j < numCols; j++) {
+                    const cell = row.insertCell();
+                    cell.textContent = '';
+                    cell.addEventListener('dblclick', editCell);
+                }
+            }
+            csvTable.appendChild(tbody);
+
+            const tableContainer = document.getElementById('tableContainer');
+            if (tableContainer.style.display === 'none') {
+                tableContainer.style.display = 'block';
+                const hideButton = document.querySelector('.hide-button');
+                if (hideButton) {
+                    hideButton.textContent = 'Hide';
+                }
+            }
+
+            updateRowDropdown();
+            updateColumnDropdown();
+            updateHistogramColumnDropdown(); // Update histogram dropdown
+
+            // **Make the tableContainer visible**
+            tableContainer.style.display = 'block';
+
+            // Αλλάξτε το κείμενο του κουμπιού σε "Hide"
+            if (hideButton) {
+                hideButton.textContent = 'Hide';
+            }
+        }
+
+        // Save as CSV
+        function saveAsCSV() {
+            const table = document.getElementById('csvTable');
+            let csv = [];
+
+            // Header row
+            const headerRow = table.querySelector('thead tr');
+            if (headerRow) {
+                const headerData = Array.from(headerRow.cells).map(cell => cell.textContent);
+                csv.push(headerData.join(','));
+            }
+
+            // Data rows
+            const bodyRows = table.querySelectorAll('tbody tr');
+            bodyRows.forEach(row => {
+                const rowData = Array.from(row.cells).map(cell => cell.textContent);
+                csv.push(rowData.join(','));
+            });
+
+            if (csv.length > 0) {
+                const csvString = csv.join('\n');
+                const filename = 'table_data.csv';
+                const blob = new Blob([csvString], {
+                    type: 'text/csv'
+                });
+
+                if (navigator.msSaveBlob) { // For IE and Edge
+                    navigator.msSaveBlob(blob, filename);
+                } else {
+                    const link = document.createElement('a');
+                    if (link.download !== undefined) { // Feature detection
+                        const url = URL.createObjectURL(blob);
+                        link.setAttribute('href', url);
+                        link.setAttribute('download', filename);
+                        link.style.visibility = 'hidden';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        URL.revokeObjectURL(url);
+                    } else {
+                        alert('Browser does not support saving as CSV.');
+                    }
+                }
+            } else {
+                alert('No data to save.');
+            }
+        }
+
+
+
+
+        function updateHistogramColumnDropdown() {
+            const histogramColumnSelect = document.getElementById('histogramColumn');
+            const theadRow = csvTable.querySelector('thead tr');
+
+            histogramColumnSelect.innerHTML = '<option value="">None</option>';
+
+            if (theadRow) {
+                for (let i = 0; i < theadRow.cells.length; i++) {
+                    const columnName = theadRow.cells[i].textContent.trim();
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = columnName;
+                    histogramColumnSelect.appendChild(option);
+                }
+            }
+        }
+
+        function getColumnData(columnIndex) {
+            const tableBody = csvTable.querySelector('tbody');
+            if (!tableBody) return [];
+            const data = [];
+            for (let i = 0; i < tableBody.rows.length; i++) {
+                const cell = tableBody.rows[i].cells[columnIndex];
+                if (cell) {
+                    const value = cell.textContent.trim();
+                    // Attempt to parse as number, otherwise keep as string
+                    const num = parseFloat(value);
+                    data.push(isNaN(num) ? value : num);
+                } else {
+                    data.push(undefined); // Or some other placeholder for missing data
+                }
+            }
+            return data;
+        }
+
+        function drawHistogramInDiv() {
+            const histogramColumnSelect = document.getElementById('histogramColumn');
+            const selectedColumnIndex = parseInt(histogramColumnSelect.value);
+            const histogramDiv = document.getElementById('histogramDiv');
+
+            if (isNaN(selectedColumnIndex)) {
+                histogramDiv.innerHTML = '<p>Please select a column for the histogram.</p>';
+                return;
+            }
+
+            const columnData = getColumnData(selectedColumnIndex);
+            const numericData = columnData.filter(value => typeof value === 'number' && !isNaN(value));
+
+            if (numericData.length === 0) {
+                histogramDiv.innerHTML = '<p>Selected column does not contain numeric data for the histogram.</p>';
+                return;
+            }
+
+            // Clear previous histogram
+            histogramDiv.innerHTML = '';
+
+            // Set up dimensions
+            const margin = {
+                top: 10,
+                right: 30,
+                bottom: 30,
+                left: 40
+            };
+            const width = histogramDiv.offsetWidth - margin.left - margin.right;
+            const height = histogramDiv.offsetHeight - margin.top - margin.bottom;
+
+            // Append the svg object to the div
+            const svg = d3.select("#histogramDiv").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            // X axis: scale and draw
+            const x = d3.scaleLinear()
+                .domain([d3.min(numericData), d3.max(numericData)])
+                .range([0, width]);
+            svg.append("g")
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(x));
+
+            // Y axis: histogram data and draw
+            const histogram = d3.histogram()
+                .value(d => d) // I need to give the vector of value
+                .domain(x.domain()) // then the domain of the graphic
+                .thresholds(d3.thresholdSturges(numericData)); // then the numbers of bins
+
+            const bins = histogram(numericData);
+
+            const y = d3.scaleLinear()
+                .range([height, 0]);
+            y.domain([0, d3.max(bins, d => d.length)]); // d3.hist has to be called before the Y axis obviously
+            svg.append("g")
+                .call(d3.axisLeft(y));
+
+            // Append the bar rectangles to the svg element
+            svg.selectAll("rect")
+                .data(bins)
+                .join("rect")
+                .attr("x", 1)
+                .attr("transform", d => `translate(${x(d.x0)},${y(d.length)})`)
+                .attr("width", d => x(d.x1) - x(d.x0) - 1)
+                .attr("height", d => height - y(d.length))
+                .style("fill", "#69b3a2");
+        }
+
+        function updatePlot() {
+
+            // Plot.style.display = 'block';
+            histogramDiv.style.display = 'block';
+            histogramControls.style.display = 'block';
+        }
+
+        function hideHistogram() {
+
+            // Plot.style.display = 'none';
+            histogramDiv.style.display = 'none';
+            histogramControls.style.display = 'none';
+
+        }
+
+
+        function saveAsCSV() {
+            const thead = csvTable.querySelector('thead');
+            const tbody = csvTable.querySelector('tbody');
+            if (!thead || !tbody) {
+                alert('No table data to save.');
+                return;
+            }
+
+            let csvContent = "";
+
+            // Add header row
+            const headerRow = Array.from(thead.rows[0].cells).map(cell => cell.textContent.trim()).join(",");
+            csvContent += headerRow + "\r\n";
+
+            // Add data rows
+            for (let i = 0; i < tbody.rows.length; i++) {
+                const dataRow = Array.from(tbody.rows[i].cells).map(cell => cell.textContent.trim()).join(",");
+                csvContent += dataRow + "\r\n";
+            }
+
+            const fileName = selectedFileName.value || 'data.csv';
+            const blob = new Blob([csvContent], {
+                type: 'text/csv;charset=utf-8;'
+            });
+
+            if (navigator.msSaveBlob) { // IE and Edge
+                navigator.msSaveBlob(blob, fileName);
+            } else {
+                const link = document.createElement("a");
+                if (link.download !== undefined) { // Browsers that support HTML5 download attribute
+                    const url = URL.createObjectURL(blob);
+                    link.setAttribute("href", url);
+                    link.setAttribute("download", fileName);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else {
+                    window.open('data:text/csv;charset=utf-8,' + escape(csvContent));
+                }
+            }
+        }
+
+        // Placeholder functions for Histogram
+        function setAlltoCardMap() {
+            const cardIdList = ["card1"];
+            cardIdList.forEach(cardId => {
+                const cardElement = document.getElementById(cardId);
+                if (cardElement) {
+                    // Remove any existing card-related classes
+                    cardElement.classList.remove(
+                        'activemap'); // Only remove activemap, keep cardmap if it exists
+                    cardElement.classList.add('cardmap');
+                } else {
+                    console.warn(`Card element with ID '${cardId}' not found.`);
+                }
+            });
+        }
+
+        function changeCardColor(buttonId, classtype) {
+            const buttonElement = document.getElementById(buttonId);
+            if (buttonElement) {
+                const parentDiv = buttonElement.parentNode;
+                if (parentDiv) {
+                    // Remove any existing card-related classes
+                    parentDiv.classList.remove('cardmap', 'activemap');
+                    // Add the new class specified by classtype
+                    parentDiv.classList.add(classtype);
+                } else {
+                    console.error(`Parent node not found for button with ID: ${buttonId}`);
+                }
+            } else {
+                console.error(`Button with ID "${buttonId}" not found.`);
+            }
+        }
+
+
+        function scrollToMainPlot() {
+            const mainPlot = document.getElementById('histogramDiv'); // Corrected ID
+            if (mainPlot && window.getComputedStyle(mainPlot).display === 'block') { // Ensure it's visible
+                mainPlot.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+
+        function clearBoxPlot() {
+            // Implement logic to clear the box plot
+            console.log('Clear Box Plot function called');
+        }
+    </script>
+
+    <!-- Table container -->
+    <div id="tableContainer">
+        <table id="csvTable"></table>
+    </div>
+
+    <!-- boxPlot -->
+    <div class="boxPlot">
+        <div class="white">
+            <div class="inbox"></div>
+        </div>
+    </div>
+
+
+
+    <!-- Histogram-container -->
+    <div class="histogram-container">
+        <div id="histogramDiv"></div>
+        <div id="histogramControls">
+            <select id="histogramColumn" class="box3">
+                <option value="">None</option><br>
+            </select>
+            <button class="button3" onclick="drawHistogramInDiv()">Draw</button>
+        </div>
+    </div>
+    </div>
+
+    <!-- Main -->
+    <main class="main">
+
+        <div id="card1" class="cardmap">
+            <font size=4 color="#9900FF"><b>Histogram</b></font><br><br>
+            <button id="showboxbutt" class="button1"
+                onclick="setAlltoCardMap(); changeCardColor('showboxbutt', 'activemap'); updatePlot(); scrollToMainPlot();">Show</button>
+            <button id="hideboxbutt" class="button2" onclick="setAlltoCardMap(); hideHistogram()">Hide</button><br>
+            <div id="CanvasBoxPlot"></div>
+        </div>
+
+    </main>
+
+    <br>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 Dashboard</p>
+    </footer>
+
+</body>
+
+</html>
